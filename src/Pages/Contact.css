@@ -237,6 +237,19 @@
   transform: translateY(-2px);
 }
 
+.Inquiry-submit:disabled {
+  cursor: wait;
+  opacity: 0.65;
+  transform: none;
+}
+
+.Inquiry-error {
+  margin: 0;
+  color: #b33a5d;
+  font-size: 0.8rem;
+  line-height: 1.4;
+}
+
 @media (max-width: 768px) {
   .Inquiry-page {
     padding: 5.5rem 1rem 2.5rem;

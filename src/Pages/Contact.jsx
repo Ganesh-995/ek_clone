@@ -11,17 +11,38 @@ const Contact = () => {
     message: ''
   })
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitError, setSubmitError] = useState('')
 
   const handleChange = (event) => {
     const { name, value } = event.target
     setFormData((previous) => ({ ...previous, [name]: value }))
   }
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault()
-    setIsSubmitted(true)
-    setFormData({ name: '', email: '', mobile: '', message: '' })
-    window.setTimeout(() => navigate('/'), 5000)
+    setIsSubmitting(true)
+    setSubmitError('')
+
+    try {
+      const apiBaseUrl = import.meta.env.VITE_API_URL || ''
+      const response = await fetch(`${apiBaseUrl}/api/inquiries`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      })
+
+      const result = await response.json()
+      if (!response.ok) throw new Error(result.message || 'Unable to send inquiry.')
+
+      setIsSubmitted(true)
+      setFormData({ name: '', email: '', mobile: '', message: '' })
+      window.setTimeout(() => navigate('/'), 5000)
+    } catch (error) {
+      setSubmitError(error.message)
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -73,8 +94,9 @@ const Contact = () => {
             Message *
             <textarea name="message" value={formData.message} onChange={handleChange} placeholder="Tell us about your celebration" rows="5" required />
           </label>
-          <button className="Inquiry-submit" type="submit">
-            Send inquiry <span aria-hidden="true">↗</span>
+          {submitError && <p className="Inquiry-error" role="alert">{submitError}</p>}
+          <button className="Inquiry-submit" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Sending...' : 'Send inquiry'} {!isSubmitting && <span aria-hidden="true">↗</span>}
           </button>
         </form>
         )}
