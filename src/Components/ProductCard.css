@@ -40,7 +40,16 @@
 }
 
 .ProductCard-square .ProductCard-image-wrapper::after {
-    display: none;
+    display: block;
+    top: 0.6rem;
+    right: 0.6rem;
+    left: auto;
+    width: 34px;
+    height: 34px;
+    padding: 0;
+    border-radius: 0;
+    background: url('/images/new_logo.png') center / contain no-repeat;
+    opacity: 0.38;
 }
 
 .ProductCard-square .ProductCard-image {
@@ -69,17 +78,15 @@
 }
 
 .ProductCard-image-wrapper::after {
-    content: 'NEW DROP';
+    content: '';
     position: absolute;
-    top: 10px;
-    left: 10px;
-    padding: 0.35rem 0.5rem;
-    border-radius: 999px;
-    background: rgba(255, 253, 251, 0.9);
-    color: #6f5390;
-    font-size: 0.55rem;
-    font-weight: 800;
-    letter-spacing: 0.1em;
+    top: 0.7rem;
+    right: 0.7rem;
+    width: 42px;
+    height: 42px;
+    background: url('/images/new_logo.png') center / contain no-repeat;
+    opacity: 0.45;
+    pointer-events: none;
 }
 
 .ProductCard-image {
