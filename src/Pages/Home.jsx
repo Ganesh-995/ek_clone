@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import ProductCard from '../Components/ProductCard'
 import { useProducts } from '../context/ProductContext'
@@ -8,10 +8,22 @@ import './Home.css'
 const Home = () => {
   const { products } = useProducts()
   const [searchParams] = useSearchParams()
+  const [currentPage, setCurrentPage] = useState(1)
+  const productsPerPage = 20
   const searchTerm = searchParams.get('search')?.trim().toLowerCase() || ''
   const visibleProducts = searchTerm
     ? products.filter((product) => `${product.title} ${product.description} ${product.bulletPoints?.join(' ')}`.toLowerCase().includes(searchTerm))
     : products
+  const totalPages = Math.min(100, Math.max(1, Math.ceil(visibleProducts.length / productsPerPage)))
+  const safePage = Math.min(currentPage, totalPages)
+  const pageStart = (safePage - 1) * productsPerPage
+  const pageProducts = visibleProducts.slice(pageStart, pageStart + productsPerPage)
+  const featuredProducts = pageProducts.slice(0, 10)
+  const additionalProducts = pageProducts.slice(10)
+
+  useEffect(() => {
+    setCurrentPage(1)
+  }, [searchTerm])
 
   return (
     <div className="Home">
@@ -49,7 +61,7 @@ const Home = () => {
       <div className="Home-container" id="featured-products">
         <h2>Featured Products</h2>
         <div className="Products-grid">
-          {visibleProducts.map((product) => (
+          {featuredProducts.map((product) => (
             <ProductCard
               key={product.id}
               image={product.image}
@@ -63,6 +75,31 @@ const Home = () => {
           )}
         </div>
       </div>
+
+      {additionalProducts.length > 0 && (
+        <section className="Home-container Home-additional-products" aria-labelledby="additional-products-title">
+          <h2 id="additional-products-title">More products</h2>
+          <div className="Products-grid">
+            {additionalProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                image={product.image}
+                title={product.title}
+                description={product.description}
+                bulletPoints={product.bulletPoints}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {visibleProducts.length > productsPerPage && (
+        <nav className="Products-pagination" aria-label="Product pages">
+          <button type="button" onClick={() => setCurrentPage(Math.max(1, safePage - 1))} disabled={safePage === 1}>Previous</button>
+          <span>Page {safePage} of {totalPages}</span>
+          <button type="button" onClick={() => setCurrentPage(Math.min(totalPages, safePage + 1))} disabled={safePage === totalPages}>Next</button>
+        </nav>
+      )}
 
       <section className="Home-themes" aria-labelledby="themes-title">
         <div className="Home-themes-heading">
