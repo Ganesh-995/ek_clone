@@ -207,10 +207,33 @@
     align-items: center;
     justify-content: center;
     gap: 1rem;
+    flex-wrap: wrap;
     padding: 0 1rem 3rem;
     color: #46366a;
     font-size: 0.8rem;
     font-weight: 800;
+}
+
+.Products-page-numbers {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.35rem;
+}
+
+.Products-page-numbers button {
+    min-width: 32px;
+    padding-inline: 0.45rem;
+}
+
+.Products-page-numbers button.is-active {
+    background: #46366a;
+    border-color: #46366a;
+    color: #fff;
+}
+
+.Products-page-status {
+    white-space: nowrap;
 }
 
 .Products-pagination button {

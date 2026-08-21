@@ -96,7 +96,21 @@ const Home = () => {
       {visibleProducts.length > productsPerPage && (
         <nav className="Products-pagination" aria-label="Product pages">
           <button type="button" onClick={() => setCurrentPage(Math.max(1, safePage - 1))} disabled={safePage === 1}>Previous</button>
-          <span>Page {safePage} of {totalPages}</span>
+          <div className="Products-page-numbers">
+            {Array.from({ length: totalPages }, (_, index) => index + 1).map((pageNumber) => (
+              <button
+                className={pageNumber === safePage ? 'is-active' : ''}
+                type="button"
+                key={pageNumber}
+                onClick={() => setCurrentPage(pageNumber)}
+                aria-label={`Go to page ${pageNumber}`}
+                aria-current={pageNumber === safePage ? 'page' : undefined}
+              >
+                {pageNumber}
+              </button>
+            ))}
+          </div>
+          <span className="Products-page-status">Page {safePage} of {totalPages}</span>
           <button type="button" onClick={() => setCurrentPage(Math.min(totalPages, safePage + 1))} disabled={safePage === totalPages}>Next</button>
         </nav>
       )}
