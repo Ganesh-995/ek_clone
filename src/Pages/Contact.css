@@ -250,6 +250,15 @@
   line-height: 1.4;
 }
 
+.Inquiry-honeypot {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
 @media (max-width: 768px) {
   .Inquiry-page {
     padding: 5.5rem 1rem 2.5rem;

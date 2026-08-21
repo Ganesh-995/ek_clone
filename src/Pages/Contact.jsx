@@ -25,15 +25,14 @@ const Contact = () => {
     setSubmitError('')
 
     try {
-      const apiBaseUrl = import.meta.env.VITE_API_URL || ''
-      const response = await fetch(`${apiBaseUrl}/api/inquiries`, {
+      const payload = new URLSearchParams({ 'form-name': 'inquiry', ...formData })
+      const response = await fetch('/', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: payload.toString(),
       })
 
-      const result = await response.json()
-      if (!response.ok) throw new Error(result.message || 'Unable to send inquiry.')
+      if (!response.ok) throw new Error('Unable to send inquiry right now.')
 
       setIsSubmitted(true)
       setFormData({ name: '', email: '', mobile: '', message: '' })
@@ -75,7 +74,12 @@ const Contact = () => {
             <p>Your inquiry has been received. You will be redirected to the home page in 5 seconds.</p>
           </div>
         ) : (
-        <form className="Inquiry-form" onSubmit={handleSubmit}>
+        <form className="Inquiry-form" name="inquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onSubmit={handleSubmit}>
+          <input type="hidden" name="form-name" value="inquiry" />
+          <label className="Inquiry-honeypot">
+            Don't fill this out
+            <input name="bot-field" tabIndex="-1" autoComplete="off" />
+          </label>
           <div className="Inquiry-form-row">
             <label>
               Name *
