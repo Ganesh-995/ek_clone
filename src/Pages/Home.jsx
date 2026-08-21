@@ -1,17 +1,12 @@
 import React from 'react'
-import { Link, useSearchParams } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import ProductCard from '../Components/ProductCard'
 import { useProducts } from '../context/ProductContext'
 import { themeCards } from '../data/themes'
 import './Home.css'
 
 const Home = () => {
-  const { products, carouselImages } = useProducts()
-  const [searchParams] = useSearchParams()
-  const searchTerm = searchParams.get('search')?.trim().toLowerCase() || ''
-  const visibleProducts = searchTerm
-    ? products.filter((product) => `${product.title} ${product.description} ${product.bulletPoints?.join(' ')}`.toLowerCase().includes(searchTerm))
-    : products
+  const { products } = useProducts()
 
   return (
     <div className="Home">
@@ -46,28 +41,10 @@ const Home = () => {
         </div>
       </div>
 
-      <section className="Home-carousel-section" aria-labelledby="new-arrivals-title">
-        <div className="Home-carousel" aria-label="Featured product images">
-          <div className="Home-carousel-track">
-            {[0, 1].map((group) => (
-              <div className="Home-carousel-group" key={group} aria-hidden={group === 1}>
-                {carouselImages.map((carouselItem) => (
-                  <ProductCard
-                    key={`carousel-${group}-${carouselItem.id}`}
-                    image={carouselItem.image}
-                    variant="square"
-                  />
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <div className="Home-container" id="featured-products">
-        <h2>Featured Products</h2>
+      <section className="Home-container" id="featured-products" aria-labelledby="featured-products-title">
+        <h2 id="featured-products-title">Featured Products</h2>
         <div className="Products-grid">
-          {visibleProducts.map((product) => (
+          {products.map((product) => (
             <ProductCard
               key={product.id}
               image={product.image}
@@ -76,18 +53,8 @@ const Home = () => {
               bulletPoints={product.bulletPoints}
             />
           ))}
-          {searchTerm && visibleProducts.length === 0 && (
-            <p className="Products-empty">No products found for “{searchTerm}”.</p>
-          )}
         </div>
-      </div>
-
-      <div className="Home-carousel-heading Home-carousel-heading-after-products">
-        <div>
-          <span className="Home-carousel-kicker">A little inspiration</span>
-          <h2 id="new-arrivals-title">Pick your <em>favourite.</em></h2>
-        </div>
-      </div>
+      </section>
 
       <section className="Home-themes" aria-labelledby="themes-title">
         <div className="Home-themes-heading">
