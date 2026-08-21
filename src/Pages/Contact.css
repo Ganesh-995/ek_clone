@@ -1,0 +1,276 @@
+.Inquiry-page {
+  min-height: 100vh;
+  padding: 7rem max(1rem, calc((100vw - 1180px) / 2)) 4rem;
+  background: #fbfaf8;
+  color: #29232e;
+}
+
+.Inquiry-intro {
+  position: relative;
+  max-width: 1180px;
+  margin: 0 auto 1.5rem;
+  padding: 3rem 2rem;
+  overflow: hidden;
+  background: linear-gradient(115deg, #7558af 0%, #a57fd8 53%, #e6a0a4 100%);
+  color: #fffaf5;
+  box-shadow: 0 18px 35px rgba(72, 54, 107, 0.14);
+}
+
+.Inquiry-intro::after {
+  content: '';
+  position: absolute;
+  width: 380px;
+  aspect-ratio: 1;
+  right: -120px;
+  top: -190px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  box-shadow: 0 0 0 30px rgba(255, 255, 255, 0.08), 0 0 0 64px rgba(255, 255, 255, 0.05);
+}
+
+.Inquiry-kicker {
+  position: relative;
+  z-index: 1;
+  display: block;
+  margin-bottom: 1rem;
+  color: #ffe0a6;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.Inquiry-intro h1 {
+  position: relative;
+  z-index: 1;
+  margin: 0;
+  color: #fffaf5;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  font-weight: 500;
+  line-height: 0.98;
+}
+
+.Inquiry-intro h1 em {
+  color: #ffe0a6;
+  font-style: italic;
+}
+
+.Inquiry-intro > p {
+  position: relative;
+  z-index: 1;
+  max-width: 500px;
+  margin-top: 1.25rem;
+  color: rgba(255, 250, 245, 0.82);
+  line-height: 1.65;
+}
+
+.Inquiry-panel {
+  display: grid;
+  grid-template-columns: minmax(250px, 0.75fr) minmax(0, 1.25fr);
+  max-width: 1180px;
+  margin: 0 auto;
+  background: #fffdfb;
+  border: 1px solid #eee9e6;
+  box-shadow: 0 12px 30px rgba(47, 36, 64, 0.06);
+}
+
+.Inquiry-note {
+  padding: 2.5rem;
+  background: #f3edf8;
+}
+
+.Inquiry-note-mark {
+  display: block;
+  margin-bottom: 2.5rem;
+  color: #ed8c68;
+  font-size: 1.6rem;
+}
+
+.Inquiry-note h2 {
+  margin: 0;
+  color: #46366a;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 2.2rem;
+  font-weight: 500;
+  line-height: 1.05;
+}
+
+.Inquiry-note > p {
+  margin-top: 1rem;
+  color: #6b6375;
+  line-height: 1.65;
+}
+
+.Inquiry-note-line {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-top: 2rem;
+  border-top: 1px solid rgba(111, 83, 144, 0.2);
+  padding-top: 0.9rem;
+}
+
+.Inquiry-note-line span {
+  color: #ed8c68;
+  font-size: 0.72rem;
+  font-weight: 800;
+}
+
+.Inquiry-note-line p {
+  color: #6b6375;
+  font-size: 0.82rem;
+}
+
+.Inquiry-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.15rem;
+  padding: 2.5rem;
+}
+
+.Inquiry-success {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 360px;
+  padding: 2.5rem;
+  background: #fffdfb;
+}
+
+.Inquiry-success-mark {
+  display: grid;
+  place-items: center;
+  width: 3.5rem;
+  height: 3.5rem;
+  margin-bottom: 1.5rem;
+  border-radius: 50%;
+  background: #ffe0a6;
+  color: #46366a;
+  font-size: 1.8rem;
+  font-weight: 800;
+}
+
+.Inquiry-success h2 {
+  margin: 0;
+  color: #46366a;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.Inquiry-success p {
+  max-width: 360px;
+  margin-top: 1rem;
+  color: #6b6375;
+  line-height: 1.65;
+}
+
+.Inquiry-form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.Inquiry-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  color: #46366a;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.Inquiry-form input,
+.Inquiry-form textarea {
+  width: 100%;
+  padding: 0.85rem 0.95rem;
+  border: 1px solid #e5e4e7;
+  border-radius: 0;
+  outline: none;
+  background: #fffdfb;
+  color: #29232e;
+  color-scheme: light;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  resize: vertical;
+}
+
+.Inquiry-form input::placeholder,
+.Inquiry-form textarea::placeholder {
+  color: #6b6375;
+  opacity: 1;
+}
+
+.Inquiry-form input:focus,
+.Inquiry-form textarea:focus {
+  border-color: #aa3bff;
+  box-shadow: 0 0 0 3px rgba(170, 59, 255, 0.1);
+}
+
+.Inquiry-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  align-self: flex-start;
+  min-width: 230px;
+  margin-top: 0.5rem;
+  padding: 0.9rem 1.1rem;
+  border: 0;
+  background: #29232e;
+  color: #fffdfb;
+  font-size: 0.78rem;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.Inquiry-submit:hover {
+  background: #6f5390;
+  transform: translateY(-2px);
+}
+
+@media (max-width: 768px) {
+  .Inquiry-page {
+    padding: 5.5rem 1rem 2.5rem;
+  }
+
+  .Inquiry-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .Inquiry-note,
+  .Inquiry-form,
+  .Inquiry-success {
+    padding: 1.75rem;
+  }
+
+  .Inquiry-note-mark {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .Inquiry-page {
+    padding: 5rem 0.6rem 2rem;
+  }
+
+  .Inquiry-intro {
+    padding: 2.25rem 1.25rem;
+  }
+
+  .Inquiry-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .Inquiry-submit {
+    width: 100%;
+  }
+}
