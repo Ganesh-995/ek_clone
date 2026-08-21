@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useSearchParams } from 'react-router-dom'
 import ProductCard from '../Components/ProductCard'
 import { useProducts } from '../context/ProductContext'
 import { themeCards } from '../data/themes'
@@ -7,6 +7,11 @@ import './Home.css'
 
 const Home = () => {
   const { products } = useProducts()
+  const [searchParams] = useSearchParams()
+  const searchTerm = searchParams.get('search')?.trim().toLowerCase() || ''
+  const visibleProducts = searchTerm
+    ? products.filter((product) => `${product.title} ${product.description} ${product.bulletPoints?.join(' ')}`.toLowerCase().includes(searchTerm))
+    : products
 
   return (
     <div className="Home">
@@ -41,10 +46,10 @@ const Home = () => {
         </div>
       </div>
 
-      <section className="Home-container" id="featured-products" aria-labelledby="featured-products-title">
-        <h2 id="featured-products-title">Featured Products</h2>
+      <div className="Home-container" id="featured-products">
+        <h2>Featured Products</h2>
         <div className="Products-grid">
-          {products.map((product) => (
+          {visibleProducts.map((product) => (
             <ProductCard
               key={product.id}
               image={product.image}
@@ -53,12 +58,15 @@ const Home = () => {
               bulletPoints={product.bulletPoints}
             />
           ))}
+          {searchTerm && visibleProducts.length === 0 && (
+            <p className="Products-empty">No products found for “{searchTerm}”.</p>
+          )}
         </div>
-      </section>
+      </div>
 
       <section className="Home-themes" aria-labelledby="themes-title">
         <div className="Home-themes-heading">
-          <span className="Home-carousel-kicker">Curated for you</span>
+          <span className="Home-section-kicker">Curated for you</span>
           <h2 id="themes-title">Find your <em>theme.</em></h2>
         </div>
         <div className="Theme-grid">

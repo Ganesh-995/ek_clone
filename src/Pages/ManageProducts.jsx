@@ -3,7 +3,7 @@ import { useProducts } from '../context/ProductContext';
 import './ManageProducts.css';
 
 export default function ManageProducts() {
-  const { products, setProducts, carouselImages, setCarouselImages } = useProducts();
+  const { products, setProducts } = useProducts();
   const [formData, setFormData] = useState({
     image: '',
     title: '',
@@ -11,19 +11,15 @@ export default function ManageProducts() {
     bulletPoints: ''
   });
   const [editingId, setEditingId] = useState(null);
-  const [carouselEditingId, setCarouselEditingId] = useState(null);
-  const [showCarouselForm, setShowCarouselForm] = useState(false);
-  const [carouselImage, setCarouselImage] = useState('');
   const [showForm, setShowForm] = useState(false);
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    if (!showForm && !showCarouselForm) return undefined;
+    if (!showForm) return undefined;
 
     const handleEscape = (event) => {
       if (event.key !== 'Escape') return;
-      if (showCarouselForm) closeCarouselForm();
-      else resetForm();
+      resetForm();
     };
 
     document.body.style.overflow = 'hidden';
@@ -33,7 +29,7 @@ export default function ManageProducts() {
       document.body.style.overflow = '';
       document.removeEventListener('keydown', handleEscape);
     };
-  }, [showForm, showCarouselForm]);
+  }, [showForm]);
 
   const resetForm = () => {
     setFormData({
@@ -44,12 +40,6 @@ export default function ManageProducts() {
     });
     setEditingId(null);
     setShowForm(false);
-  };
-
-  const closeCarouselForm = () => {
-    setCarouselEditingId(null);
-    setCarouselImage('');
-    setShowCarouselForm(false);
   };
 
   const handleInputChange = (e) => {
@@ -117,45 +107,6 @@ export default function ManageProducts() {
     });
     setEditingId(product.id);
     setShowForm(true);
-  };
-
-  const handleCarouselEdit = (carouselItem) => {
-    setCarouselEditingId(carouselItem.id);
-    setCarouselImage(carouselItem.image || '');
-    setShowCarouselForm(true);
-  };
-
-  const handleCarouselSave = (event) => {
-    event.preventDefault();
-    if (!carouselImage.trim()) return;
-
-    if (carouselEditingId) {
-      setCarouselImages(carouselImages.map(item =>
-        item.id === carouselEditingId ? { ...item, image: carouselImage.trim() } : item
-      ));
-    } else {
-      setCarouselImages([
-        ...carouselImages,
-        { id: `carousel-${Date.now()}`, image: carouselImage.trim() }
-      ]);
-    }
-    setMessage('✅ Carousel image update ho gayi!');
-    setTimeout(() => setMessage(''), 3000);
-    closeCarouselForm();
-  };
-
-  const handleAddCarousel = () => {
-    setCarouselEditingId(null);
-    setCarouselImage('');
-    setShowCarouselForm(true);
-  };
-
-  const handleDeleteCarousel = (id) => {
-    if (window.confirm('Kya aap is carousel image ko delete karna chahte ho?')) {
-      setCarouselImages(carouselImages.filter(item => item.id !== id));
-      setMessage('✅ Carousel image delete ho gayi!');
-      setTimeout(() => setMessage(''), 3000);
-    }
   };
 
   const handleDelete = (id) => {
@@ -295,64 +246,6 @@ export default function ManageProducts() {
           ))}
         </div>
       </div>
-
-      <section className="carousel-manager">
-        <div className="carousel-manager-heading">
-          <div>
-            <span className="carousel-manager-kicker">Separate collection</span>
-            <h2>Manage Carousel Images ({carouselImages.length})</h2>
-          </div>
-          <button className="btn btn-primary" onClick={handleAddCarousel}>
-            ➕ Add Carousel Image
-          </button>
-        </div>
-        <div className="carousel-manager-grid">
-          {carouselImages.map((carouselItem) => (
-            <div className="carousel-manager-item" key={carouselItem.id}>
-              <img src={carouselItem.image} alt="Carousel graphic" />
-              <div className="carousel-manager-actions">
-                <button className="btn btn-edit" onClick={() => handleCarouselEdit(carouselItem)}>
-                  ✏️ Edit
-                </button>
-                <button className="btn btn-delete" onClick={() => handleDeleteCarousel(carouselItem.id)}>
-                  🗑️ Delete
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {showCarouselForm && (
-        <div className="modal-backdrop" onMouseDown={(event) => {
-          if (event.target === event.currentTarget) closeCarouselForm();
-        }}>
-          <div className="form-container carousel-form-container" role="dialog" aria-modal="true" aria-labelledby="carousel-form-title">
-            <div className="modal-header">
-              <h2 id="carousel-form-title">🎞️ Change Carousel Image</h2>
-              <button type="button" className="modal-close" onClick={closeCarouselForm} aria-label="Close carousel image form">
-                ×
-              </button>
-            </div>
-            <form onSubmit={handleCarouselSave}>
-              <div className="form-group">
-                <label>Graphic Image URL *</label>
-                <input
-                  type="url"
-                  value={carouselImage}
-                  onChange={(event) => setCarouselImage(event.target.value)}
-                  placeholder="https://example.com/carousel-graphic.jpg"
-                  required
-                />
-              </div>
-              <div className="form-buttons">
-                <button type="submit" className="btn btn-success">💾 Save Image</button>
-                <button type="button" className="btn btn-cancel" onClick={closeCarouselForm}>❌ Cancel</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
 
       <div className="info-box">
         <h3>ℹ️ Important Notes:</h3>

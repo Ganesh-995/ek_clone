@@ -77,75 +77,6 @@
 .Hero-partners strong { color: #fff; font-size: 1.5rem; }
 @keyframes floatAstronaut { 0%, 100% { transform: rotate(7deg) translateY(0); } 50% { transform: rotate(4deg) translateY(-14px); } }
 
-.Home-carousel-section {
-    width: 100%;
-    padding: 2rem max(1.5rem, calc((100vw - 1180px) / 2));
-    overflow: hidden;
-    background: transparent;
-}
-
-.Home-carousel-section::before,
-.Home-carousel-section::after {
-    content: '';
-    position: absolute;
-    z-index: -1;
-    pointer-events: none;
-    border: 1px solid rgba(111, 83, 144, 0.16);
-    transform: rotate(-12deg);
-}
-
-.Home-carousel-section::before {
-    width: 310px;
-    height: 120px;
-    right: -80px;
-    top: 24px;
-}
-
-.Home-carousel-section::after {
-    width: 240px;
-    height: 90px;
-    left: -90px;
-    bottom: 20px;
-    border-color: rgba(237, 140, 104, 0.2);
-    transform: rotate(18deg);
-}
-.Home-carousel-heading {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 1rem;
-    max-width: 1180px;
-    margin: 1.5rem auto 0;
-}
-
-.Home-carousel-heading-after-products {
-    width: min(1180px, calc(100% - 2rem));
-    margin: 0 auto 2.5rem;
-}
-
-.Home-carousel-kicker {
-    display: block;
-    margin-bottom: 0.55rem;
-    color: #ed8c68;
-    font-size: 0.68rem;
-    font-weight: 800;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-}
-
-.Home-carousel-heading h2 {
-    margin: 0;
-    color: #46366a;
-    font-family: Georgia, 'Times New Roman', serif;
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 500;
-}
-
-.Home-carousel-heading h2 em {
-    color: #ed8c68;
-    font-style: italic;
-}
-
 .Home-themes {
     width: min(1180px, calc(100% - 2rem));
     margin: 0 auto 4rem;
@@ -153,6 +84,16 @@
 
 .Home-themes-heading {
     margin-bottom: 1.25rem;
+}
+
+.Home-section-kicker {
+    display: block;
+    margin-bottom: 0.55rem;
+    color: #ed8c68;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
 }
 
 .Home-themes-heading h2 {
@@ -234,46 +175,6 @@
     text-decoration: none;
 }
 
-.Home-carousel {
-    display: flex;
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 0.25rem 0.1rem;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scrollbar-width: none;
-}
-
-.Home-carousel::-webkit-scrollbar {
-    display: none;
-}
-
-.Home-carousel-track {
-    display: flex;
-    width: max-content;
-    animation: slowProductLoop 42s linear infinite;
-}
-
-.Home-carousel-group {
-    display: flex;
-    gap: 1rem;
-    padding-right: 1rem;
-}
-
-.Home-carousel:hover .Home-carousel-track,
-.Home-carousel:focus-within .Home-carousel-track {
-    animation-play-state: paused;
-}
-
-@keyframes slowProductLoop {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-}
-
-.Home-carousel .ProductCard {
-    flex-shrink: 0;
-}
-
 .Home-container {
     max-width: 1280px;
     margin: 0 auto;
@@ -327,10 +228,6 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 1rem;
         justify-items: center;
-    }
-
-    .Home-carousel-section {
-        padding: 1.25rem 1.25rem;
     }
 
 }
@@ -431,19 +328,6 @@
         gap: 0.3rem;
     }
 
-    .Home-carousel-section {
-        padding: 1rem;
-    }
-
-    .Home-carousel-heading h2 {
-        font-size: 1.3rem;
-    }
-
-    .Home-carousel-kicker {
-        margin-bottom: 0.3rem;
-        font-size: 0.56rem;
-    }
-
     .Home-themes {
         width: calc(100% - 2rem);
         margin-bottom: 2.5rem;
@@ -483,12 +367,6 @@
     .Theme-card-explore {
         margin-top: 0.55rem;
         font-size: 0.62rem;
-    }
-
-    .ProductCard-square {
-        flex-basis: 80px;
-        max-width: 80px;
-        height: 80px;
     }
 
     .Products-grid .ProductCard-title {

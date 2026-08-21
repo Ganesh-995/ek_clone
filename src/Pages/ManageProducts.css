@@ -445,71 +445,6 @@
   border-top: 1px solid #eee9e6;
 }
 
-.carousel-manager {
-  max-width: 1180px;
-  margin: 2rem auto 0;
-  padding: 1.5rem;
-  background: #f3edf8;
-  border: 1px solid #e5d7ee;
-}
-
-.carousel-manager-heading {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  margin-bottom: 1.25rem;
-}
-
-.carousel-manager-kicker {
-  display: block;
-  margin-bottom: 0.35rem;
-  color: #ed8c68;
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-.carousel-manager h2 {
-  margin: 0;
-  color: #46366a;
-  font-size: 1.35rem;
-}
-
-.carousel-manager-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 1rem;
-}
-
-.carousel-manager-item {
-  overflow: hidden;
-  background: #fffdfb;
-  border: 1px solid #d9cbe5;
-}
-
-.carousel-manager-item img {
-  display: block;
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: contain;
-  background: #e9def0;
-}
-
-.carousel-manager-actions {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.5rem;
-  padding: 0.65rem;
-}
-
-.carousel-manager-actions .btn {
-  justify-content: center;
-  padding: 0.55rem 0.4rem;
-  font-size: 0.72rem;
-}
-
 .info-box {
   max-width: 1180px;
   margin: 2rem auto 0;
@@ -586,10 +521,6 @@
     grid-template-columns: 1fr;
   }
 
-  .carousel-manager-heading {
-    align-items: stretch;
-    flex-direction: column;
-  }
 }
 
 @media (max-width: 480px) {

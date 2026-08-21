@@ -93,7 +93,6 @@ body,
 .Navbar-search input::placeholder { color: #a28ea4; }
 
 .Home-container h2,
-.Home-carousel-heading h2,
 .Home-themes-heading h2,
 .ProductDetails h1,
 .ThemeDetails h1,
@@ -163,7 +162,6 @@ body,
 .manage-products-container .btn-primary:hover,
 .manage-products-container .btn-success:hover { background: linear-gradient(100deg, #df5f9b, #9746d4); }
 .manage-products-container .product-item,
-.manage-products-container .carousel-manager,
 .manage-products-container .form-container { background: #fffafe; border-color: #ead8e9; }
 
 .Site-footer {
