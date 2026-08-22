@@ -81,6 +81,44 @@
   flex-wrap: wrap;
 }
 
+.admin-login-form {
+  max-width: 460px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: #fffafe;
+  border: 1px solid #ead8e9;
+  border-radius: 16px;
+  box-shadow: 0 10px 24px rgba(47, 36, 64, 0.08);
+}
+
+.admin-login-form label {
+  display: grid;
+  gap: 0.5rem;
+  color: #51445d;
+  font-weight: 700;
+}
+
+.admin-login-form input {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid #d9cde0;
+  border-radius: 8px;
+  box-sizing: border-box;
+  font: inherit;
+}
+
+.admin-login-form input:focus {
+  outline: 2px solid rgba(195, 74, 154, 0.2);
+  border-color: #c34a9a;
+}
+
+.admin-login-form .btn {
+  width: 100%;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
 .btn {
   padding: 0.75rem 1.15rem;
   border: none;
@@ -540,6 +578,11 @@
 
   .manage-header h1 {
     font-size: 1.5rem;
+  }
+
+  .admin-login-form {
+    margin: 1.25rem auto;
+    padding: 1rem;
   }
 
   .form-container,
