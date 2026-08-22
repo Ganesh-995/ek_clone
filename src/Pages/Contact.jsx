@@ -28,7 +28,6 @@ const Contact = () => {
 
     try {
       const whatsappMessage = [
-        'New inquiry from EK Celebrations',
         `Name: ${formData.name}`,
         `Email: ${formData.email}`,
         `Mobile: ${formData.mobile}`,
