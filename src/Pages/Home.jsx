@@ -64,6 +64,7 @@ const Home = () => {
           {featuredProducts.map((product) => (
             <ProductCard
               key={product.id}
+              id={product.id}
               image={product.image}
               title={product.title}
               description={product.description}
@@ -83,6 +84,7 @@ const Home = () => {
             {additionalProducts.map((product) => (
               <ProductCard
                 key={product.id}
+                id={product.id}
                 image={product.image}
                 title={product.title}
                 description={product.description}
