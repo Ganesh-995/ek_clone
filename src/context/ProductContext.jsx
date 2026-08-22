@@ -22,6 +22,7 @@ export function ProductProvider({ children }) {
   const [products, setProducts] = useState(() => {
     return readStoredProducts();
   });
+  const [visitorCount, setVisitorCount] = useState(0);
 
   useEffect(() => {
     let isCurrent = true;
@@ -44,6 +45,13 @@ export function ProductProvider({ children }) {
     };
   }, []);
 
+  useEffect(() => {
+    fetch('/api/visitors')
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error('Unable to load visitor count')))
+      .then((result) => setVisitorCount(result.count))
+      .catch(() => undefined);
+  }, []);
+
   const updateProducts = (nextProducts) => {
     setProducts(nextProducts);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(nextProducts));
@@ -61,7 +69,7 @@ export function ProductProvider({ children }) {
   };
 
   return (
-    <ProductContext.Provider value={{ products, setProducts: updateProducts }}>
+    <ProductContext.Provider value={{ products, setProducts: updateProducts, visitorCount }}>
       {children}
     </ProductContext.Provider>
   );

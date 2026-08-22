@@ -81,6 +81,31 @@
   flex-wrap: wrap;
 }
 
+.visitor-counter {
+  max-width: 1180px;
+  margin: 0 auto 2rem;
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  background: #29232e;
+  color: #fffaf5;
+  border-radius: 12px;
+}
+
+.visitor-counter-label {
+  color: #f3dced;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.visitor-counter strong {
+  color: #ffe0a6;
+  font-size: 1.7rem;
+  line-height: 1;
+}
+
 .admin-login-form {
   max-width: 460px;
   margin: 2rem auto;
@@ -583,6 +608,10 @@
   .admin-login-form {
     margin: 1.25rem auto;
     padding: 1rem;
+  }
+
+  .visitor-counter {
+    margin-bottom: 1.25rem;
   }
 
   .form-container,
