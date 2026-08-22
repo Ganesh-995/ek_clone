@@ -63,7 +63,9 @@
 }
 
 .ProductCard-title {
+    flex: 1 1 auto;
     max-width: calc(100% - 42px);
+    min-width: 0;
     overflow: hidden;
     display: -webkit-box;
     -webkit-box-orient: vertical;
@@ -74,6 +76,8 @@
     color: #29232e;
     line-height: 1.25;
     letter-spacing: 0;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 
