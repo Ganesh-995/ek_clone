@@ -1,4 +1,5 @@
 import { getStore } from '@netlify/blobs'
+import defaultProducts from '../../src/data/products.json' with { type: 'json' }
 
 const store = getStore('products')
 const allowedMethods = ['GET', 'PUT']
@@ -13,7 +14,11 @@ export default async (request) => {
 
   if (request.method === 'GET') {
     const products = await store.get('catalog', { type: 'json' })
-    return Response.json(products || [])
+    if (products === null || products === undefined) {
+      await store.setJSON('catalog', defaultProducts)
+      return Response.json(defaultProducts)
+    }
+    return Response.json(products)
   }
 
   try {
