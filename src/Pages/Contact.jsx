@@ -2,6 +2,8 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './Contact.css'
 
+const whatsappNumber = '917838937047'
+
 const Contact = () => {
   const navigate = useNavigate()
   const [formData, setFormData] = useState({
@@ -25,6 +27,15 @@ const Contact = () => {
     setSubmitError('')
 
     try {
+      const whatsappMessage = [
+        'New inquiry from EK Celebrations',
+        `Name: ${formData.name}`,
+        `Email: ${formData.email}`,
+        `Mobile: ${formData.mobile}`,
+        `Message: ${formData.message}`,
+      ].join('\n')
+      window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`, '_blank', 'noopener,noreferrer')
+
       const payload = new URLSearchParams({ 'form-name': 'inquiry', ...formData })
       const response = await fetch('/', {
         method: 'POST',
