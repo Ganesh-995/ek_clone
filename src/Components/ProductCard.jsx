@@ -130,6 +130,12 @@ const ProductCard = ({ image, title, description, bulletPoints = [] }) => {
           }}
         >
           <div className="ProductModal" role="dialog" aria-modal="true" aria-labelledby={`product-title-${title}`}>
+            <button className="ProductModal-back" onClick={(event) => {
+              event.stopPropagation()
+              closeModal()
+            }} aria-label="Go back to products">
+              <span aria-hidden="true">←</span> Back
+            </button>
             <div className="ProductModal-visual" onWheel={handleImageWheel} onTouchStart={handleImageTouchStart} onTouchMove={handleImageTouchMove} onTouchEnd={handleImageTouchEnd}>
               <span className="ProductModal-label">made for your moment</span>
               <img src={image} alt={title} style={{ transform: `scale(${imageScale})` }} />
@@ -148,12 +154,6 @@ const ProductCard = ({ image, title, description, bulletPoints = [] }) => {
               <div className="ProductModal-actions">
                 <button className="ProductModal-action" onClick={handleWhatsAppClick}>
                   Ask about this product <span aria-hidden="true">↗</span>
-                </button>
-                <button className="ProductModal-back" onClick={(event) => {
-                  event.stopPropagation()
-                  closeModal()
-                }} aria-label="Go back to products">
-                  <span aria-hidden="true">←</span> Back
                 </button>
               </div>
             </div>

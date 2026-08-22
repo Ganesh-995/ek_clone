@@ -178,6 +178,10 @@
 }
 
 .ProductModal-back {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
