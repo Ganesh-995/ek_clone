@@ -50,7 +50,12 @@ export function ProductProvider({ children }) {
 
     fetch('/api/products', {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        ...(sessionStorage.getItem('ek-admin-token')
+          ? { Authorization: `Bearer ${sessionStorage.getItem('ek-admin-token')}` }
+          : {}),
+      },
       body: JSON.stringify(nextProducts),
     }).catch(() => undefined);
   };

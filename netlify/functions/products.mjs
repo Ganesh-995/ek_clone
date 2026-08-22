@@ -1,8 +1,19 @@
 import { getStore } from '@netlify/blobs'
 import defaultProducts from '../../src/data/products.json' with { type: 'json' }
+import { timingSafeEqual, createHmac } from 'node:crypto'
 
 const store = getStore('products')
 const allowedMethods = ['GET', 'PUT']
+
+function isAuthorized(request) {
+  const token = request.headers.get('authorization')?.replace('Bearer ', '')
+  if (!token || !process.env.ADMIN_PASSWORD) return false
+
+  const expectedToken = createHmac('sha256', process.env.ADMIN_PASSWORD).update('ek-products-admin').digest('hex')
+  const actual = Buffer.from(token)
+  const expected = Buffer.from(expectedToken)
+  return actual.length === expected.length && timingSafeEqual(actual, expected)
+}
 
 export default async (request) => {
   if (!allowedMethods.includes(request.method)) {
@@ -19,6 +30,10 @@ export default async (request) => {
       return Response.json(defaultProducts)
     }
     return Response.json(products)
+  }
+
+  if (!isAuthorized(request)) {
+    return Response.json({ message: 'Unauthorized.' }, { status: 401 })
   }
 
   try {

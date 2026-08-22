@@ -4,6 +4,10 @@ import './ManageProducts.css';
 
 export default function ManageProducts() {
   const { products, setProducts } = useProducts();
+  const [isAuthenticated, setIsAuthenticated] = useState(() => Boolean(sessionStorage.getItem('ek-admin-token')));
+  const [password, setPassword] = useState('');
+  const [loginError, setLoginError] = useState('');
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [formData, setFormData] = useState({
     image: '',
     title: '',
@@ -116,6 +120,49 @@ export default function ManageProducts() {
       setTimeout(() => setMessage(''), 3000);
     }
   };
+
+  const handleLogin = async (event) => {
+    event.preventDefault();
+    setIsLoggingIn(true);
+    setLoginError('');
+    try {
+      const response = await fetch('/api/admin-auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || 'Login failed.');
+      sessionStorage.setItem('ek-admin-token', result.token);
+      setIsAuthenticated(true);
+      setPassword('');
+    } catch (error) {
+      setLoginError(error.message);
+    } finally {
+      setIsLoggingIn(false);
+    }
+  };
+
+  if (!isAuthenticated) {
+    return (
+      <div className="manage-products-container">
+        <div className="manage-header">
+          <h1>🔒 Manage Products</h1>
+          <p>Admin password required</p>
+        </div>
+        <form className="admin-login-form" onSubmit={handleLogin}>
+          <label>
+            Password
+            <input type="password" value={password} onChange={(event) => setPassword(event.target.value)} required autoFocus />
+          </label>
+          {loginError && <p className="message">{loginError}</p>}
+          <button className="btn btn-primary" type="submit" disabled={isLoggingIn}>
+            {isLoggingIn ? 'Checking...' : 'Unlock products'}
+          </button>
+        </form>
+      </div>
+    );
+  }
 
   return (
     <div className="manage-products-container">
