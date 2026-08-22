@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { FaWhatsapp } from 'react-icons/fa'
 import './ProductCard.css'
 
@@ -121,7 +122,7 @@ const ProductCard = ({ image, title, description, bulletPoints = [] }) => {
           </button>
       </div>
 
-      {isOpen && (
+      {isOpen && createPortal(
         <div
           className="ProductModal-backdrop"
           onClick={(event) => {
@@ -157,7 +158,8 @@ const ProductCard = ({ image, title, description, bulletPoints = [] }) => {
               </div>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   )
