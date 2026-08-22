@@ -36,15 +36,6 @@ const Contact = () => {
       ].join('\n')
       window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`, '_blank', 'noopener,noreferrer')
 
-      const payload = new URLSearchParams({ 'form-name': 'inquiry', ...formData })
-      const response = await fetch('/', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: payload.toString(),
-      })
-
-      if (!response.ok) throw new Error('Unable to send inquiry right now.')
-
       setIsSubmitted(true)
       setFormData({ name: '', email: '', mobile: '', message: '' })
       window.setTimeout(() => navigate('/'), 5000)
@@ -103,7 +94,7 @@ const Contact = () => {
           </div>
           <label>
             Mobile number *
-            <input type="tel" name="mobile" value={formData.mobile} onChange={handleChange} placeholder="Your mobile number" pattern="[0-9+() -]{10,}" required />
+            <input type="tel" name="mobile" value={formData.mobile} onChange={handleChange} placeholder="Your mobile number" pattern="[0-9+() \x2D]{10,}" required />
           </label>
           <label>
             Message *
