@@ -3,7 +3,7 @@ import { useProducts } from '../context/ProductContext';
 import './ManageProducts.css';
 
 export default function ManageProducts() {
-  const { products, setProducts, visitorCount } = useProducts();
+  const { products, setProducts, visitorStats } = useProducts();
   const [isAuthenticated, setIsAuthenticated] = useState(() => Boolean(sessionStorage.getItem('ek-admin-token')));
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -182,9 +182,19 @@ export default function ManageProducts() {
         </button>
       </div>
 
-      <div className="visitor-counter" aria-label="Total website visitors">
-        <span className="visitor-counter-label">Website visitors</span>
-        <strong>{visitorCount.toLocaleString()}</strong>
+      <div className="visitor-counter" aria-label="Website visitor statistics">
+        <div>
+          <span className="visitor-counter-label">Live now</span>
+          <strong>{visitorStats.live.toLocaleString()}</strong>
+        </div>
+        <div>
+          <span className="visitor-counter-label">Today</span>
+          <strong>{visitorStats.today.toLocaleString()}</strong>
+        </div>
+        <div>
+          <span className="visitor-counter-label">Total</span>
+          <strong>{visitorStats.total.toLocaleString()}</strong>
+        </div>
       </div>
 
       {showForm && (

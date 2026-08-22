@@ -22,7 +22,7 @@ export function ProductProvider({ children }) {
   const [products, setProducts] = useState(() => {
     return readStoredProducts();
   });
-  const [visitorCount, setVisitorCount] = useState(0);
+  const [visitorStats, setVisitorStats] = useState({ total: 0, today: 0, live: 0 });
 
   useEffect(() => {
     let isCurrent = true;
@@ -46,10 +46,16 @@ export function ProductProvider({ children }) {
   }, []);
 
   useEffect(() => {
-    fetch('/api/visitors')
-      .then((response) => response.ok ? response.json() : Promise.reject(new Error('Unable to load visitor count')))
-      .then((result) => setVisitorCount(result.count))
-      .catch(() => undefined);
+    const updateVisitorStats = () => {
+      fetch('/api/visitors')
+        .then((response) => response.ok ? response.json() : Promise.reject(new Error('Unable to load visitor stats')))
+        .then((result) => setVisitorStats(result))
+        .catch(() => undefined);
+    };
+
+    updateVisitorStats();
+    const heartbeat = window.setInterval(updateVisitorStats, 60_000);
+    return () => window.clearInterval(heartbeat);
   }, []);
 
   const updateProducts = (nextProducts) => {
@@ -69,7 +75,7 @@ export function ProductProvider({ children }) {
   };
 
   return (
-    <ProductContext.Provider value={{ products, setProducts: updateProducts, visitorCount }}>
+    <ProductContext.Provider value={{ products, setProducts: updateProducts, visitorStats }}>
       {children}
     </ProductContext.Provider>
   );
