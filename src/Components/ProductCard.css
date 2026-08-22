@@ -250,8 +250,32 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    min-height: 0;
     padding: clamp(2rem, 5vw, 4.5rem);
     background: #fffdfb;
+}
+
+.ProductModal-scroll {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: #d8cfe6 transparent;
+}
+
+.ProductModal-scroll::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ProductModal-scroll::-webkit-scrollbar-thumb {
+    background: #d8cfe6;
+    border-radius: 999px;
+}
+
+.ProductModal-actions {
+    flex: 0 0 auto;
+    margin-top: 1rem;
 }
 
 .ProductModal-kicker {
@@ -364,6 +388,11 @@
 
     .ProductModal-content {
         padding: 2rem 1.5rem 1.75rem;
+    }
+
+    .ProductModal-scroll {
+        overflow-y: visible;
+        padding-right: 0;
     }
 }
 

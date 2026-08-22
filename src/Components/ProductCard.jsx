@@ -134,14 +134,16 @@ const ProductCard = ({ image, title, description, bulletPoints = [] }) => {
               <img src={image} alt={title} style={{ transform: `scale(${imageScale})` }} />
             </div>
             <div className="ProductModal-content">
-              <span className="ProductModal-kicker">Featured detail</span>
-              <h2 id={`product-title-${title}`}>{title}</h2>
-              <p>{description || 'A thoughtful detail to make your celebration feel extra special.'}</p>
-              {bulletPoints.length > 0 && (
-                <ul>
-                  {bulletPoints.map((point) => <li key={point}>{point}</li>)}
-                </ul>
-              )}
+              <div className="ProductModal-scroll">
+                <span className="ProductModal-kicker">Featured detail</span>
+                <h2 id={`product-title-${title}`}>{title}</h2>
+                <p>{description || 'A thoughtful detail to make your celebration feel extra special.'}</p>
+                {bulletPoints.length > 0 && (
+                  <ul>
+                    {bulletPoints.map((point) => <li key={point}>{point}</li>)}
+                  </ul>
+                )}
+              </div>
               <div className="ProductModal-actions">
                 <button className="ProductModal-action" onClick={handleWhatsAppClick}>
                   Ask about this product <span aria-hidden="true">↗</span>
