@@ -22,12 +22,41 @@ export function ProductProvider({ children }) {
   const [products, setProducts] = useState(() => {
     return readStoredProducts();
   });
+
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
-  }, [products]);
+    let isCurrent = true;
+
+    fetch('/api/products')
+      .then((response) => {
+        if (!response.ok) throw new Error('Unable to load products');
+        return response.json();
+      })
+      .then((remoteProducts) => {
+        if (isCurrent && remoteProducts.length > 0) {
+          setProducts(remoteProducts);
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(remoteProducts));
+        }
+      })
+      .catch(() => undefined);
+
+    return () => {
+      isCurrent = false;
+    };
+  }, []);
+
+  const updateProducts = (nextProducts) => {
+    setProducts(nextProducts);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextProducts));
+
+    fetch('/api/products', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(nextProducts),
+    }).catch(() => undefined);
+  };
 
   return (
-    <ProductContext.Provider value={{ products, setProducts }}>
+    <ProductContext.Provider value={{ products, setProducts: updateProducts }}>
       {children}
     </ProductContext.Provider>
   );
