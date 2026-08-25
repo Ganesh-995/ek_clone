@@ -236,7 +236,7 @@
 .form-container {
   max-width: 900px;
   width: min(900px, calc(100vw - 2rem));
-  max-height: calc(100vh - 2rem);
+  max-height: calc(100dvh - 2rem);
   overflow-y: auto;
   background-color: #fffdfb;
   border: 1px solid #eee9e6;
@@ -254,6 +254,8 @@
   align-items: center;
   justify-content: center;
   padding: 1rem;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background: rgba(17, 24, 39, 0.65);
   backdrop-filter: blur(4px);
   animation: fadeIn 0.2s ease;
@@ -560,6 +562,17 @@
 }
 
 @media (max-width: 768px) {
+  .modal-backdrop {
+    align-items: flex-start;
+    padding-top: max(0.75rem, env(safe-area-inset-top));
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+
+  .form-container {
+    width: calc(100vw - 1.5rem);
+    max-height: calc(100dvh - 1.5rem);
+  }
+
   .manage-header h1 {
     font-size: 1.8rem;
   }
@@ -604,6 +617,7 @@
 
   .form-container {
     width: calc(100vw - 1rem);
+    max-height: calc(100dvh - 1rem);
     padding: 1.25rem;
     border-radius: 12px;
   }

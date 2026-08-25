@@ -58,8 +58,10 @@
     inset: 0;
     z-index: 2000;
     display: grid;
-    place-items: center;
-    padding: 2rem;
+    place-items: start center;
+    padding: 1.25rem;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     background: rgba(20, 16, 26, 0.72);
     animation: ImagePopup-fadeIn 0.2s ease;
 }
@@ -69,9 +71,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    max-width: min(95vw, 1000px);
-    max-height: 94vh;
-    padding: 0.6rem;
+    margin: auto;
+    box-sizing: border-box;
+    width: min(1000px, calc(100% - 0.5rem));
+    max-width: min(calc(100vw - 2.5rem), 1000px);
+    max-height: calc(100dvh - 2.5rem);
+    padding: 0.3rem;
     background: #fff;
     border-radius: 6px;
     box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
@@ -80,18 +85,19 @@
 
 .ImagePopup-frame img {
     display: block;
-    width: auto;
+    width: 100%;
     height: auto;
-    max-width: calc(min(95vw, 1000px) - 1.2rem);
-    max-height: calc(94vh - 1.2rem);
+    max-width: min(calc(100vw - 3.1rem), 999.4px);
+    max-height: calc(100dvh - 3.1rem);
     object-fit: contain;
     border-radius: 3px;
 }
 
 .ImagePopup-close {
     position: absolute;
-    top: -14px;
-    right: -14px;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
     display: grid;
     place-items: center;
     width: 34px;
@@ -113,6 +119,25 @@
 @keyframes ImagePopup-scaleIn {
     from { opacity: 0; transform: scale(0.9); }
     to { opacity: 1; transform: scale(1); }
+}
+
+@media (max-width: 600px) {
+    .ImagePopup-overlay {
+        place-items: start center;
+        padding: max(0.6rem, env(safe-area-inset-top)) 0.5rem max(0.6rem, env(safe-area-inset-bottom));
+    }
+
+    .ImagePopup-frame {
+        width: calc(100% - 0.25rem);
+        max-width: calc(100% - 0.25rem);
+        max-height: calc(100dvh - 1rem);
+        padding: 0.25rem;
+    }
+
+    .ImagePopup-frame img {
+        max-width: 100%;
+        max-height: calc(100dvh - 1.5rem);
+    }
 }
 
 .ProductDetails-label {
