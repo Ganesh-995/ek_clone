@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { createPortal } from 'react-dom'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { FaWhatsapp } from 'react-icons/fa'
+import { FaWhatsapp, FaTimes } from 'react-icons/fa'
 import { useProducts } from '../context/ProductContext'
 import './ProductDetails.css'
 
@@ -9,6 +10,7 @@ const ProductDetails = () => {
   const navigate = useNavigate()
   const { products } = useProducts()
   const product = products.find((item) => String(item.id) === productId)
+  const [isImageOpen, setIsImageOpen] = useState(false)
 
   if (!product) {
     return (
@@ -33,7 +35,12 @@ const ProductDetails = () => {
       <div className="ProductDetails-content">
         <div className="ProductDetails-visual">
           <span className="ProductDetails-label">made for your moment</span>
-          <img src={product.image} alt={product.title} />
+          <img
+            src={product.image}
+            alt={product.title}
+            className="ProductDetails-image"
+            onClick={() => setIsImageOpen(true)}
+          />
         </div>
         <div className="ProductDetails-copy">
           <span className="ProductDetails-kicker">Featured detail</span>
@@ -49,6 +56,23 @@ const ProductDetails = () => {
           </button>
         </div>
       </div>
+
+      {isImageOpen && createPortal(
+        <div className="ImagePopup-overlay" onClick={() => setIsImageOpen(false)}>
+          <div className="ImagePopup-frame" onClick={(event) => event.stopPropagation()}>
+            <button
+              className="ImagePopup-close"
+              type="button"
+              aria-label="Close image preview"
+              onClick={() => setIsImageOpen(false)}
+            >
+              <FaTimes />
+            </button>
+            <img src={product.image} alt={product.title} />
+          </div>
+        </div>,
+        document.body
+      )}
     </section>
   )
 }

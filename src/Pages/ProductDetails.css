@@ -44,6 +44,77 @@
     object-fit: contain;
 }
 
+.ProductDetails-image {
+    cursor: zoom-in;
+    transition: transform 0.2s ease;
+}
+
+.ProductDetails-image:hover {
+    transform: scale(1.02);
+}
+
+.ImagePopup-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: grid;
+    place-items: center;
+    padding: 2rem;
+    background: rgba(20, 16, 26, 0.72);
+    animation: ImagePopup-fadeIn 0.2s ease;
+}
+
+.ImagePopup-frame {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: min(95vw, 1000px);
+    max-height: 94vh;
+    padding: 0.6rem;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
+    animation: ImagePopup-scaleIn 0.22s ease;
+}
+
+.ImagePopup-frame img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: calc(min(95vw, 1000px) - 1.2rem);
+    max-height: calc(94vh - 1.2rem);
+    object-fit: contain;
+    border-radius: 3px;
+}
+
+.ImagePopup-close {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 50%;
+    background: #29232e;
+    color: #fffdfb;
+    font-size: 0.9rem;
+    cursor: pointer;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes ImagePopup-fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes ImagePopup-scaleIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
 .ProductDetails-label {
     position: absolute;
     top: 1.5rem;
