@@ -187,6 +187,11 @@
     color: #000;
 }
 
+.Navbar ul li a.Navbar-link-active {
+    background: #000;
+    color: #fff;
+}
+
 .Navbar-search {
     position: relative;
     display: flex;

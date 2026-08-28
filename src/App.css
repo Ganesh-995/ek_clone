@@ -88,6 +88,7 @@ body,
 
 .Navbar ul li a { color: #654c6d; }
 .Navbar ul li a:hover { color: #a046c1; background: rgba(238, 114, 169, 0.1); }
+.Navbar ul li a.Navbar-link-active { display: inline-flex; align-items: center; height: 38px; margin: 0; padding: 0 0.85rem; background: #000; border-radius: 8px !important; color: #fff; line-height: 1; }
 .Navbar-search { background: #fff7fc; border-color: #ead8e9; color: #a046c1; }
 .Navbar-search input { color: #211525; }
 .Navbar-search input::placeholder { color: #a28ea4; }

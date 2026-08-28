@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { FiSearch } from 'react-icons/fi'
 import { useProducts } from '../context/ProductContext'
 import './Navbar.css'
@@ -51,11 +51,11 @@ const Navbar = () => {
                 </div>
                 <ul className={isMenuOpen ? 'active' : ''}>
                   <li className="Navbar-section-label">MAIN</li>
-                    <li><Link to="/" onClick={handleLinkClick}>Home</Link></li>
-                    <li><Link to="/location" onClick={handleLinkClick}>Location</Link></li>
-                    <li><Link to="/about" onClick={handleLinkClick}>About</Link></li>
+                    <li><NavLink to="/" end className={({ isActive }) => isActive ? 'Navbar-link-active' : undefined} onClick={handleLinkClick}>Home</NavLink></li>
+                    <li><NavLink to="/location" className={({ isActive }) => isActive ? 'Navbar-link-active' : undefined} onClick={handleLinkClick}>Location</NavLink></li>
+                    <li><NavLink to="/about" className={({ isActive }) => isActive ? 'Navbar-link-active' : undefined} onClick={handleLinkClick}>About</NavLink></li>
                   <li className="Navbar-section-label">SUPPORT</li>
-                    <li><Link to="/inquiry" onClick={handleLinkClick}>Inquiry</Link></li>
+                    <li><NavLink to="/inquiry" className={({ isActive }) => isActive ? 'Navbar-link-active' : undefined} onClick={handleLinkClick}>Inquiry</NavLink></li>
                 </ul>
                 <form className="Navbar-search" role="search" onSubmit={handleSearch}>
                   <FiSearch aria-hidden="true" />
