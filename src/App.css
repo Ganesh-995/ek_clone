@@ -209,12 +209,12 @@ body,
 .Site-footer-socials a {
     display: grid;
     place-items: center;
-    width: 36px;
-    height: 36px;
+    width: 46px;
+    height: 46px;
     border: 1px solid rgba(255, 255, 255, 0.45);
     border-radius: 50%;
     color: #fff;
-    font-size: 1rem;
+    font-size: 1.3rem;
     text-decoration: none;
     transition: background 180ms ease, transform 180ms ease;
 }

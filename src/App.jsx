@@ -1,7 +1,7 @@
 
 import { Routes, Route, useLocation } from 'react-router-dom'
 import { useEffect } from 'react'
-import { FaInstagram, FaWhatsapp, FaEnvelope } from 'react-icons/fa'
+import { FaInstagram, FaPinterest, FaYoutube } from 'react-icons/fa'
 import Navbar from './Components/Navbar.jsx'
 import Home from './Pages/Home.jsx'
 import Location from './Pages/Location.jsx'
@@ -53,14 +53,14 @@ function App() {
       </main>
       <footer className="Site-footer">
         <div className="Site-footer-socials" aria-label="Social links">
-          <a href="https://www.instagram.com/" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram">
+          <a href="https://www.instagram.com/theballoonspace/" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram">
             <FaInstagram aria-hidden="true" />
           </a>
-          <a href="https://wa.me/917838937047" target="_blank" rel="noreferrer" aria-label="WhatsApp" title="WhatsApp">
-            <FaWhatsapp aria-hidden="true" />
+          <a href="https://in.pinterest.com/ganeshrathore518/" target="_blank" rel="noreferrer" aria-label="Pinterest" title="Pinterest">
+            <FaPinterest aria-hidden="true" />
           </a>
-          <a href="mailto:hello@ekcelebrations.com" aria-label="Email" title="Email">
-            <FaEnvelope aria-hidden="true" />
+          <a href="https://www.youtube.com/@Theballoonspace-0" target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube">
+            <FaYoutube aria-hidden="true" />
           </a>
         </div>
       </footer>

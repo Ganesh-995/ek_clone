@@ -1,4 +1,5 @@
 import React from 'react'
+import { FaInstagram, FaPinterest, FaYoutube } from 'react-icons/fa'
 import { FiHeart, FiStar } from 'react-icons/fi'
 import './About.css'
 
@@ -12,6 +13,20 @@ const About = () => {
           <p>
             The Balloon Space creates joyful, personal celebrations across Delhi NCR, turning ordinary corners into moments people remember.
           </p>
+          <div className="About-hero-social" aria-label="Social links">
+            <a href="https://www.instagram.com/theballoonspace/" target="_blank" rel="noreferrer" aria-label="Instagram" title="Instagram">
+              <FaInstagram aria-hidden="true" />
+              <span>Instagram</span>
+            </a>
+            <a href="https://in.pinterest.com/ganeshrathore518/" target="_blank" rel="noreferrer" aria-label="Pinterest" title="Pinterest">
+              <FaPinterest aria-hidden="true" />
+              <span>Pinterest</span>
+            </a>
+            <a href="https://www.youtube.com/@Theballoonspace-0" target="_blank" rel="noreferrer" aria-label="YouTube" title="YouTube">
+              <FaYoutube aria-hidden="true" />
+              <span>YouTube</span>
+            </a>
+          </div>
         </div>
         <div className="About-logo-stage" aria-label="The Balloon Space logo">
           <div className="About-stage-orbit About-stage-orbit-one" />
@@ -50,6 +65,28 @@ const About = () => {
           <article><FiHeart aria-hidden="true" /><h3>Personal, always</h3><p>Every setup starts with your story, your people, and the feeling you want in the room.</p></article>
           <article><FiStar aria-hidden="true" /><h3>Designed with joy</h3><p>We pair playful balloon styling with considered colour, texture, and a little surprise.</p></article>
           <article><span className="About-number">03</span><h3>Made nearby</h3><p>We work exclusively across Delhi NCR, so every celebration gets our full attention.</p></article>
+        </div>
+      </section>
+
+      <section className="About-social" aria-label="About me and social links">
+        <div>
+          <span>Come say hello</span>
+          <h2>About <em>me.</em></h2>
+          <p>Behind every colourful setup is a little care, a lot of joy, and a love for making your moments feel personal.</p>
+        </div>
+        <div className="About-social-links">
+          <a href="https://www.instagram.com/theballoonspace/" target="_blank" rel="noreferrer">
+            <FaInstagram aria-hidden="true" />
+            <span>Instagram</span>
+          </a>
+          <a href="https://in.pinterest.com/ganeshrathore518/" target="_blank" rel="noreferrer">
+            <FaPinterest aria-hidden="true" />
+            <span>Pinterest</span>
+          </a>
+          <a href="https://www.youtube.com/@Theballoonspace-0" target="_blank" rel="noreferrer">
+            <FaYoutube aria-hidden="true" />
+            <span>YouTube</span>
+          </a>
         </div>
       </section>
     </main>

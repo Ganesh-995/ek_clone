@@ -8,6 +8,11 @@
 .About-hero h1 { margin: 0; color: #2b1734; font-family: 'Trebuchet MS', sans-serif; font-size: clamp(3.2rem, 6vw, 6rem); font-weight: 900; line-height: 0.93; letter-spacing: -0.04em; }
 .About-hero h1 em, .About-principles h2 em { color: #b04cdb; font-family: Georgia, serif; font-style: italic; font-weight: 500; }
 .About-hero-copy > p { max-width: 480px; margin: 1.6rem 0 2rem; color: #78657e; font-size: 1.05rem; line-height: 1.7; }
+.About-hero-social { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+.About-hero-social a { display: inline-flex; align-items: center; gap: 0.45rem; padding: 0.65rem 0.8rem; border: 1px solid rgba(176, 76, 219, 0.22); background: rgba(255, 255, 255, 0.72); color: #4b3157; font-size: 0.78rem; font-weight: 700; text-decoration: none; transition: background 180ms ease, color 180ms ease, transform 180ms ease; }
+.About-hero-social a svg { color: #b04cdb; font-size: 1rem; }
+.About-hero-social a:hover { background: #32203b; color: #fff; transform: translateY(-3px); }
+.About-hero-social a:hover svg { color: #efa4cc; }
 .About-logo-stage { position: relative; display: grid; place-items: center; width: min(100%, 470px); aspect-ratio: 1; justify-self: center; }
 .About-logo-stage img { position: relative; z-index: 2; width: 72%; height: 72%; object-fit: contain; filter: drop-shadow(12px 18px 12px rgba(47, 29, 64, 0.18)); }
 .About-stage-orbit { position: absolute; border: 1px solid rgba(176, 76, 219, 0.34); border-radius: 50%; }
@@ -38,6 +43,18 @@
 .About-number { color: #efa4cc; font-size: 0.75rem; font-weight: 900; letter-spacing: 0.12em; }
 .About-principles-grid h3 { margin: 1.45rem 0 0.6rem; font-family: Georgia, serif; font-size: 1.3rem; font-style: italic; }
 .About-principles-grid p { color: rgba(255, 255, 255, 0.65); font-size: 0.82rem; line-height: 1.55; }
+.About-social { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(320px, 1.1fr); align-items: center; gap: 4rem; padding: 5rem max(2rem, calc((100vw - 1180px) / 2)); background: #fff1f7; }
+.About-social > div:first-child { max-width: 470px; }
+.About-social > div:first-child > span { color: #b64d9d; font-size: 0.7rem; font-weight: 900; letter-spacing: 0.15em; text-transform: uppercase; }
+.About-social h2 { margin: 0.7rem 0 1rem; color: #2b1734; font-family: 'Trebuchet MS', sans-serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 0.95; }
+.About-social h2 em { color: #b04cdb; font-family: Georgia, serif; font-style: italic; font-weight: 500; }
+.About-social p { max-width: 420px; color: #78657e; font-size: 1rem; line-height: 1.7; }
+.About-social-links { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8rem; }
+.About-social-links a { display: flex; min-height: 145px; flex-direction: column; align-items: flex-start; justify-content: space-between; padding: 1.2rem; border: 1px solid rgba(176, 76, 219, 0.2); background: #fff; color: #4b3157; text-decoration: none; transition: background 180ms ease, color 180ms ease, transform 180ms ease; }
+.About-social-links a svg { color: #b04cdb; font-size: 1.45rem; }
+.About-social-links a span { font-family: Georgia, serif; font-size: 1.05rem; font-style: italic; }
+.About-social-links a:hover { background: #32203b; color: #fff; transform: translateY(-4px); }
+.About-social-links a:hover svg { color: #efa4cc; }
 
 @media (max-width: 760px) {
     .About-hero { grid-template-columns: 1fr; min-height: auto; padding: 7rem 1.35rem 3rem; }
@@ -50,4 +67,7 @@
     .About-principles { grid-template-columns: 1fr; gap: 2.5rem; padding: 3.5rem 1.35rem; }
     .About-principles-grid { grid-template-columns: 1fr; }
     .About-principles-grid article { min-height: auto; padding: 1rem 0; }
+    .About-social { grid-template-columns: 1fr; gap: 2.5rem; padding: 3.5rem 1.35rem; }
+    .About-social-links { grid-template-columns: 1fr; }
+    .About-social-links a { min-height: 92px; }
 }
