@@ -47,7 +47,8 @@
 }
 
 .Hero-copy { position: relative; z-index: 3; max-width: 590px; min-width: 0; text-align: left; }
-.Hero-kicker { display: inline-flex; margin-bottom: 1.35rem; color: #c34a9a; font-size: 0.75rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; }
+.Hero-kicker { position: relative; z-index: 5; display: inline-flex; width: 150px; margin: 0 0 1.35rem; }
+.Hero-kicker img { display: block; width: 100%; max-width: 100%; height: auto; object-fit: contain; }
 .Hero-copy h1 { position: relative; max-width: 620px; margin: 0; color: #211525; font-family: 'Trebuchet MS', 'Segoe UI', sans-serif; font-size: clamp(3.1rem, 5.5vw, 5.8rem); font-weight: 900; line-height: 0.96; letter-spacing: -0.04em; }
 .Hero-copy h1 span,
 .Hero-copy h1 em,
@@ -383,13 +384,16 @@
     }
 
     .Hero-copy {
+        position: relative;
+        z-index: 4;
         min-width: 0;
     }
 
     .Hero-kicker {
+        align-self: flex-start;
+        width: 112px;
         margin-bottom: 0.45rem;
-        font-size: 0.46rem;
-        letter-spacing: 0.1em;
+        flex-shrink: 0;
     }
 
     .Hero-copy h1 {
