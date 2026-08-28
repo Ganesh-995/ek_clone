@@ -204,7 +204,9 @@ const Home = () => {
     <div className="Home">
       <div className="Home-hero">
         <div className="Hero-copy">
-          <span className="Hero-kicker">Party supplies, reimagined</span>
+          <span className="Hero-kicker">
+            <img src="/images/new_logo.png" alt="The Balloon Space" />
+          </span>
           <h1><span>Make every moment feel</span> <em>extraordinary.</em></h1>
           <p>Bright balloons, playful details and everything you need to turn an ordinary day into your favourite memory.</p>
           <div className="Hero-proof" aria-label="Store highlights">
