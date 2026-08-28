@@ -43,12 +43,11 @@ const Navbar = () => {
             <div className="Navbar-container">
                 <div className="Logo">
                     <Link to="/">
-                      <img src="/images/new_logo.png" height="50" alt="EK celebrations logo" />
+                      <span className="Logo-text">
+                        <small>The Balloon</small>
+                        <strong>Space</strong>
+                      </span>
                     </Link>
-                    <span className="Logo-text">
-                      <small>The Balloon</small>
-                      <strong>Space</strong>
-                    </span>
                 </div>
                 <ul className={isMenuOpen ? 'active' : ''}>
                   <li className="Navbar-section-label">MAIN</li>
