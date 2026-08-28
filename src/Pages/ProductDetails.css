@@ -56,14 +56,13 @@
 .ImagePopup-overlay {
     position: fixed;
     inset: 0;
-    z-index: 2000;
+    z-index: 3000;
     display: grid;
-    place-items: start center;
+    place-items: center;
     padding: 1.25rem;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     background: rgba(20, 16, 26, 0.72);
-    animation: ImagePopup-fadeIn 0.2s ease;
 }
 
 .ImagePopup-frame {
@@ -73,23 +72,17 @@
     justify-content: center;
     margin: auto;
     box-sizing: border-box;
-    width: min(1000px, calc(100% - 0.5rem));
-    max-width: min(calc(100vw - 2.5rem), 1000px);
-    max-height: calc(100dvh - 2.5rem);
+    width: max-content;
+    max-width: none;
+    max-height: none;
     padding: 0.3rem;
     background: #fff;
     border-radius: 6px;
     box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
-    animation: ImagePopup-scaleIn 0.22s ease;
 }
 
 .ImagePopup-frame img {
     display: block;
-    width: 100%;
-    height: auto;
-    max-width: min(calc(100vw - 3.1rem), 999.4px);
-    max-height: calc(100dvh - 3.1rem);
-    object-fit: contain;
     border-radius: 3px;
 }
 
@@ -111,32 +104,25 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
-@keyframes ImagePopup-fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes ImagePopup-scaleIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-}
-
 @media (max-width: 600px) {
     .ImagePopup-overlay {
-        place-items: start center;
+        place-items: center;
         padding: max(0.6rem, env(safe-area-inset-top)) 0.5rem max(0.6rem, env(safe-area-inset-bottom));
     }
 
     .ImagePopup-frame {
-        width: calc(100% - 0.25rem);
-        max-width: calc(100% - 0.25rem);
-        max-height: calc(100dvh - 1rem);
-        padding: 0.25rem;
+        width: auto;
+        max-width: calc(100vw - 1rem);
+        max-height: calc(100dvh - 1.2rem);
+        padding: 0.2rem;
     }
 
     .ImagePopup-frame img {
-        max-width: 100%;
-        max-height: calc(100dvh - 1.5rem);
+        max-width: calc(100vw - 1.4rem);
+        max-height: calc(100dvh - 1.6rem);
+        width: auto;
+        height: auto;
+        object-fit: contain;
     }
 }
 
@@ -201,6 +187,36 @@
     color: #fffdfb;
     font-weight: 800;
     cursor: pointer;
+}
+
+.ProductDetails-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-top: 1rem;
+}
+
+.ProductDetails-actions .ProductDetails-action {
+    margin-top: 0;
+}
+
+.ProductDetails-action-ask {
+    background: #111;
+}
+
+.ProductDetails-action-whatsapp {
+    background: #25d366;
+}
+
+.ProductDetails-action-ask:hover,
+.ProductDetails-action-ask:focus-visible {
+    background: #29232e;
+}
+
+.ProductDetails-action-whatsapp:hover,
+.ProductDetails-action-whatsapp:focus-visible {
+    background: #1da851;
 }
 
 .ProductDetails-action svg {

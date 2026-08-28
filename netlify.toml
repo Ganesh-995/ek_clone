@@ -21,6 +21,11 @@
   status = 200
 
 [[redirects]]
+  from = "/api/themes"
+  to = "/.netlify/functions/themes"
+  status = 200
+
+[[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200

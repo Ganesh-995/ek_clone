@@ -10,6 +10,7 @@ import Contact from './Pages/Contact.jsx'
 import ManageProducts from './Pages/ManageProducts.jsx'
 import ProductDetails from './Pages/ProductDetails.jsx'
 import ThemeDetails from './Pages/ThemeDetails.jsx'
+import SearchResults from './Pages/SearchResults.jsx'
 import './App.css'
 
 function ScrollToTop() {
@@ -36,6 +37,7 @@ function App() {
           <Route path="/manage" element={<ManageProducts />} />
           <Route path="/product/:productId" element={<ProductDetails />} />
           <Route path="/theme/:themeId" element={<ThemeDetails />} />
+          <Route path="/search" element={<SearchResults />} />
         </Routes>
         <div className="Page-up-container">
           <button

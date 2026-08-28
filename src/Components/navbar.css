@@ -289,6 +289,17 @@
     background: #f9f5fb;
 }
 
+.SearchModal-result > span {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.SearchModal-result small {
+    color: #9b91a7;
+    font-size: 0.65rem;
+    font-weight: 700;
+}
+
 .SearchModal-result img {
     flex: 0 0 54px;
     width: 54px;
@@ -391,7 +402,47 @@
 }
 
 /* Tablet & Mobile Responsive */
-@media (max-width: 600px) {
+@media (max-width: 900px) {
+    .Navbar-container {
+        gap: 0.35rem;
+        padding-inline: 0.8rem;
+    }
+
+    .Navbar ul {
+        display: flex !important;
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: none;
+        margin-left: 0.35rem;
+        margin-right: 0.5rem;
+    }
+
+    .Navbar ul li a {
+        padding-inline: 0.45rem;
+        font-size: 0.7rem;
+    }
+
+    .Navbar-search {
+        flex-basis: 200px;
+        min-width: 180px;
+        height: 36px;
+        padding-inline: 0.6rem;
+    }
+
+    .Navbar-search-button {
+        min-height: 28px;
+        padding-inline: 0.45rem;
+        font-size: 0.62rem;
+    }
+
+    .Navbar-search input {
+        font-size: 0.68rem;
+    }
+}
+
+@media (max-width: 767px) {
     .Navbar-wrapper,
     .Navbar,
     .Navbar-container {
@@ -578,7 +629,7 @@
     }
 }
 
-@media (min-width: 601px) and (max-width: 900px) {
+@media (min-width: 768px) and (max-width: 900px) {
     .Navbar-container {
         gap: 0.25rem;
         padding-inline: 0.65rem;

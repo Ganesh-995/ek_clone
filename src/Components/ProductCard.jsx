@@ -1,22 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaWhatsapp } from 'react-icons/fa'
+import { createProductWhatsAppUrl } from '../utils/whatsapp'
+import AskFormModal from './AskFormModal'
 import './ProductCard.css'
 
 const ProductCard = ({ id, image, title, description, bulletPoints = [] }) => {
-  const whatsappNumber = '917838937047'
   const navigate = useNavigate()
+  const [isAskFormOpen, setIsAskFormOpen] = useState(false)
 
   const handleWhatsAppClick = (e) => {
     e.preventDefault()
     e.stopPropagation()
 
-    const message = `🛍️ *Interested in this product!*\n\n📦 *${title}*\n\n🖼️ *Product Image:*\n${image}\n\nPlease provide more details!`
-
-    const encodedMessage = encodeURIComponent(message)
-    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`
-
-    window.open(whatsappUrl, '_blank')
+    window.open(createProductWhatsAppUrl({ title, image, description, bulletPoints }), '_blank')
   }
 
   const goToDetails = () => {
@@ -45,16 +42,27 @@ const ProductCard = ({ id, image, title, description, bulletPoints = [] }) => {
       <div className="ProductCard-info">
           <h3 className="ProductCard-title">{title}</h3>
 
-          <button
-            className="ProductCard-message-btn"
-            onClick={handleWhatsAppClick}
-            aria-label={`WhatsApp par ${title} ke baare mein poochein`}
-            title="WhatsApp par inquiry bhejein"
-          >
-            <FaWhatsapp aria-hidden="true" />
-            <span className="ProductCard-message-tooltip">WhatsApp</span>
-          </button>
+          <div className="ProductCard-actions">
+            <button
+              className="ProductCard-ask-btn"
+              onClick={(event) => { event.preventDefault(); event.stopPropagation(); setIsAskFormOpen(true) }}
+              aria-label={`Ask about ${title}`}
+              title="Ask about this product"
+            >
+              Ask
+            </button>
+            <button
+              className="ProductCard-message-btn"
+              onClick={handleWhatsAppClick}
+              aria-label={`WhatsApp par ${title} ke baare mein poochein`}
+              title="WhatsApp par inquiry bhejein"
+            >
+              <FaWhatsapp aria-hidden="true" />
+              <span className="ProductCard-message-tooltip">WhatsApp</span>
+            </button>
+          </div>
       </div>
+      {isAskFormOpen && <AskFormModal subject={title} images={[image]} onClose={() => setIsAskFormOpen(false)} />}
     </div>
   )
 }

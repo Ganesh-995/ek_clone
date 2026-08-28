@@ -8,19 +8,13 @@ import './Navbar.css'
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [searchTerm, setSearchTerm] = useState('')
-  const [isSearchModalOpen, setIsSearchModalOpen] = useState(false)
   const navigate = useNavigate()
-  const { products } = useProducts()
   const searchQuery = searchTerm.trim().toLowerCase()
-  const searchResults = searchQuery
-    ? products.filter((product) => `${product.title} ${product.description || ''} ${product.bulletPoints?.join(' ') || ''}`.toLowerCase().includes(searchQuery)).slice(0, 5)
-    : []
 
   useEffect(() => {
     const handleEscape = (event) => {
       if (event.key === 'Escape') {
         setSearchTerm('')
-        setIsSearchModalOpen(false)
       }
     }
     document.addEventListener('keydown', handleEscape)
@@ -39,15 +33,8 @@ const Navbar = () => {
 
   const handleSearch = (event) => {
     event.preventDefault()
-    if (searchQuery) setIsSearchModalOpen(true)
+    if (searchQuery) navigate(`/search?q=${encodeURIComponent(searchTerm.trim())}`)
     setIsMenuOpen(false)
-  }
-
-  const handleResultClick = (productId) => {
-    setSearchTerm('')
-    setIsSearchModalOpen(false)
-    setIsMenuOpen(false)
-    navigate(`/product/${productId}`)
   }
 
   return (
@@ -75,8 +62,8 @@ const Navbar = () => {
                   <FiSearch aria-hidden="true" />
                   <input
                     type="search"
-                    placeholder="Search products"
-                    aria-label="Search products"
+                    placeholder="Search products or themes"
+                    aria-label="Search products or themes"
                     value={searchTerm}
                     onChange={(event) => setSearchTerm(event.target.value)}
                     onKeyDown={(event) => {
@@ -85,31 +72,6 @@ const Navbar = () => {
                   />
                   <button className="Navbar-search-button" type="submit">Search</button>
                 </form>
-                {isSearchModalOpen && (
-                  <div className="SearchModal-backdrop" onClick={(event) => {
-                    if (event.target === event.currentTarget) setIsSearchModalOpen(false)
-                  }}>
-                    <div className="SearchModal" role="dialog" aria-modal="true" aria-labelledby="search-results-title">
-                      <div className="SearchModal-header">
-                        <div>
-                          <span className="SearchModal-kicker">Search results</span>
-                          <h2 id="search-results-title">Results for “{searchTerm}”</h2>
-                        </div>
-                        <button className="SearchModal-close" type="button" onClick={() => setIsSearchModalOpen(false)} aria-label="Close search results">×</button>
-                      </div>
-                      {searchResults.length > 0 ? (
-                        <div className="SearchModal-grid">
-                          {searchResults.map((product) => (
-                            <button className="SearchModal-result" type="button" key={product.id} onClick={() => handleResultClick(product.id)}>
-                              <img src={product.image} alt="" />
-                              <span>{product.title}</span>
-                            </button>
-                          ))}
-                        </div>
-                      ) : <p className="SearchModal-empty">No products found for this search.</p>}
-                    </div>
-                  </div>
-                )}
                 <button
                   className={`hamburger ${isMenuOpen ? 'active' : ''}`}
                   type="button"

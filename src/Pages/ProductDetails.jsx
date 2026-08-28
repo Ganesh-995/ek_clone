@@ -1,8 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { FaWhatsapp, FaTimes } from 'react-icons/fa'
 import { useProducts } from '../context/ProductContext'
+import { createProductWhatsAppUrl } from '../utils/whatsapp'
+import AskFormModal from '../Components/AskFormModal'
 import './ProductDetails.css'
 
 const ProductDetails = () => {
@@ -11,6 +13,17 @@ const ProductDetails = () => {
   const { products } = useProducts()
   const product = products.find((item) => String(item.id) === productId)
   const [isImageOpen, setIsImageOpen] = useState(false)
+  const [isAskFormOpen, setIsAskFormOpen] = useState(false)
+
+  useEffect(() => {
+    if (!isImageOpen) return undefined
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    return () => {
+      document.body.style.overflow = previousOverflow
+    }
+  }, [isImageOpen])
 
   if (!product) {
     return (
@@ -20,11 +33,6 @@ const ProductDetails = () => {
         <Link className="ProductDetails-back" to="/">Back to products</Link>
       </section>
     )
-  }
-
-  const handleWhatsAppClick = () => {
-    const message = encodeURIComponent(`I am interested in ${product.title}. Please provide more details.`)
-    window.open(`https://wa.me/917838937047?text=${message}`, '_blank')
   }
 
   return (
@@ -51,14 +59,31 @@ const ProductDetails = () => {
               {product.bulletPoints.map((point) => <li key={point}>{point}</li>)}
             </ul>
           )}
-          <button className="ProductDetails-action" type="button" onClick={handleWhatsAppClick}>
-            <FaWhatsapp aria-hidden="true" /> Ask about this product
-          </button>
+          <div className="ProductDetails-actions">
+            <button className="ProductDetails-action ProductDetails-action-ask" type="button" onClick={() => setIsAskFormOpen(true)}>
+              Ask about this product
+            </button>
+            <button
+              className="ProductDetails-action ProductDetails-action-whatsapp"
+              type="button"
+              onClick={() => window.open(createProductWhatsAppUrl(product), '_blank')}
+            >
+              <FaWhatsapp aria-hidden="true" /> WhatsApp
+            </button>
+          </div>
         </div>
       </div>
 
+      {isAskFormOpen && (
+        <AskFormModal
+          subject={product.title}
+          images={[product.image]}
+          onClose={() => setIsAskFormOpen(false)}
+        />
+      )}
+
       {isImageOpen && createPortal(
-        <div className="ImagePopup-overlay" onClick={() => setIsImageOpen(false)}>
+        <div className="ImagePopup-overlay">
           <div className="ImagePopup-frame" onClick={(event) => event.stopPropagation()}>
             <button
               className="ImagePopup-close"

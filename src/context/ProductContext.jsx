@@ -1,8 +1,10 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import defaultProducts from '../data/products.json';
+import { themeCards as defaultThemes } from '../data/themes';
 
 const ProductContext = createContext(null);
 const STORAGE_KEY = 'ek-products';
+const THEMES_STORAGE_KEY = 'ek-themes';
 
 function readStoredProducts() {
   const savedProducts = localStorage.getItem(STORAGE_KEY);
@@ -18,10 +20,23 @@ function readStoredProducts() {
   }
 }
 
+function readStoredThemes() {
+  const savedThemes = localStorage.getItem(THEMES_STORAGE_KEY);
+  if (!savedThemes) return defaultThemes;
+
+  try {
+    const parsedThemes = JSON.parse(savedThemes);
+    return Array.isArray(parsedThemes) ? parsedThemes : defaultThemes;
+  } catch {
+    return defaultThemes;
+  }
+}
+
 export function ProductProvider({ children }) {
   const [products, setProducts] = useState(() => {
     return readStoredProducts();
   });
+  const [themes, setThemes] = useState(() => readStoredThemes());
   const [visitorStats, setVisitorStats] = useState({ total: 0, today: 0, live: 0 });
 
   useEffect(() => {
@@ -36,6 +51,27 @@ export function ProductProvider({ children }) {
         if (isCurrent && remoteProducts.length > 0) {
           setProducts(remoteProducts);
           localStorage.setItem(STORAGE_KEY, JSON.stringify(remoteProducts));
+        }
+      })
+      .catch(() => undefined);
+
+    return () => {
+      isCurrent = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let isCurrent = true;
+
+    fetch('/api/themes')
+      .then((response) => {
+        if (!response.ok) throw new Error('Unable to load themes');
+        return response.json();
+      })
+      .then((remoteThemes) => {
+        if (isCurrent && Array.isArray(remoteThemes) && remoteThemes.length > 0) {
+          setThemes(remoteThemes);
+          localStorage.setItem(THEMES_STORAGE_KEY, JSON.stringify(remoteThemes));
         }
       })
       .catch(() => undefined);
@@ -74,8 +110,24 @@ export function ProductProvider({ children }) {
     }).catch(() => undefined);
   };
 
+  const updateThemes = (nextThemes) => {
+    setThemes(nextThemes);
+    localStorage.setItem(THEMES_STORAGE_KEY, JSON.stringify(nextThemes));
+
+    fetch('/api/themes', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(sessionStorage.getItem('ek-admin-token')
+          ? { Authorization: `Bearer ${sessionStorage.getItem('ek-admin-token')}` }
+          : {}),
+      },
+      body: JSON.stringify(nextThemes),
+    }).catch(() => undefined);
+  };
+
   return (
-    <ProductContext.Provider value={{ products, setProducts: updateProducts, visitorStats }}>
+    <ProductContext.Provider value={{ products, setProducts: updateProducts, themes, setThemes: updateThemes, visitorStats }}>
       {children}
     </ProductContext.Provider>
   );
