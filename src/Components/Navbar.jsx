@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { FiSearch } from 'react-icons/fi'
-import { useProducts } from '../context/ProductContext'
-import './Navbar.css'
-
+import './navbar.css'
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)

@@ -7,6 +7,8 @@ const STORAGE_KEY = 'ek-products';
 const THEMES_STORAGE_KEY = 'ek-themes';
 
 function readStoredProducts() {
+  if (typeof window === 'undefined') return defaultProducts;
+
   const savedProducts = localStorage.getItem(STORAGE_KEY);
   if (!savedProducts) return defaultProducts;
 
@@ -21,6 +23,8 @@ function readStoredProducts() {
 }
 
 function readStoredThemes() {
+  if (typeof window === 'undefined') return defaultThemes;
+
   const savedThemes = localStorage.getItem(THEMES_STORAGE_KEY);
   if (!savedThemes) return defaultThemes;
 
@@ -33,11 +37,14 @@ function readStoredThemes() {
 }
 
 export function ProductProvider({ children }) {
-  const [products, setProducts] = useState(() => {
-    return readStoredProducts();
-  });
-  const [themes, setThemes] = useState(() => readStoredThemes());
+  const [products, setProducts] = useState(defaultProducts);
+  const [themes, setThemes] = useState(defaultThemes);
   const [visitorStats, setVisitorStats] = useState({ total: 0, today: 0, live: 0 });
+
+  useEffect(() => {
+    setProducts(readStoredProducts());
+    setThemes(readStoredThemes());
+  }, []);
 
   useEffect(() => {
     let isCurrent = true;
@@ -82,6 +89,8 @@ export function ProductProvider({ children }) {
   }, []);
 
   useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+
     const updateVisitorStats = () => {
       fetch('/api/visitors')
         .then((response) => response.ok ? response.json() : Promise.reject(new Error('Unable to load visitor stats')))
@@ -96,13 +105,15 @@ export function ProductProvider({ children }) {
 
   const updateProducts = (nextProducts) => {
     setProducts(nextProducts);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextProducts));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(nextProducts));
+    }
 
     fetch('/api/products', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        ...(sessionStorage.getItem('ek-admin-token')
+        ...(typeof window !== 'undefined' && sessionStorage.getItem('ek-admin-token')
           ? { Authorization: `Bearer ${sessionStorage.getItem('ek-admin-token')}` }
           : {}),
       },
@@ -112,13 +123,15 @@ export function ProductProvider({ children }) {
 
   const updateThemes = (nextThemes) => {
     setThemes(nextThemes);
-    localStorage.setItem(THEMES_STORAGE_KEY, JSON.stringify(nextThemes));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem(THEMES_STORAGE_KEY, JSON.stringify(nextThemes));
+    }
 
     fetch('/api/themes', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
-        ...(sessionStorage.getItem('ek-admin-token')
+        ...(typeof window !== 'undefined' && sessionStorage.getItem('ek-admin-token')
           ? { Authorization: `Bearer ${sessionStorage.getItem('ek-admin-token')}` }
           : {}),
       },
