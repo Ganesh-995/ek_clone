@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import defaultProducts from '../data/products.json';
 import { themeCards as defaultThemes } from '../data/themes';
+import { getApiUrl } from '../utils/api';
 
 const ProductContext = createContext(null);
 const STORAGE_KEY = 'ek-products';
@@ -49,13 +50,13 @@ export function ProductProvider({ children }) {
   useEffect(() => {
     let isCurrent = true;
 
-    fetch('/api/products')
+    fetch(getApiUrl('/api/products'))
       .then((response) => {
         if (!response.ok) throw new Error('Unable to load products');
         return response.json();
       })
       .then((remoteProducts) => {
-        if (isCurrent && remoteProducts.length > 0) {
+        if (isCurrent && Array.isArray(remoteProducts) && remoteProducts.length > 0) {
           setProducts(remoteProducts);
           localStorage.setItem(STORAGE_KEY, JSON.stringify(remoteProducts));
         }
@@ -70,7 +71,7 @@ export function ProductProvider({ children }) {
   useEffect(() => {
     let isCurrent = true;
 
-    fetch('/api/themes')
+    fetch(getApiUrl('/api/themes'))
       .then((response) => {
         if (!response.ok) throw new Error('Unable to load themes');
         return response.json();
@@ -92,7 +93,7 @@ export function ProductProvider({ children }) {
     if (typeof window === 'undefined') return undefined;
 
     const updateVisitorStats = () => {
-      fetch('/api/visitors')
+      fetch(getApiUrl('/api/visitors'))
         .then((response) => response.ok ? response.json() : Promise.reject(new Error('Unable to load visitor stats')))
         .then((result) => setVisitorStats(result))
         .catch(() => undefined);
@@ -109,7 +110,7 @@ export function ProductProvider({ children }) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(nextProducts));
     }
 
-    fetch('/api/products', {
+    fetch(getApiUrl('/api/products'), {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -127,7 +128,7 @@ export function ProductProvider({ children }) {
       localStorage.setItem(THEMES_STORAGE_KEY, JSON.stringify(nextThemes));
     }
 
-    fetch('/api/themes', {
+    fetch(getApiUrl('/api/themes'), {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

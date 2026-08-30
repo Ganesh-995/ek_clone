@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///D:/web/ek_clone/app/globals.css"],"sourcesContent":["html, body, #__next {\r\n  margin: 0;\r\n  min-height: 100%;\r\n  min-width: 0;\r\n  font-family: inherit;\r\n}\r\n\r\nbody {\r\n  background: #fffaf6;\r\n}\r\n\r\na {\r\n  color: inherit;\r\n  text-decoration: none;\r\n}\r\n\r\nbutton, input {\r\n  font: inherit;\r\n}\r\n\r\nimg {\r\n  max-width: 100%;\r\n  display: block;\r\n}\r\n"],"names":[],"mappings":"AAAA;;;;;;;AAOA;;;;AAIA;;;;;AAKA;;;;AAIA"}}]
+}

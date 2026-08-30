@@ -1,0 +1,230 @@
+/* [project]/src/site_pages/ThemeDetails.css [app-client] (css) */
+.ThemeDetails {
+  width: min(1120px, 100% - 2rem);
+  margin: 0 auto;
+  padding: 7rem 0 4rem;
+}
+
+.ThemeDetails-back {
+  color: #6f5390;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  gap: .5rem;
+  margin-bottom: 1.25rem;
+  padding: .6rem 0;
+  font-size: .8rem;
+  font-weight: 800;
+  display: inline-flex;
+}
+
+.ThemeDetails-hero {
+  background: #fffdfb;
+  border: 1px solid #eee9e6;
+  grid-template-columns: 1.1fr .9fr;
+  display: grid;
+  overflow: hidden;
+}
+
+.ThemeDetails-gallery {
+  background: #f3edf8;
+  grid-template-columns: repeat(2, 1fr);
+  gap: .5rem;
+  padding: .75rem;
+  display: grid;
+}
+
+.ThemeDetails-gallery img {
+  object-fit: cover;
+  background: #fff;
+  width: 100%;
+  height: 190px;
+}
+
+.ThemeDetails-gallery-button {
+  cursor: zoom-in;
+  background: #fff;
+  border: 0;
+  width: 100%;
+  padding: 0;
+  display: block;
+}
+
+.ThemeDetails-gallery-button:hover img, .ThemeDetails-gallery-button:focus-visible img {
+  opacity: .8;
+}
+
+.ThemeDetails-gallery img:first-child {
+  grid-column: 1 / -1;
+  height: 250px;
+}
+
+.ThemeImagePopup-overlay {
+  z-index: 3000;
+  background: #1b1520d1;
+  place-items: center;
+  padding: 1rem;
+  display: grid;
+  position: fixed;
+  inset: 0;
+  overflow: auto;
+}
+
+.ThemeImagePopup-frame {
+  box-sizing: border-box;
+  width: max-content;
+  max-width: none;
+  max-height: none;
+  position: relative;
+}
+
+.ThemeImagePopup-frame img {
+  display: block;
+  box-shadow: 0 1.5rem 4rem #0000004d;
+}
+
+.ThemeImagePopup-close {
+  z-index: 1;
+  color: #29232e;
+  cursor: pointer;
+  background: #ffffffeb;
+  border: 0;
+  border-radius: 50%;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: grid;
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+}
+
+.ThemeDetails-copy {
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(1.5rem, 5vw, 3.5rem);
+  display: flex;
+}
+
+.ThemeDetails-kicker {
+  color: #ed8c68;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+.ThemeDetails h1 {
+  color: #29232e;
+  margin: .7rem 0 1rem;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: clamp(2rem, 4vw, 3.7rem);
+  font-weight: 500;
+  line-height: 1;
+}
+
+.ThemeDetails-copy p {
+  color: #6b6375;
+  line-height: 1.7;
+}
+
+.ThemeDetails-whatsapp {
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  background: #25d366;
+  border: 0;
+  border-radius: 999px;
+  align-self: flex-start;
+  align-items: center;
+  gap: .55rem;
+  margin-top: 0;
+  padding: .8rem 1rem;
+  font-size: .82rem;
+  font-weight: 800;
+  transition: background .2s, transform .2s;
+  display: inline-flex;
+}
+
+.ThemeDetails-whatsapp:hover, .ThemeDetails-whatsapp:focus-visible {
+  background: #1da851;
+  transform: translateY(-1px);
+}
+
+.ThemeDetails-actions {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: .65rem;
+  margin-top: 1.25rem;
+  display: flex;
+}
+
+.ThemeDetails-ask {
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  background: #111;
+  border: 0;
+  border-radius: 999px;
+  align-items: center;
+  padding: .8rem 1rem;
+  font-size: .82rem;
+  font-weight: 800;
+  transition: background .2s, transform .2s;
+  display: inline-flex;
+}
+
+.ThemeDetails-ask:hover, .ThemeDetails-ask:focus-visible {
+  background: #29232e;
+  transform: translateY(-1px);
+}
+
+.ThemeDetails-empty h1 {
+  color: #29232e;
+}
+
+@media (max-width: 600px) {
+  .ThemeDetails {
+    padding-top: 6rem;
+  }
+
+  .ThemeDetails-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .ThemeDetails-gallery img {
+    height: 100px;
+  }
+
+  .ThemeDetails-gallery img:first-child {
+    height: 145px;
+  }
+
+  .ThemeDetails-copy {
+    padding: 1.25rem;
+  }
+
+  .ThemeDetails h1 {
+    font-size: 2rem;
+  }
+
+  .ThemeImagePopup-overlay {
+    padding: .625rem;
+  }
+
+  .ThemeImagePopup-frame {
+    width: auto;
+    max-width: calc(100vw - 1.25rem);
+    max-height: calc(100dvh - 1.25rem);
+  }
+
+  .ThemeImagePopup-frame img {
+    object-fit: contain;
+    width: auto;
+    max-width: calc(100vw - 1.25rem);
+    height: auto;
+    max-height: calc(100dvh - 1.25rem);
+  }
+}
+
+/*# sourceMappingURL=src_site_pages_ThemeDetails_css_1igg3k2._.single.css.map*/

@@ -1,5 +1,6 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { themeCards } from '../../../src/data/themes.js';
+import { readCollectionData, writeCollectionData } from '../../../lib/mongodb';
 
 const DEV_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'ek-admin-123';
 const themeStore = globalThis.__ekThemesStore ??= { data: themeCards };
@@ -18,7 +19,10 @@ function isAuthorized(request) {
 }
 
 export async function GET() {
-  return Response.json(themeStore.data);
+  const mongoThemes = await readCollectionData('themes', themeCards);
+  const list = Array.isArray(mongoThemes) && mongoThemes.length ? mongoThemes : themeStore.data;
+  themeStore.data = list;
+  return Response.json(list);
 }
 
 export async function PUT(request) {
@@ -33,6 +37,7 @@ export async function PUT(request) {
     }
 
     themeStore.data = payload;
+    await writeCollectionData('themes', payload);
     return Response.json({ themes: payload });
   } catch {
     return Response.json({ message: 'Invalid theme data.' }, { status: 400 });

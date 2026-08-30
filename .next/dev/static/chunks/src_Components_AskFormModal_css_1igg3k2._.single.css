@@ -1,0 +1,174 @@
+/* [project]/src/Components/AskFormModal.css [app-client] (css) */
+.AskFormModal-overlay {
+  z-index: 3000;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  background: #111111b3;
+  place-items: center;
+  padding: 1rem;
+  display: grid;
+  position: fixed;
+  inset: 0;
+}
+
+.AskFormModal {
+  box-sizing: border-box;
+  color: #29232e;
+  background: #fffdfb;
+  width: min(560px, 100vw - 2rem);
+  max-height: calc(100dvh - 1rem);
+  padding: 1.75rem;
+  overflow-y: auto;
+  box-shadow: 0 1.5rem 4rem #0000003d;
+}
+
+.AskFormModal-header {
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  display: flex;
+}
+
+.AskFormModal-kicker {
+  color: #ed8c68;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  font-size: .68rem;
+  font-weight: 800;
+}
+
+.AskFormModal h2 {
+  color: #111;
+  margin: .4rem 0 0;
+  font-family: Georgia, Times New Roman, serif;
+  font-size: 1.8rem;
+  font-weight: 500;
+}
+
+.AskFormModal-close {
+  color: #111;
+  cursor: pointer;
+  background: #f1efec;
+  border: 0;
+  border-radius: 50%;
+  flex: none;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  display: grid;
+}
+
+.AskFormModal-subject {
+  color: #5f5862;
+  background: #f6f3ef;
+  border-left: 3px solid #111;
+  margin: 1.2rem 0 1.4rem;
+  padding: .8rem .9rem;
+  font-size: .82rem;
+  font-weight: 700;
+}
+
+.AskFormModal form {
+  gap: 1rem;
+  display: grid;
+}
+
+.AskFormModal-row {
+  grid-template-columns: 1fr 1fr;
+  gap: .75rem;
+  display: grid;
+}
+
+.AskFormModal label {
+  color: #46366a;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  gap: .35rem;
+  font-size: .68rem;
+  font-weight: 800;
+  display: grid;
+}
+
+.AskFormModal input, .AskFormModal textarea {
+  box-sizing: border-box;
+  color: #29232e;
+  width: 100%;
+  font: inherit;
+  letter-spacing: 0;
+  text-transform: none;
+  resize: vertical;
+  background: #fff;
+  border: 1px solid #ded9d4;
+  border-radius: 6px;
+  outline: 0;
+  padding: .7rem .75rem;
+  font-size: .85rem;
+}
+
+.AskFormModal input:focus, .AskFormModal textarea:focus {
+  border-color: #111;
+  box-shadow: 0 0 0 3px #1111111a;
+}
+
+.AskFormModal-submit {
+  color: #fff;
+  font: inherit;
+  cursor: pointer;
+  background: #111;
+  border: 0;
+  border-radius: 6px;
+  justify-content: center;
+  align-items: center;
+  gap: .5rem;
+  margin-top: .25rem;
+  padding: .8rem 1rem;
+  font-size: .78rem;
+  font-weight: 800;
+  display: inline-flex;
+}
+
+.AskFormModal-submit:hover, .AskFormModal-submit:focus-visible {
+  background: #25d366;
+}
+
+@media (max-width: 480px) {
+  .AskFormModal-overlay {
+    padding: .65rem;
+  }
+
+  .AskFormModal {
+    width: calc(100vw - 1.3rem);
+    max-height: calc(100dvh - 1.3rem);
+    padding: 1.15rem;
+  }
+
+  .AskFormModal h2 {
+    font-size: 1.35rem;
+  }
+
+  .AskFormModal-subject {
+    margin: .85rem 0 1rem;
+    padding: .65rem .7rem;
+  }
+
+  .AskFormModal form {
+    gap: .8rem;
+  }
+
+  .AskFormModal input, .AskFormModal textarea {
+    padding: .68rem .7rem;
+    font-size: .85rem;
+  }
+
+  .AskFormModal-submit {
+    min-height: 2.8rem;
+    padding: .7rem .8rem;
+    font-size: .78rem;
+  }
+
+  .AskFormModal-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/*# sourceMappingURL=src_Components_AskFormModal_css_1igg3k2._.single.css.map*/

@@ -1,5 +1,6 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import defaultProducts from '../../../src/data/products.json' with { type: 'json' };
+import { readCollectionData, writeCollectionData } from '../../../lib/mongodb';
 
 const DEV_ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'ek-admin-123';
 const productStore = globalThis.__ekProductsStore ??= { data: defaultProducts };
@@ -18,7 +19,10 @@ function isAuthorized(request) {
 }
 
 export async function GET() {
-  return Response.json(productStore.data);
+  const mongoProducts = await readCollectionData('products', defaultProducts);
+  const list = Array.isArray(mongoProducts) && mongoProducts.length ? mongoProducts : productStore.data;
+  productStore.data = list;
+  return Response.json(list);
 }
 
 export async function PUT(request) {
@@ -33,6 +37,7 @@ export async function PUT(request) {
     }
 
     productStore.data = payload;
+    await writeCollectionData('products', payload);
     return Response.json({ products: payload });
   } catch {
     return Response.json({ message: 'Invalid product data.' }, { status: 400 });

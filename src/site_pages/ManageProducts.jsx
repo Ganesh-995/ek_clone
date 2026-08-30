@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useProducts } from '../context/ProductContext';
+import { getApiUrl } from '../utils/api';
 import './ManageProducts.css';
 
 export default function ManageProducts() {
@@ -187,7 +188,7 @@ export default function ManageProducts() {
     setIsLoggingIn(true);
     setLoginError('');
     try {
-      const response = await fetch('/api/admin-auth', {
+      const response = await fetch(getApiUrl('/api/admin-auth'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),

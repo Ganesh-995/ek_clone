@@ -1,0 +1,16 @@
+{
+  "/_global-error/page": "app/_global-error/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
+  "/about/page": "app/about/page.js",
+  "/api/admin-auth/route": "app/api/admin-auth/route.js",
+  "/api/products/route": "app/api/products/route.js",
+  "/api/themes/route": "app/api/themes/route.js",
+  "/api/visitors/route": "app/api/visitors/route.js",
+  "/inquiry/page": "app/inquiry/page.js",
+  "/location/page": "app/location/page.js",
+  "/manage/page": "app/manage/page.js",
+  "/page": "app/page.js",
+  "/product/[productId]/page": "app/product/[productId]/page.js",
+  "/search/page": "app/search/page.js",
+  "/theme/[themeId]/page": "app/theme/[themeId]/page.js"
+}

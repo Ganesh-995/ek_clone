@@ -1,0 +1,261 @@
+/* [project]/src/site_pages/Location.css [app-client] (css) */
+.Location-page {
+  color: #302238;
+  background: #fff8fc;
+  min-height: calc(100vh - 60px);
+  overflow: hidden;
+}
+
+.Location-hero {
+  isolation: isolate;
+  grid-template-columns: minmax(0, .95fr) minmax(320px, 1.05fr);
+  align-items: center;
+  gap: 3rem;
+  min-height: 580px;
+  padding: 7.8rem max(2rem, 50vw - 590px) 5rem;
+  display: grid;
+  position: relative;
+}
+
+.Location-hero:before {
+  content: "";
+  z-index: -2;
+  background: radial-gradient(circle at 80% 42%, #ee72a933 0 13%, #0000 13.2%), linear-gradient(130deg, #fff9fd, #f9eeff 68%, #ffeef7);
+  position: absolute;
+  inset: 0;
+}
+
+.Location-hero:after {
+  content: "";
+  z-index: -1;
+  border: 1px solid #a64db233;
+  border-radius: 50%;
+  width: 620px;
+  height: 620px;
+  position: absolute;
+  top: -140px;
+  right: -150px;
+  box-shadow: 0 0 0 28px #ee72a90f, 0 0 0 58px #a64db20d;
+}
+
+.Location-hero-copy {
+  max-width: 620px;
+}
+
+.Location-eyebrow {
+  color: #b64d9d;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  align-items: center;
+  gap: .45rem;
+  margin-bottom: 1.25rem;
+  font-size: .72rem;
+  font-weight: 900;
+  display: inline-flex;
+}
+
+.Location-eyebrow svg {
+  font-size: 1rem;
+}
+
+.Location-hero h1 {
+  color: #2b1734;
+  letter-spacing: -.04em;
+  margin: 0;
+  font-family: Trebuchet MS, sans-serif;
+  font-size: clamp(3rem, 6vw, 6rem);
+  font-weight: 900;
+  line-height: .94;
+}
+
+.Location-hero h1 em, .Location-details h2 em {
+  color: #b04cdb;
+  font-family: Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.Location-intro {
+  color: #78657e;
+  max-width: 470px;
+  margin: 1.6rem 0 2rem;
+  font-size: 1.05rem;
+  line-height: 1.7;
+}
+
+.Location-cta {
+  color: #fff;
+  background: #32203b;
+  border-radius: 999px;
+  align-items: center;
+  gap: .65rem;
+  padding: .9rem 1.15rem;
+  font-size: .82rem;
+  font-weight: 800;
+  text-decoration: none;
+  display: inline-flex;
+  box-shadow: 0 12px 24px #32203b2e;
+}
+
+.Location-cta:hover {
+  background: #b04cdb;
+}
+
+.Location-signal {
+  aspect-ratio: 1;
+  justify-self: center;
+  place-items: center;
+  width: min(100%, 460px);
+  display: grid;
+  position: relative;
+}
+
+.Location-ring {
+  border: 1px solid #b04cdb5c;
+  border-radius: 50%;
+  position: absolute;
+  transform: rotate(-18deg);
+}
+
+.Location-ring-one {
+  width: 82%;
+  height: 42%;
+}
+
+.Location-ring-two {
+  width: 100%;
+  height: 58%;
+  transform: rotate(34deg);
+}
+
+.Location-pin {
+  color: #fff;
+  background: linear-gradient(145deg, #f07aaa, #a95be1);
+  border-radius: 50%;
+  place-items: center;
+  width: 112px;
+  height: 112px;
+  font-size: 3.2rem;
+  display: grid;
+  box-shadow: 0 20px 35px #b04cdb40, 0 0 0 18px #ee72a91f;
+}
+
+.Location-signal-label {
+  color: #4b3157;
+  font-family: Georgia, serif;
+  font-size: clamp(1.3rem, 3vw, 2rem);
+  font-style: italic;
+  font-weight: 700;
+  position: absolute;
+  top: 20%;
+  right: 6%;
+  transform: rotate(8deg);
+}
+
+.Location-signal-caption {
+  color: #9b719c;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  background: #fff;
+  padding: .55rem .75rem;
+  font-size: .68rem;
+  font-weight: 800;
+  position: absolute;
+  bottom: 19%;
+  left: 10%;
+  transform: rotate(-8deg);
+}
+
+.Location-details {
+  color: #fff;
+  background: #302238;
+  grid-template-columns: .7fr 1.3fr;
+  gap: 4rem;
+  padding: 5rem max(2rem, 50vw - 590px);
+  display: grid;
+}
+
+.Location-details-heading > span {
+  color: #efa4cc;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  font-size: .7rem;
+  font-weight: 900;
+}
+
+.Location-details h2 {
+  margin: .7rem 0 0;
+  font-family: Trebuchet MS, sans-serif;
+  font-size: clamp(2.1rem, 4vw, 3.8rem);
+  line-height: .95;
+}
+
+.Location-details h2 em {
+  color: #f49bca;
+}
+
+.Location-areas {
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  display: grid;
+}
+
+.Location-areas article {
+  border-top: 1px solid #ffffff47;
+  min-height: 190px;
+  padding: 1.2rem;
+}
+
+.Location-areas strong {
+  color: #efa4cc;
+  letter-spacing: .12em;
+  font-size: .7rem;
+}
+
+.Location-areas h3 {
+  margin: 1.5rem 0 .6rem;
+  font-family: Georgia, serif;
+  font-size: 1.35rem;
+  font-style: italic;
+}
+
+.Location-areas p {
+  color: #ffffffa6;
+  font-size: .82rem;
+  line-height: 1.55;
+}
+
+@media (max-width: 760px) {
+  .Location-hero {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    min-height: auto;
+    padding: 7rem 1.35rem 3rem;
+  }
+
+  .Location-hero h1 {
+    font-size: clamp(3rem, 15vw, 5rem);
+  }
+
+  .Location-signal {
+    width: min(100%, 330px);
+    margin-top: .5rem;
+  }
+
+  .Location-details {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    padding: 3.5rem 1.35rem;
+  }
+
+  .Location-areas {
+    grid-template-columns: 1fr;
+  }
+
+  .Location-areas article {
+    min-height: auto;
+    padding: 1rem 0;
+  }
+}
+
+/*# sourceMappingURL=src_site_pages_Location_css_1igg3k2._.single.css.map*/
