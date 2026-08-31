@@ -6,6 +6,7 @@ const tiltPattern = [-6, 4, -3, 5, -4, 3, -5, 4]
 const archAmplitude = 22
 const cardWidth = 120
 const cardGap = 28
+const pastelPalette = ['#ffd9e6', '#ffe8c2', '#d9f2d9', '#d0ecff', '#e6d9ff', '#fff0b3', '#ffd6cc', '#c9f2ea', '#f0d9ff', '#d9e6ff']
 
 const buildSet = (items, offset) => items.map((item, index) => {
   const arch = items.length > 1 ? archAmplitude * Math.sin((Math.PI * index) / (items.length - 1)) : 0
@@ -64,7 +65,8 @@ const HangingSlider = ({ items }) => {
                     width: `${cardWidth}px`,
                     '--tilt': `${tiltPattern[card.localIndex % tiltPattern.length]}deg`,
                     '--delay': `${(card.localIndex % 5) * 0.3}s`,
-                    '--arch-offset': `${card.arch}px`
+                    '--arch-offset': `${card.arch}px`,
+                    '--card-color': pastelPalette[card.localIndex % pastelPalette.length]
                   }}
                   aria-label={card.item.title}
                 >
@@ -92,7 +94,8 @@ const HangingSlider = ({ items }) => {
                   width: `${cardWidth}px`,
                   '--tilt': `${tiltPattern[card.localIndex % tiltPattern.length]}deg`,
                   '--delay': `${(card.localIndex % 5) * 0.3}s`,
-                  '--arch-offset': `${card.arch}px`
+                  '--arch-offset': `${card.arch}px`,
+                  '--card-color': pastelPalette[card.localIndex % pastelPalette.length]
                 }}
                 aria-label={card.item.title}
               >
