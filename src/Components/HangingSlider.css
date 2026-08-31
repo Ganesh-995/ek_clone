@@ -36,7 +36,7 @@
 .HangingSlider-card {
     position: relative;
     flex: 0 0 auto;
-    background: #fff;
+    background: var(--card-color, #fff);
     border-radius: 0;
     padding: 0.4rem 0.4rem 0.55rem;
     box-shadow: 0 10px 18px rgba(41, 35, 46, 0.14);
