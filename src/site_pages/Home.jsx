@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { FaWhatsapp } from 'react-icons/fa'
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
 import ProductCard from '../Components/ProductCard'
+import HangingSlider from '../Components/HangingSlider'
 import { useProducts } from '../context/ProductContext'
 import { createThemeWhatsAppUrl } from '../utils/whatsapp'
 import AskFormModal from '../Components/AskFormModal'
@@ -301,6 +302,14 @@ const Home = () => {
           <span><strong>+</strong> Fresh arrivals</span>
         </div>
       </div>
+
+      <HangingSlider
+        items={Array.from({ length: 10 }, (_, index) => products[index % products.length]).filter(Boolean).map((product, index) => ({
+          id: `${product.id}-${index}`,
+          title: product.title,
+          image: product.image
+        }))}
+      />
 
       <div className="Home-container" id="featured-products">
         <h2>Shop the <em>celebration.</em></h2>
