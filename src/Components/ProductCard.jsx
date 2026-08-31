@@ -17,6 +17,11 @@ const ProductCard = ({ id, image, title, description, bulletPoints = [] }) => {
   }
 
   const goToDetails = () => {
+    // If this product is a bunting/banner item, route to the curated bunting page
+    if (title && /bunting|banner|buntin/i.test(title)) {
+      navigate('/bunting')
+      return
+    }
     navigate(`/product/${id}`)
   }
 

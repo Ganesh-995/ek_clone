@@ -1,0 +1,21 @@
+.App-bunting-root { padding: 2.5rem 1.25rem }
+.App-bunting-hero { display:flex; gap:2rem; align-items:center; max-width:1100px; margin:0 auto 2rem }
+.App-bunting-panel { flex:1 1 48%; padding:2rem; border-radius:12px }
+.App-bunting-panel h1 { font-size:2rem; margin:0 0 0.75rem }
+.App-bunting-panel em { color:#e86f2d; font-style:normal }
+.App-bunting-panel .lead { color:#524a4f; margin-bottom:1rem }
+
+.App-bunting-designer { background:transparent; padding:0 }
+.App-bunting-main-info { padding:0.5rem 0 }
+.App-bunting-item-title { font-size:1.1rem; margin:0 0 0.4rem }
+.App-bunting-item-desc { color:#5a5357; margin:0 }
+
+.ctas { display:none }
+.cta { display:none }
+.App-bunting-art { flex:1 1 48%; display:flex; justify-content:center; align-items:center }
+.App-bunting-art .single { width:420px; height:420px; background-size:cover; background-position:center; border-radius:12px; box-shadow:0 26px 50px rgba(0,0,0,0.18); }
+.App-bunting-grid { display:none }
+.grid-card { display:none }
+
+@media (max-width:800px){ .App-bunting-hero{flex-direction:column-reverse;align-items:stretch} .stack{width:100%;height:220px} .grid-card{width:calc(50% - 0.5rem)} }
+@media (max-width:420px){ .grid-card{width:100%} .App-bunting-panel h1{font-size:1.6rem} }

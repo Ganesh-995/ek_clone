@@ -304,7 +304,7 @@ const Home = () => {
       </div>
 
       <HangingSlider
-        items={Array.from({ length: 10 }, (_, index) => products[index % products.length]).filter(Boolean).map((product, index) => ({
+        items={Array.from({ length: 20 }, (_, index) => products[index % products.length]).filter(Boolean).map((product, index) => ({
           id: `${product.id}-${index}`,
           title: product.title,
           image: product.image

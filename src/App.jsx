@@ -10,6 +10,7 @@ import Contact from './site_pages/Contact.jsx'
 import ManageProducts from './site_pages/ManageProducts.jsx'
 import ProductDetails from './site_pages/ProductDetails.jsx'
 import ThemeDetails from './site_pages/ThemeDetails.jsx'
+import Bunting from './site_pages/Bunting.jsx'
 import SearchResults from './site_pages/SearchResults.jsx'
 import './App.css'
 
@@ -36,6 +37,7 @@ function App() {
           <Route path="/inquiry" element={<Contact />} />
           <Route path="/manage" element={<ManageProducts />} />
           <Route path="/product/:productId" element={<ProductDetails />} />
+          <Route path="/bunting" element={<Bunting />} />
           <Route path="/theme/:themeId" element={<ThemeDetails />} />
           <Route path="/search" element={<SearchResults />} />
         </Routes>

@@ -1,0 +1,64 @@
+.Bunting-page {
+  padding: 6rem 1.25rem 5rem;
+  background: #fffaf6;
+}
+
+.Bunting-hero {
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+.Bunting-panel {
+  flex: 1 1 48%;
+  padding: 1rem 0;
+}
+
+.Bunting-panel h1 {
+  color: #2f2024;
+  font-size: 3.4rem;
+  margin: 0 0 1.5rem;
+  line-height: 1.02;
+}
+
+.Bunting-eyebrow { color: #bc5b4c; display: block; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; margin-bottom: 0.75rem; text-transform: uppercase; }
+.Bunting-panel h2 { color: #473639; font-size: 1.3rem; line-height: 1.35; margin: 0 0 0.75rem; }
+
+.Bunting-lead {
+  color: #524a4f;
+  line-height: 1.7;
+  margin: 0;
+}
+
+.Bunting-details { color: #66595b; line-height: 1.6; margin: 1.25rem 0 0; padding-left: 1.2rem; }
+.Bunting-details li + li { margin-top: 0.35rem; }
+.Bunting-whatsapp { align-items: center; background: #111; border-radius: 6px; color: #fff; display: inline-flex; font-weight: 700; gap: 0.5rem; margin-top: 1.5rem; padding: 0.75rem 1rem; text-decoration: none; }
+.Bunting-whatsapp:hover { background: #333; }
+.Bunting-whatsapp svg { font-size: 1.15rem; }
+
+.Bunting-art { flex: 1 1 48%; display: flex; justify-content: flex-end; }
+.Bunting-image-trigger { background: #fff; border: 0; cursor: zoom-in; display: block; max-width: 100%; padding: 0; width: min(100%, 480px); }
+.Bunting-art-main { aspect-ratio: 1 / 1; background: #fff; border-radius: 8px; box-shadow: 0 24px 48px rgba(71, 46, 42, 0.2); display: block; max-width: 100%; object-fit: contain; transition: transform 0.2s ease; width: 100%; }
+.Bunting-image-trigger:hover .Bunting-art-main { transform: scale(1.015); }
+.Bunting-image-trigger:focus-visible { outline: 3px solid #111; outline-offset: 4px; }
+
+.BuntingImagePopup-overlay { align-items: center; background: rgba(16, 14, 14, 0.78); display: flex; inset: 0; justify-content: center; padding: 1rem; position: fixed; z-index: 3000; }
+.BuntingImagePopup-frame { background: #fff; border-radius: 8px; box-shadow: 0 24px 70px rgba(0, 0, 0, 0.4); max-height: calc(100dvh - 2rem); max-width: min(100%, 960px); padding: 0.3rem; position: relative; }
+.BuntingImagePopup-frame img { display: block; max-height: calc(100dvh - 2.6rem); max-width: calc(100vw - 2.6rem); object-fit: contain; }
+.BuntingImagePopup-close { align-items: center; background: #111; border: 0; border-radius: 50%; color: #fff; cursor: pointer; display: flex; height: 36px; justify-content: center; position: absolute; right: 0.7rem; top: 0.7rem; width: 36px; z-index: 1; }
+
+@media (max-width: 800px) {
+  .Bunting-page { padding-top: 5rem; }
+  .Bunting-hero { flex-direction: column-reverse; gap: 2rem; align-items: stretch; }
+  .Bunting-art { justify-content: center; }
+  .Bunting-art-main { width: min(100%, 480px); }
+  .Bunting-panel h1 { font-size: 2.6rem; }
+}
+
+@media (max-width: 420px) {
+  .Bunting-page { padding-inline: 1rem; }
+  .Bunting-panel h1 { font-size: 2.2rem; }
+}
