@@ -1,11 +1,13 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import defaultProducts from '../data/products.json';
 import { themeCards as defaultThemes } from '../data/themes';
+import { defaultHeroImages } from '../data/siteSettings';
 import { getApiUrl } from '../utils/api';
 
 const ProductContext = createContext(null);
 const STORAGE_KEY = 'ek-products';
 const THEMES_STORAGE_KEY = 'ek-themes';
+const HERO_IMAGES_STORAGE_KEY = 'ek-hero-images';
 
 function readStoredProducts() {
   if (typeof window === 'undefined') return defaultProducts;
@@ -37,20 +39,54 @@ function readStoredThemes() {
   }
 }
 
+function readStoredHeroImages() {
+  if (typeof window === 'undefined') return defaultHeroImages;
+
+  try {
+    const savedImages = JSON.parse(localStorage.getItem(HERO_IMAGES_STORAGE_KEY));
+    return Array.isArray(savedImages) && savedImages.length > 0 ? savedImages : defaultHeroImages;
+  } catch {
+    return defaultHeroImages;
+  }
+}
+
 export function ProductProvider({ children }) {
   const [products, setProducts] = useState(defaultProducts);
   const [themes, setThemes] = useState(defaultThemes);
+  const [heroImages, setHeroImages] = useState(defaultHeroImages);
   const [visitorStats, setVisitorStats] = useState({ total: 0, today: 0, live: 0 });
 
   useEffect(() => {
     setProducts(readStoredProducts());
     setThemes(readStoredThemes());
+    setHeroImages(readStoredHeroImages());
   }, []);
 
   useEffect(() => {
     let isCurrent = true;
 
-    fetch(getApiUrl('/api/products'))
+    fetch(getApiUrl('/api/site-settings'), { cache: 'no-store' })
+      .then((response) => {
+        if (!response.ok) throw new Error('Unable to load site settings');
+        return response.json();
+      })
+      .then((settings) => {
+        if (isCurrent && Array.isArray(settings.heroImages) && settings.heroImages.length > 0) {
+          setHeroImages(settings.heroImages);
+          localStorage.setItem(HERO_IMAGES_STORAGE_KEY, JSON.stringify(settings.heroImages));
+        }
+      })
+      .catch(() => undefined);
+
+    return () => {
+      isCurrent = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let isCurrent = true;
+
+    fetch(getApiUrl('/api/products'), { cache: 'no-store' })
       .then((response) => {
         if (!response.ok) throw new Error('Unable to load products');
         return response.json();
@@ -71,7 +107,7 @@ export function ProductProvider({ children }) {
   useEffect(() => {
     let isCurrent = true;
 
-    fetch(getApiUrl('/api/themes'))
+    fetch(getApiUrl('/api/themes'), { cache: 'no-store' })
       .then((response) => {
         if (!response.ok) throw new Error('Unable to load themes');
         return response.json();
@@ -104,44 +140,93 @@ export function ProductProvider({ children }) {
     return () => window.clearInterval(heartbeat);
   }, []);
 
-  const updateProducts = (nextProducts) => {
+  const updateProducts = async (nextProducts) => {
+    const previousProducts = products;
     setProducts(nextProducts);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(nextProducts));
-    }
+    try {
+      const response = await fetch(getApiUrl('/api/products'), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(typeof window !== 'undefined' && sessionStorage.getItem('ek-admin-token')
+            ? { Authorization: `Bearer ${sessionStorage.getItem('ek-admin-token')}` }
+            : {}),
+        },
+        body: JSON.stringify(nextProducts),
+      });
 
-    fetch(getApiUrl('/api/products'), {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(typeof window !== 'undefined' && sessionStorage.getItem('ek-admin-token')
-          ? { Authorization: `Bearer ${sessionStorage.getItem('ek-admin-token')}` }
-          : {}),
-      },
-      body: JSON.stringify(nextProducts),
-    }).catch(() => undefined);
+      if (!response.ok) {
+        const result = await response.json().catch(() => ({}));
+        throw new Error(result.message || 'Product update could not be saved.');
+      }
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(nextProducts));
+      }
+    } catch (error) {
+      setProducts(previousProducts);
+      throw error;
+    }
   };
 
-  const updateThemes = (nextThemes) => {
+  const updateThemes = async (nextThemes) => {
+    const previousThemes = themes;
     setThemes(nextThemes);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem(THEMES_STORAGE_KEY, JSON.stringify(nextThemes));
-    }
+    try {
+      const response = await fetch(getApiUrl('/api/themes'), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(typeof window !== 'undefined' && sessionStorage.getItem('ek-admin-token')
+            ? { Authorization: `Bearer ${sessionStorage.getItem('ek-admin-token')}` }
+            : {}),
+        },
+        body: JSON.stringify(nextThemes),
+      });
 
-    fetch(getApiUrl('/api/themes'), {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        ...(typeof window !== 'undefined' && sessionStorage.getItem('ek-admin-token')
-          ? { Authorization: `Bearer ${sessionStorage.getItem('ek-admin-token')}` }
-          : {}),
-      },
-      body: JSON.stringify(nextThemes),
-    }).catch(() => undefined);
+      if (!response.ok) {
+        const result = await response.json().catch(() => ({}));
+        throw new Error(result.message || 'Theme update could not be saved.');
+      }
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem(THEMES_STORAGE_KEY, JSON.stringify(nextThemes));
+      }
+    } catch (error) {
+      setThemes(previousThemes);
+      throw error;
+    }
+  };
+
+  const updateHeroImages = async (nextHeroImages) => {
+    const previousHeroImages = heroImages;
+    setHeroImages(nextHeroImages);
+    try {
+      const response = await fetch(getApiUrl('/api/site-settings'), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(typeof window !== 'undefined' && sessionStorage.getItem('ek-admin-token')
+            ? { Authorization: `Bearer ${sessionStorage.getItem('ek-admin-token')}` }
+            : {}),
+        },
+        body: JSON.stringify({ heroImages: nextHeroImages }),
+      });
+
+      if (!response.ok) {
+        const result = await response.json().catch(() => ({}));
+        throw new Error(result.message || 'Hero images could not be saved.');
+      }
+
+      localStorage.setItem(HERO_IMAGES_STORAGE_KEY, JSON.stringify(nextHeroImages));
+    } catch (error) {
+      setHeroImages(previousHeroImages);
+      throw error;
+    }
   };
 
   return (
-    <ProductContext.Provider value={{ products, setProducts: updateProducts, themes, setThemes: updateThemes, visitorStats }}>
+    <ProductContext.Provider value={{ products, setProducts: updateProducts, themes, setThemes: updateThemes, heroImages, setHeroImages: updateHeroImages, visitorStats }}>
       {children}
     </ProductContext.Provider>
   );

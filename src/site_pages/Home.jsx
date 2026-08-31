@@ -8,14 +8,6 @@ import { createThemeWhatsAppUrl } from '../utils/whatsapp'
 import AskFormModal from '../Components/AskFormModal'
 import './Home.css'
 
-const heroImages = [
-  '/images/butterfly.png',
-  '/images/turtle.png',
-  '/images/box.png',
-  '/images/hotair.png'
-]
-const carouselImages = [...heroImages, heroImages[0]]
-
 const heroBubbles = [
   { size: 18, left: '8%', top: '18%', delay: 0 },
   { size: 30, left: '84%', top: '20%', delay: 1.2 },
@@ -25,21 +17,34 @@ const heroBubbles = [
   { size: 15, left: '4%', top: '48%', delay: 2.7 }
 ]
 
+const themeBulletColors = ['#f2897a', '#3fb950', '#e5484d']
+
 const ThemeCard = ({ theme, products }) => {
   const [isAskFormOpen, setIsAskFormOpen] = useState(false)
   const images = (theme.images?.length
     ? theme.images.map((item) => typeof item === 'string' ? item : item.image).filter(Boolean)
     : theme.productIds?.map((productId) => products.find((item) => item.id === productId)?.image).filter(Boolean) || [])
+  const bulletPoints = (theme.detail || '')
+    .split(/(?<=[.!])\s+/)
+    .map((sentence) => sentence.trim())
+    .filter(Boolean)
 
   return (
     <>
       <Link className={`Theme-card Theme-card-${theme.id}`} to={`/theme/${theme.id}`}>
         <div className="Theme-card-images">
-          {images.slice(0, 4).map((image) => <img key={image} src={image} alt="" />)}
+          {images.slice(0, 3).map((image, index) => <img key={image} src={image} alt="" className={index === 0 ? 'Theme-card-image-main' : 'Theme-card-image-sub'} />)}
         </div>
         <div className="Theme-card-copy">
           <h3>{theme.title}</h3>
-          <p>{theme.detail}</p>
+          <ul className="Theme-card-bullets">
+            {bulletPoints.map((point, index) => (
+              <li key={point}>
+                <span className="Theme-card-bullet-dot" style={{ background: themeBulletColors[index % themeBulletColors.length] }} aria-hidden="true" />
+                <span>{point}</span>
+              </li>
+            ))}
+          </ul>
           <div className="Theme-card-actions">
             <span className="Theme-card-explore">Explore theme <span aria-hidden="true">↗</span></span>
             <button
@@ -74,7 +79,8 @@ const ThemeCard = ({ theme, products }) => {
 }
 
 const Home = () => {
-  const { products, themes } = useProducts()
+  const { products, themes, heroImages } = useProducts()
+  const carouselImages = [...heroImages, heroImages[0]]
   const [searchParams] = useSearchParams()
   const [currentPage, setCurrentPage] = useState(1)
   const [heroImageIndex, setHeroImageIndex] = useState(0)
@@ -82,7 +88,7 @@ const Home = () => {
   const bubbleRefs = useRef([])
   const carouselPointerStartX = useRef(null)
   const paginationPositionRef = useRef(null)
-  const productsPerPage = 10
+  const productsPerPage = 20
   const searchTerm = searchParams.get('search')?.trim().toLowerCase() || ''
   const visibleProducts = searchTerm
     ? products.filter((product) => `${product.title} ${product.description} ${product.bulletPoints?.join(' ')}`.toLowerCase().includes(searchTerm))
@@ -94,8 +100,8 @@ const Home = () => {
   const safePage = Math.min(currentPage, totalPages)
   const pageStart = (safePage - 1) * productsPerPage
   const pageProducts = visibleProducts.slice(pageStart, pageStart + productsPerPage)
-  const featuredProducts = pageProducts.slice(0, 10)
-  const additionalProducts = pageProducts.slice(10)
+  const featuredProducts = pageProducts
+  const additionalProducts = []
   const safeHeroImageIndex = Math.min(heroImageIndex, heroImages.length)
 
   useEffect(() => {

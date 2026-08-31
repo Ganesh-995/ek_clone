@@ -4,7 +4,7 @@ import { getApiUrl } from '../utils/api';
 import './ManageProducts.css';
 
 export default function ManageProducts() {
-  const { products, setProducts, themes, setThemes, visitorStats } = useProducts();
+  const { products, setProducts, themes, setThemes, heroImages, setHeroImages, visitorStats } = useProducts();
   const [isAuthenticated, setIsAuthenticated] = useState(() => Boolean(sessionStorage.getItem('ek-admin-token')));
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -20,6 +20,7 @@ export default function ManageProducts() {
   const [formType, setFormType] = useState('product');
   const [editingThemeId, setEditingThemeId] = useState(null);
   const [themeFormData, setThemeFormData] = useState({ title: '', detail: '', images: '' });
+  const [heroFormData, setHeroFormData] = useState({ images: '' });
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -49,6 +50,7 @@ export default function ManageProducts() {
     setEditingId(null);
     setEditingThemeId(null);
     setThemeFormData({ title: '', detail: '', images: '' });
+    setHeroFormData({ images: '' });
     setFormType('product');
     setShowForm(false);
   };
@@ -66,6 +68,10 @@ export default function ManageProducts() {
     setThemeFormData((previous) => ({ ...previous, [name]: value }));
   };
 
+  const handleHeroInputChange = (e) => {
+    setHeroFormData({ images: e.target.value });
+  };
+
   const createThemeId = (title) => {
     const baseId = title.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'theme';
     let nextId = baseId;
@@ -77,8 +83,26 @@ export default function ManageProducts() {
     return nextId;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (formType === 'hero') {
+      const images = heroFormData.images.split('\n').map((image) => image.trim()).filter(Boolean);
+      if (images.length === 0 || images.length > 10) {
+        setMessage('❌ 1 se 10 hero image URLs zaroori hain!');
+        return;
+      }
+
+      try {
+        await setHeroImages(images);
+        setMessage('✅ Hero images update ho gayi!');
+        setTimeout(() => setMessage(''), 3000);
+        resetForm();
+      } catch (error) {
+        setMessage(`❌ ${error.message}`);
+      }
+      return;
+    }
 
     if (formType === 'theme') {
       const images = themeFormData.images.split('\n').map((image) => image.trim()).filter(Boolean);
@@ -94,10 +118,14 @@ export default function ManageProducts() {
         detail: themeFormData.detail.trim(),
         images: images.map((image) => ({ image, title: themeFormData.title.trim() }))
       };
-      setThemes(editingThemeId ? themes.map((item) => item.id === editingThemeId ? theme : item) : [...themes, theme]);
-      setMessage(editingThemeId ? '✅ Theme update ho gaya!' : '✅ Naya theme add ho gaya!');
-      setTimeout(() => setMessage(''), 3000);
-      resetForm();
+      try {
+        await setThemes(editingThemeId ? themes.map((item) => item.id === editingThemeId ? theme : item) : [...themes, theme]);
+        setMessage(editingThemeId ? '✅ Theme update ho gaya!' : '✅ Naya theme add ho gaya!');
+        setTimeout(() => setMessage(''), 3000);
+        resetForm();
+      } catch (error) {
+        setMessage(`❌ ${error.message}`);
+      }
       return;
     }
 
@@ -108,9 +136,11 @@ export default function ManageProducts() {
       return;
     }
 
+    let nextProducts;
+    let successMessage;
     if (editingId) {
       // Update existing product
-      const updatedProducts = products.map(p =>
+      nextProducts = products.map(p =>
         p.id === editingId
           ? {
               ...p,
@@ -124,8 +154,7 @@ export default function ManageProducts() {
             }
           : p
       );
-      setProducts(updatedProducts);
-      setMessage('✅ Product update ho gaya!');
+      successMessage = '✅ Product update ho gaya!';
     } else {
       // Add new product
       const newProduct = {
@@ -138,12 +167,18 @@ export default function ManageProducts() {
           .map(point => point.trim())
           .filter(Boolean)
       };
-      setProducts([...products, newProduct]);
-      setMessage('✅ Naya product add ho gaya!');
+      nextProducts = [...products, newProduct];
+      successMessage = '✅ Naya product add ho gaya!';
     }
 
-    setTimeout(() => setMessage(''), 3000);
-    resetForm();
+    try {
+      await setProducts(nextProducts);
+      setMessage(successMessage);
+      setTimeout(() => setMessage(''), 3000);
+      resetForm();
+    } catch (error) {
+      setMessage(`❌ ${error.message}`);
+    }
   };
 
   const handleEdit = (product) => {
@@ -167,19 +202,27 @@ export default function ManageProducts() {
     setShowForm(true);
   };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (window.confirm('Kya aap confirm karte ho ke delete karna hai?')) {
-      setProducts(products.filter(p => p.id !== id));
-      setMessage('✅ Product delete ho gaya!');
-      setTimeout(() => setMessage(''), 3000);
+      try {
+        await setProducts(products.filter(p => p.id !== id));
+        setMessage('✅ Product delete ho gaya!');
+        setTimeout(() => setMessage(''), 3000);
+      } catch (error) {
+        setMessage(`❌ ${error.message}`);
+      }
     }
   };
 
-  const handleDeleteTheme = (id) => {
+  const handleDeleteTheme = async (id) => {
     if (window.confirm('Kya aap confirm karte ho ke theme delete karna hai?')) {
-      setThemes(themes.filter((theme) => theme.id !== id));
-      setMessage('✅ Theme delete ho gaya!');
-      setTimeout(() => setMessage(''), 3000);
+      try {
+        await setThemes(themes.filter((theme) => theme.id !== id));
+        setMessage('✅ Theme delete ho gaya!');
+        setTimeout(() => setMessage(''), 3000);
+      } catch (error) {
+        setMessage(`❌ ${error.message}`);
+      }
     }
   };
 
@@ -248,6 +291,12 @@ export default function ManageProducts() {
         >
           ➕ Add New Theme
         </button>
+        <button
+          className="btn btn-secondary"
+          onClick={() => { setHeroFormData({ images: heroImages.join('\n') }); setFormType('hero'); setShowForm(true); }}
+        >
+          🖼️ Edit Hero Images
+        </button>
       </div>
 
       <div className="visitor-counter" aria-label="Website visitor statistics">
@@ -271,13 +320,18 @@ export default function ManageProducts() {
         }}>
           <div className="form-container" role="dialog" aria-modal="true" aria-labelledby="product-form-title">
             <div className="modal-header">
-              <h2 id="product-form-title">{formType === 'theme' ? (editingThemeId ? '✏️ Edit Theme' : '🆕 Add New Theme') : (editingId ? '✏️ Edit Product' : '🆕 Add New Product')}</h2>
+              <h2 id="product-form-title">{formType === 'hero' ? '🖼️ Edit Hero Images' : (formType === 'theme' ? (editingThemeId ? '✏️ Edit Theme' : '🆕 Add New Theme') : (editingId ? '✏️ Edit Product' : '🆕 Add New Product'))}</h2>
               <button type="button" className="modal-close" onClick={resetForm} aria-label="Close form">
                 ×
               </button>
             </div>
             <form onSubmit={handleSubmit}>
-            {formType === 'theme' ? (
+            {formType === 'hero' ? (
+              <div className="form-group">
+                <label>🖼️ Hero Image URLs (har line me ek, maximum 10)</label>
+                <textarea name="images" value={heroFormData.images} onChange={handleHeroInputChange} placeholder="https://example.com/hero-image.jpg" rows="8" required />
+              </div>
+            ) : formType === 'theme' ? (
               <>
                 <div className="form-group">
                   <label>🎨 Theme Title *</label>
@@ -345,7 +399,7 @@ export default function ManageProducts() {
 
             <div className="form-buttons">
               <button type="submit" className="btn btn-success">
-                {formType === 'theme' ? (editingThemeId ? '💾 Update Theme' : '✅ Add Theme') : (editingId ? '💾 Update' : '✅ Add')}
+                {formType === 'hero' ? '💾 Update Hero Images' : (formType === 'theme' ? (editingThemeId ? '💾 Update Theme' : '✅ Add Theme') : (editingId ? '💾 Update' : '✅ Add'))}
               </button>
               <button
                 type="button"
