@@ -10,6 +10,7 @@ import Contact from './site_pages/Contact.jsx'
 import ManageProducts from './site_pages/ManageProducts.jsx'
 import ProductDetails from './site_pages/ProductDetails.jsx'
 import ThemeDetails from './site_pages/ThemeDetails.jsx'
+import Themes from './site_pages/Themes.jsx'
 import Bunting from './site_pages/Bunting.jsx'
 import SearchResults from './site_pages/SearchResults.jsx'
 import './App.css'
@@ -39,6 +40,7 @@ function App() {
           <Route path="/product/:productId" element={<ProductDetails />} />
           <Route path="/bunting" element={<Bunting />} />
           <Route path="/theme/:themeId" element={<ThemeDetails />} />
+          <Route path="/themes" element={<Themes />} />
           <Route path="/search" element={<SearchResults />} />
         </Routes>
         <div className="Page-up-container">

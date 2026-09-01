@@ -1,13 +1,14 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import defaultProducts from '../data/products.json';
 import { themeCards as defaultThemes } from '../data/themes';
-import { defaultHeroImages } from '../data/siteSettings';
+import { defaultHangerCards, defaultHeroImages } from '../data/siteSettings';
 import { getApiUrl } from '../utils/api';
 
 const ProductContext = createContext(null);
 const STORAGE_KEY = 'ek-products';
 const THEMES_STORAGE_KEY = 'ek-themes';
 const HERO_IMAGES_STORAGE_KEY = 'ek-hero-images';
+const HANGER_CARDS_STORAGE_KEY = 'ek-hanger-cards';
 
 function readStoredProducts() {
   if (typeof window === 'undefined') return defaultProducts;
@@ -33,6 +34,9 @@ function readStoredThemes() {
 
   try {
     const parsedThemes = JSON.parse(savedThemes);
+    if (process.env.NODE_ENV === 'development' && Array.isArray(parsedThemes) && parsedThemes.length < defaultThemes.length) {
+      return defaultThemes;
+    }
     return Array.isArray(parsedThemes) ? parsedThemes : defaultThemes;
   } catch {
     return defaultThemes;
@@ -50,16 +54,29 @@ function readStoredHeroImages() {
   }
 }
 
+function readStoredHangerCards() {
+  if (typeof window === 'undefined') return defaultHangerCards;
+
+  try {
+    const savedCards = JSON.parse(localStorage.getItem(HANGER_CARDS_STORAGE_KEY));
+    return Array.isArray(savedCards) && savedCards.length > 0 ? savedCards : defaultHangerCards;
+  } catch {
+    return defaultHangerCards;
+  }
+}
+
 export function ProductProvider({ children }) {
   const [products, setProducts] = useState(defaultProducts);
   const [themes, setThemes] = useState(defaultThemes);
   const [heroImages, setHeroImages] = useState(defaultHeroImages);
+  const [hangerCards, setHangerCards] = useState(defaultHangerCards);
   const [visitorStats, setVisitorStats] = useState({ total: 0, today: 0, live: 0 });
 
   useEffect(() => {
     setProducts(readStoredProducts());
     setThemes(readStoredThemes());
     setHeroImages(readStoredHeroImages());
+    setHangerCards(readStoredHangerCards());
   }, []);
 
   useEffect(() => {
@@ -74,6 +91,10 @@ export function ProductProvider({ children }) {
         if (isCurrent && Array.isArray(settings.heroImages) && settings.heroImages.length > 0) {
           setHeroImages(settings.heroImages);
           localStorage.setItem(HERO_IMAGES_STORAGE_KEY, JSON.stringify(settings.heroImages));
+        }
+        if (isCurrent && Array.isArray(settings.hangerCards) && settings.hangerCards.length > 0) {
+          setHangerCards(settings.hangerCards);
+          localStorage.setItem(HANGER_CARDS_STORAGE_KEY, JSON.stringify(settings.hangerCards));
         }
       })
       .catch(() => undefined);
@@ -210,7 +231,7 @@ export function ProductProvider({ children }) {
             ? { Authorization: `Bearer ${sessionStorage.getItem('ek-admin-token')}` }
             : {}),
         },
-        body: JSON.stringify({ heroImages: nextHeroImages }),
+        body: JSON.stringify({ heroImages: nextHeroImages, hangerCards }),
       });
 
       if (!response.ok) {
@@ -225,8 +246,35 @@ export function ProductProvider({ children }) {
     }
   };
 
+  const updateHangerCards = async (nextHangerCards) => {
+    const previousHangerCards = hangerCards;
+    setHangerCards(nextHangerCards);
+    try {
+      const response = await fetch(getApiUrl('/api/site-settings'), {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(typeof window !== 'undefined' && sessionStorage.getItem('ek-admin-token')
+            ? { Authorization: `Bearer ${sessionStorage.getItem('ek-admin-token')}` }
+            : {}),
+        },
+        body: JSON.stringify({ heroImages, hangerCards: nextHangerCards }),
+      });
+
+      if (!response.ok) {
+        const result = await response.json().catch(() => ({}));
+        throw new Error(result.message || 'Hanger cards could not be saved.');
+      }
+
+      localStorage.setItem(HANGER_CARDS_STORAGE_KEY, JSON.stringify(nextHangerCards));
+    } catch (error) {
+      setHangerCards(previousHangerCards);
+      throw error;
+    }
+  };
+
   return (
-    <ProductContext.Provider value={{ products, setProducts: updateProducts, themes, setThemes: updateThemes, heroImages, setHeroImages: updateHeroImages, visitorStats }}>
+    <ProductContext.Provider value={{ products, setProducts: updateProducts, themes, setThemes: updateThemes, heroImages, setHeroImages: updateHeroImages, hangerCards, setHangerCards: updateHangerCards, visitorStats }}>
       {children}
     </ProductContext.Provider>
   );

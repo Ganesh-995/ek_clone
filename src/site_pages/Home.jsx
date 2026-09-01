@@ -80,7 +80,7 @@ const ThemeCard = ({ theme, products }) => {
 }
 
 const Home = () => {
-  const { products, themes, heroImages } = useProducts()
+  const { products, themes, heroImages, hangerCards } = useProducts()
   const carouselImages = [...heroImages, heroImages[0]]
   const [searchParams] = useSearchParams()
   const [currentPage, setCurrentPage] = useState(1)
@@ -304,10 +304,10 @@ const Home = () => {
       </div>
 
       <HangingSlider
-        items={Array.from({ length: 20 }, (_, index) => products[index % products.length]).filter(Boolean).map((product, index) => ({
-          id: `${product.id}-${index}`,
-          title: product.title,
-          image: product.image
+        items={hangerCards.map((card, index) => ({
+          id: `hanger-${index}`,
+          title: card.title,
+          image: card.image
         }))}
       />
 
@@ -378,8 +378,9 @@ const Home = () => {
           <h2 id="themes-title">Find your <em>theme.</em></h2>
         </div>
         <div className="Theme-grid">
-          {visibleThemes.map((theme) => <ThemeCard key={theme.id} theme={theme} products={products} />)}
+          {visibleThemes.slice(0, 4).map((theme) => <ThemeCard key={theme.id} theme={theme} products={products} />)}
         </div>
+        {themes.length > 4 && <Link className="Home-more-themes" to="/themes">More Themes</Link>}
       </section>
     </div>
   )

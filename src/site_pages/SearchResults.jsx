@@ -18,14 +18,17 @@ function getThemeSearchText(theme) {
 
 function SearchResults() {
   const [searchParams] = useSearchParams()
-  const { products, themes } = useProducts()
+  const { products, themes, hangerCards } = useProducts()
   const [currentPage, setCurrentPage] = useState(1)
   const query = searchParams.get('q')?.trim() || ''
   const normalizedQuery = query.toLowerCase()
-  const matchingProducts = products.filter((product, index) => (
-    `${index < 20 ? 'hanger' : ''} ${product.title} ${product.description || ''} ${product.bulletPoints?.join(' ') || ''}`
+  const matchingProducts = products.filter((product) => (
+    `${product.title} ${product.description || ''} ${product.bulletPoints?.join(' ') || ''}`
       .toLowerCase()
       .includes(normalizedQuery)
+  ))
+  const matchingHangerCards = hangerCards.filter((card) => (
+    `hanger ${card.title} ${card.description || ''}`.toLowerCase().includes(normalizedQuery)
   ))
   const matchingThemes = themes.filter((theme) => getThemeSearchText(theme).includes(normalizedQuery))
   const productsPerPage = 8
@@ -43,7 +46,7 @@ function SearchResults() {
         <Link className="Search-results-back" to="/">← Back home</Link>
         <span className="Search-results-kicker">Search results</span>
         <h1>Results for <em>“{query}”</em></h1>
-        <p>{matchingProducts.length + matchingThemes.length} results found across products and themes.</p>
+        <p>{matchingProducts.length + matchingHangerCards.length + matchingThemes.length} results found across products, hanger cards, and themes.</p>
       </header>
 
       {matchingThemes.length > 0 && (
@@ -108,7 +111,28 @@ function SearchResults() {
         </section>
       )}
 
-      {matchingProducts.length === 0 && matchingThemes.length === 0 && (
+      {matchingHangerCards.length > 0 && (
+        <section className="Search-results-section" aria-labelledby="matching-hangers-title">
+          <div className="Search-results-section-heading">
+            <span>03</span>
+            <h2 id="matching-hangers-title">Matching <em>hanger cards.</em></h2>
+          </div>
+          <div className="Search-results-products">
+            {matchingHangerCards.map((card, index) => (
+              <Link className="Search-hanger-card" to="/bunting" key={`${card.title}-${index}`}>
+                <img src={card.image} alt={card.title} />
+                <div>
+                  <span className="Search-result-type">Hanger card</span>
+                  <h3>{card.title}</h3>
+                  <p>{card.description}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {matchingProducts.length === 0 && matchingHangerCards.length === 0 && matchingThemes.length === 0 && (
         <div className="Search-results-empty">
           <strong>No matches yet.</strong>
           <p>Try another product or theme name.</p>

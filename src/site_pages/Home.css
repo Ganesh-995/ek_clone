@@ -134,6 +134,27 @@
     gap: 1rem;
 }
 
+.Home-more-themes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    margin: 1.5rem auto 0;
+    padding: 0.7rem 1.1rem;
+    border: 1px solid #111;
+    border-radius: 999px;
+    background: #111;
+    color: #fff;
+    font-size: 0.84rem;
+    font-weight: 800;
+    text-decoration: none;
+}
+
+.Home-more-themes:hover {
+    background: #333;
+    border-color: #333;
+}
+
 .Theme-card {
     --theme-accent: #29232e;
     --theme-accent-hover: #46366a;
@@ -152,22 +173,26 @@
 }
 
 .Theme-card-images {
+    --theme-image-gap: 0.35rem;
+    --theme-image-padding: 0.5rem;
+    --theme-main-size: clamp(120px, 18vw, 186px);
+    --theme-sub-size: calc((var(--theme-main-size) - var(--theme-image-gap)) / 2);
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-template-rows: repeat(2, auto);
+    grid-template-columns: var(--theme-main-size) var(--theme-sub-size);
+    grid-template-rows: repeat(2, var(--theme-sub-size));
     align-items: start;
     align-content: center;
-    gap: 0.35rem;
-    padding: 0.5rem;
-    flex: 0 0 300px;
-    max-width: 300px;
+    gap: var(--theme-image-gap);
+    padding: var(--theme-image-padding);
+    flex: 0 0 calc(var(--theme-main-size) + var(--theme-image-gap) + var(--theme-sub-size) + (var(--theme-image-padding) * 2));
+    max-width: calc(var(--theme-main-size) + var(--theme-image-gap) + var(--theme-sub-size) + (var(--theme-image-padding) * 2));
+    background: #fff;
     background: tr;
 }
 
 .Theme-card-images img {
     width: 100%;
-    height: auto;
-    aspect-ratio: 1 / 1;
+    height: 100%;
     object-fit: cover;
     background: #fff;
     border-radius: 8px;
@@ -176,6 +201,7 @@
 .Theme-card-image-main {
     grid-column: 1;
     grid-row: 1 / span 2;
+    align-self: center;
 }
 
 .Theme-card-image-sub {
@@ -394,8 +420,7 @@
     }
 
     .Theme-card-images {
-        flex-basis: 220px;
-        max-width: 220px;
+        --theme-main-size: 160px;
     }
 }
 
@@ -569,10 +594,9 @@
     }
 
     .Theme-card-images {
-        flex: 0 0 120px;
-        max-width: 120px;
-        gap: 0.2rem;
-        padding: 0.3rem;
+        --theme-main-size: 120px;
+        --theme-image-gap: 0.2rem;
+        --theme-image-padding: 0.3rem;
     }
 
     .Theme-card-copy {

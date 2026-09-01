@@ -4,7 +4,7 @@ import { getApiUrl } from '../utils/api';
 import './ManageProducts.css';
 
 export default function ManageProducts() {
-  const { products, setProducts, themes, setThemes, heroImages, setHeroImages, visitorStats } = useProducts();
+  const { products, setProducts, themes, setThemes, heroImages, setHeroImages, hangerCards, setHangerCards, visitorStats } = useProducts();
   const [isAuthenticated, setIsAuthenticated] = useState(() => Boolean(sessionStorage.getItem('ek-admin-token')));
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -114,15 +114,14 @@ export default function ManageProducts() {
     }
 
     if (formType === 'hanger') {
-      const hangerCount = Math.min(20, products.length);
-      const cards = hangerFormData.cards.slice(0, hangerCount);
-      if (cards.length !== hangerCount || cards.some((card) => !card.image.trim() || !card.title.trim() || !card.description.trim())) {
+      const cards = hangerFormData.cards;
+      if (cards.length === 0 || cards.length > 20 || cards.some((card) => !card.image.trim() || !card.title.trim() || !card.description.trim())) {
         setMessage('❌ Har hanger card ka image, title aur description zaroori hai!');
         return;
       }
 
       try {
-        await setProducts(products.map((product, index) => index < hangerCount ? { ...product, ...cards[index] } : product));
+        await setHangerCards(cards);
         setMessage('✅ Hanger cards update ho gaye!');
         setTimeout(() => setMessage(''), 3000);
         resetForm();
@@ -327,7 +326,7 @@ export default function ManageProducts() {
         </button>
         <button
           className="btn btn-secondary"
-          onClick={() => { setHangerFormData({ cards: products.slice(0, 20).map(({ image, title, description }) => ({ image: image || '', title: title || '', description: description || '' })) }); setFormType('hanger'); setShowForm(true); }}
+          onClick={() => { setHangerFormData({ cards: hangerCards.map((card) => ({ ...card })) }); setFormType('hanger'); setShowForm(true); }}
         >
           ✏️ Edit Hanger Cards
         </button>
