@@ -22,8 +22,8 @@ function SearchResults() {
   const [currentPage, setCurrentPage] = useState(1)
   const query = searchParams.get('q')?.trim() || ''
   const normalizedQuery = query.toLowerCase()
-  const matchingProducts = products.filter((product) => (
-    `${product.title} ${product.description || ''} ${product.bulletPoints?.join(' ') || ''}`
+  const matchingProducts = products.filter((product, index) => (
+    `${index < 20 ? 'hanger' : ''} ${product.title} ${product.description || ''} ${product.bulletPoints?.join(' ') || ''}`
       .toLowerCase()
       .includes(normalizedQuery)
   ))

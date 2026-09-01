@@ -311,6 +311,31 @@
   resize: vertical;
 }
 
+.hanger-card-editor {
+  display: grid;
+  gap: 1rem;
+}
+
+.hanger-card-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 0;
+  padding: 1rem;
+  border: 1px solid #eee9e6;
+}
+
+.hanger-card-fields legend {
+  padding: 0 0.4rem;
+  color: #46366a;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.hanger-card-fields .form-group:first-of-type {
+  grid-column: 1 / -1;
+}
+
 .form-group input:focus,
 .form-group textarea:focus {
   outline: none;

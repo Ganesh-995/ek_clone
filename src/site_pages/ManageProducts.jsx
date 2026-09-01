@@ -21,8 +21,7 @@ export default function ManageProducts() {
   const [editingThemeId, setEditingThemeId] = useState(null);
   const [themeFormData, setThemeFormData] = useState({ title: '', detail: '', images: '' });
   const [heroFormData, setHeroFormData] = useState({ images: '' });
-  const [hangerFormData, setHangerFormData] = useState({ images: '' });
-  const [hangerTextFormData, setHangerTextFormData] = useState({ titles: '' });
+  const [hangerFormData, setHangerFormData] = useState({ cards: [] });
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -53,8 +52,7 @@ export default function ManageProducts() {
     setEditingThemeId(null);
     setThemeFormData({ title: '', detail: '', images: '' });
     setHeroFormData({ images: '' });
-    setHangerFormData({ images: '' });
-    setHangerTextFormData({ titles: '' });
+    setHangerFormData({ cards: [] });
     setFormType('product');
     setShowForm(false);
   };
@@ -76,12 +74,11 @@ export default function ManageProducts() {
     setHeroFormData({ images: e.target.value });
   };
 
-  const handleHangerInputChange = (e) => {
-    setHangerFormData({ images: e.target.value });
-  };
-
-  const handleHangerTextInputChange = (e) => {
-    setHangerTextFormData({ titles: e.target.value });
+  const handleHangerInputChange = (index, event) => {
+    const { name, value } = event.target;
+    setHangerFormData((previous) => ({
+      cards: previous.cards.map((card, cardIndex) => cardIndex === index ? { ...card, [name]: value } : card)
+    }));
   };
 
   const createThemeId = (title) => {
@@ -117,35 +114,16 @@ export default function ManageProducts() {
     }
 
     if (formType === 'hanger') {
-      const images = hangerFormData.images.split('\n').map((image) => image.trim()).filter(Boolean);
       const hangerCount = Math.min(20, products.length);
-      if (images.length !== hangerCount) {
-        setMessage(`❌ ${hangerCount} hanger image URLs zaroori hain!`);
+      const cards = hangerFormData.cards.slice(0, hangerCount);
+      if (cards.length !== hangerCount || cards.some((card) => !card.image.trim() || !card.title.trim() || !card.description.trim())) {
+        setMessage('❌ Har hanger card ka image, title aur description zaroori hai!');
         return;
       }
 
       try {
-        await setProducts(products.map((product, index) => index < hangerCount ? { ...product, image: images[index] } : product));
-        setMessage('✅ Hanger images update ho gayi!');
-        setTimeout(() => setMessage(''), 3000);
-        resetForm();
-      } catch (error) {
-        setMessage(`❌ ${error.message}`);
-      }
-      return;
-    }
-
-    if (formType === 'hangerText') {
-      const titles = hangerTextFormData.titles.split('\n').map((title) => title.trim()).filter(Boolean);
-      const hangerCount = Math.min(20, products.length);
-      if (titles.length !== hangerCount) {
-        setMessage(`❌ ${hangerCount} hanger titles zaroori hain!`);
-        return;
-      }
-
-      try {
-        await setProducts(products.map((product, index) => index < hangerCount ? { ...product, title: titles[index] } : product));
-        setMessage('✅ Hanger titles update ho gaye!');
+        await setProducts(products.map((product, index) => index < hangerCount ? { ...product, ...cards[index] } : product));
+        setMessage('✅ Hanger cards update ho gaye!');
         setTimeout(() => setMessage(''), 3000);
         resetForm();
       } catch (error) {
@@ -349,15 +327,9 @@ export default function ManageProducts() {
         </button>
         <button
           className="btn btn-secondary"
-          onClick={() => { setHangerFormData({ images: products.slice(0, 20).map((product) => product.image).join('\n') }); setFormType('hanger'); setShowForm(true); }}
+          onClick={() => { setHangerFormData({ cards: products.slice(0, 20).map(({ image, title, description }) => ({ image: image || '', title: title || '', description: description || '' })) }); setFormType('hanger'); setShowForm(true); }}
         >
-          🖼️ Edit Hanger Images
-        </button>
-        <button
-          className="btn btn-secondary"
-          onClick={() => { setHangerTextFormData({ titles: products.slice(0, 20).map((product) => product.title).join('\n') }); setFormType('hangerText'); setShowForm(true); }}
-        >
-          ✏️ Edit Hanger Titles
+          ✏️ Edit Hanger Cards
         </button>
       </div>
 
@@ -382,7 +354,7 @@ export default function ManageProducts() {
         }}>
           <div className="form-container" role="dialog" aria-modal="true" aria-labelledby="product-form-title">
             <div className="modal-header">
-              <h2 id="product-form-title">{formType === 'hero' ? '🖼️ Edit Hero Images' : (formType === 'hanger' ? '🖼️ Edit Hanger Images' : (formType === 'theme' ? (editingThemeId ? '✏️ Edit Theme' : '🆕 Add New Theme') : (editingId ? '✏️ Edit Product' : '🆕 Add New Product')))}</h2>
+              <h2 id="product-form-title">{formType === 'hero' ? '🖼️ Edit Hero Images' : (formType === 'hanger' ? '✏️ Edit Hanger Cards' : (formType === 'theme' ? (editingThemeId ? '✏️ Edit Theme' : '🆕 Add New Theme') : (editingId ? '✏️ Edit Product' : '🆕 Add New Product')))}</h2>
               <button type="button" className="modal-close" onClick={resetForm} aria-label="Close form">
                 ×
               </button>
@@ -394,14 +366,24 @@ export default function ManageProducts() {
                 <textarea name="images" value={heroFormData.images} onChange={handleHeroInputChange} placeholder="https://example.com/hero-image.jpg" rows="8" required />
               </div>
             ) : formType === 'hanger' ? (
-              <div className="form-group">
-                <label>🖼️ Hanger Image URLs (har line me ek, homepage ke 20 hanger cards ke liye)</label>
-                <textarea name="images" value={hangerFormData.images} onChange={handleHangerInputChange} placeholder="https://example.com/hanger-image.jpg" rows="12" required />
-              </div>
-            ) : formType === 'hangerText' ? (
-              <div className="form-group">
-                <label>✏️ Hanger Titles (har line me ek, homepage ke 20 hanger cards ke liye)</label>
-                <textarea name="titles" value={hangerTextFormData.titles} onChange={handleHangerTextInputChange} placeholder="Hanger Title 1" rows="12" required />
+              <div className="hanger-card-editor">
+                {hangerFormData.cards.map((card, index) => (
+                  <fieldset className="hanger-card-fields" key={index}>
+                    <legend>Hanger Card {index + 1}</legend>
+                    <div className="form-group">
+                      <label>🖼️ Image URL</label>
+                      <input type="url" name="image" value={card.image} onChange={(event) => handleHangerInputChange(index, event)} required />
+                    </div>
+                    <div className="form-group">
+                      <label>📝 Title</label>
+                      <input type="text" name="title" value={card.title} onChange={(event) => handleHangerInputChange(index, event)} required />
+                    </div>
+                    <div className="form-group">
+                      <label>📄 Description</label>
+                      <textarea name="description" value={card.description} onChange={(event) => handleHangerInputChange(index, event)} rows="3" required />
+                    </div>
+                  </fieldset>
+                ))}
               </div>
             ) : formType === 'theme' ? (
               <>
@@ -471,7 +453,7 @@ export default function ManageProducts() {
 
             <div className="form-buttons">
               <button type="submit" className="btn btn-success">
-                {formType === 'hero' ? '💾 Update Hero Images' : (formType === 'hanger' ? '💾 Update Hanger Images' : (formType === 'hangerText' ? '💾 Update Hanger Titles' : (formType === 'theme' ? (editingThemeId ? '💾 Update Theme' : '✅ Add Theme') : (editingId ? '💾 Update' : '✅ Add'))))}
+                {formType === 'hero' ? '💾 Update Hero Images' : (formType === 'hanger' ? '💾 Update Hanger Cards' : (formType === 'theme' ? (editingThemeId ? '💾 Update Theme' : '✅ Add Theme') : (editingId ? '💾 Update' : '✅ Add')))}
               </button>
               <button
                 type="button"
