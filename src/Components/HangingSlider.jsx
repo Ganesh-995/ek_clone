@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import './HangingSlider.css'
 
 const tiltPattern = [-6, 4, -3, 5, -4, 3, -5, 4]
+const getPastelColor = (index) => `hsl(${(index * 137.508) % 360} 72% 91%)`
 const archAmplitude = 22
 const cardWidth = 120
 const cardGap = 28
@@ -64,7 +65,8 @@ const HangingSlider = ({ items }) => {
                     width: `${cardWidth}px`,
                     '--tilt': `${tiltPattern[card.localIndex % tiltPattern.length]}deg`,
                     '--delay': `${(card.localIndex % 5) * 0.3}s`,
-                    '--arch-offset': `${card.arch}px`
+                    '--arch-offset': `${card.arch}px`,
+                    '--card-color': getPastelColor(i)
                   }}
                   aria-label={card.item.title}
                 >
@@ -92,7 +94,8 @@ const HangingSlider = ({ items }) => {
                   width: `${cardWidth}px`,
                   '--tilt': `${tiltPattern[card.localIndex % tiltPattern.length]}deg`,
                   '--delay': `${(card.localIndex % 5) * 0.3}s`,
-                  '--arch-offset': `${card.arch}px`
+                  '--arch-offset': `${card.arch}px`,
+                  '--card-color': getPastelColor(i)
                 }}
                 aria-label={card.item.title}
               >

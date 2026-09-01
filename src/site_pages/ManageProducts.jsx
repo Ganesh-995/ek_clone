@@ -22,6 +22,7 @@ export default function ManageProducts() {
   const [themeFormData, setThemeFormData] = useState({ title: '', detail: '', images: '' });
   const [heroFormData, setHeroFormData] = useState({ images: '' });
   const [hangerFormData, setHangerFormData] = useState({ images: '' });
+  const [hangerTextFormData, setHangerTextFormData] = useState({ titles: '' });
   const [message, setMessage] = useState('');
 
   useEffect(() => {
@@ -53,6 +54,7 @@ export default function ManageProducts() {
     setThemeFormData({ title: '', detail: '', images: '' });
     setHeroFormData({ images: '' });
     setHangerFormData({ images: '' });
+    setHangerTextFormData({ titles: '' });
     setFormType('product');
     setShowForm(false);
   };
@@ -76,6 +78,10 @@ export default function ManageProducts() {
 
   const handleHangerInputChange = (e) => {
     setHangerFormData({ images: e.target.value });
+  };
+
+  const handleHangerTextInputChange = (e) => {
+    setHangerTextFormData({ titles: e.target.value });
   };
 
   const createThemeId = (title) => {
@@ -121,6 +127,25 @@ export default function ManageProducts() {
       try {
         await setProducts(products.map((product, index) => index < hangerCount ? { ...product, image: images[index] } : product));
         setMessage('✅ Hanger images update ho gayi!');
+        setTimeout(() => setMessage(''), 3000);
+        resetForm();
+      } catch (error) {
+        setMessage(`❌ ${error.message}`);
+      }
+      return;
+    }
+
+    if (formType === 'hangerText') {
+      const titles = hangerTextFormData.titles.split('\n').map((title) => title.trim()).filter(Boolean);
+      const hangerCount = Math.min(20, products.length);
+      if (titles.length !== hangerCount) {
+        setMessage(`❌ ${hangerCount} hanger titles zaroori hain!`);
+        return;
+      }
+
+      try {
+        await setProducts(products.map((product, index) => index < hangerCount ? { ...product, title: titles[index] } : product));
+        setMessage('✅ Hanger titles update ho gaye!');
         setTimeout(() => setMessage(''), 3000);
         resetForm();
       } catch (error) {
@@ -328,6 +353,12 @@ export default function ManageProducts() {
         >
           🖼️ Edit Hanger Images
         </button>
+        <button
+          className="btn btn-secondary"
+          onClick={() => { setHangerTextFormData({ titles: products.slice(0, 20).map((product) => product.title).join('\n') }); setFormType('hangerText'); setShowForm(true); }}
+        >
+          ✏️ Edit Hanger Titles
+        </button>
       </div>
 
       <div className="visitor-counter" aria-label="Website visitor statistics">
@@ -366,6 +397,11 @@ export default function ManageProducts() {
               <div className="form-group">
                 <label>🖼️ Hanger Image URLs (har line me ek, homepage ke 20 hanger cards ke liye)</label>
                 <textarea name="images" value={hangerFormData.images} onChange={handleHangerInputChange} placeholder="https://example.com/hanger-image.jpg" rows="12" required />
+              </div>
+            ) : formType === 'hangerText' ? (
+              <div className="form-group">
+                <label>✏️ Hanger Titles (har line me ek, homepage ke 20 hanger cards ke liye)</label>
+                <textarea name="titles" value={hangerTextFormData.titles} onChange={handleHangerTextInputChange} placeholder="Hanger Title 1" rows="12" required />
               </div>
             ) : formType === 'theme' ? (
               <>
@@ -435,7 +471,7 @@ export default function ManageProducts() {
 
             <div className="form-buttons">
               <button type="submit" className="btn btn-success">
-                {formType === 'hero' ? '💾 Update Hero Images' : (formType === 'hanger' ? '💾 Update Hanger Images' : (formType === 'theme' ? (editingThemeId ? '💾 Update Theme' : '✅ Add Theme') : (editingId ? '💾 Update' : '✅ Add')))}
+                {formType === 'hero' ? '💾 Update Hero Images' : (formType === 'hanger' ? '💾 Update Hanger Images' : (formType === 'hangerText' ? '💾 Update Hanger Titles' : (formType === 'theme' ? (editingThemeId ? '💾 Update Theme' : '✅ Add Theme') : (editingId ? '💾 Update' : '✅ Add'))))}
               </button>
               <button
                 type="button"
