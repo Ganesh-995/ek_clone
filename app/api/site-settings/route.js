@@ -1,12 +1,10 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
-import { getStore } from '@netlify/blobs';
+import { getDatabase } from '../../../lib/mongodb';
 import { defaultHangerCards, defaultHeroImages } from '../../../src/data/siteSettings';
 
-const adminPassword = process.env.ADMIN_PASSWORD;
+export const runtime = 'nodejs';
 
-function getSettingsStore() {
-  return getStore('site-settings');
-}
+const adminPassword = process.env.ADMIN_PASSWORD;
 
 function isAuthorized(request) {
   const token = (request.headers.get('authorization') || '').replace(/^Bearer\s+/i, '').trim();
@@ -23,8 +21,7 @@ function response(settings) {
 }
 
 export async function GET() {
-  const store = getSettingsStore();
-  const settings = await store.get('site-settings', { type: 'json' });
+  const settings = await (await getDatabase()).collection('siteSettings').findOne({ _id: 'site-settings' });
   if (Array.isArray(settings?.heroImages) && settings.heroImages.length > 0) {
     return response({
       heroImages: settings.heroImages,
@@ -33,7 +30,7 @@ export async function GET() {
   }
 
   const defaultSettings = { heroImages: defaultHeroImages, hangerCards: defaultHangerCards };
-  await store.setJSON('site-settings', defaultSettings);
+  await (await getDatabase()).collection('siteSettings').updateOne({ _id: 'site-settings' }, { $set: defaultSettings }, { upsert: true });
   return response(defaultSettings);
 }
 
@@ -57,7 +54,7 @@ export async function PUT(request) {
       heroImages: heroImages.map((image) => image.trim()),
       hangerCards: hangerCards.map((card) => ({ image: card.image.trim(), title: card.title.trim(), description: card.description.trim() }))
     };
-    await getSettingsStore().setJSON('site-settings', nextSettings);
+    await (await getDatabase()).collection('siteSettings').updateOne({ _id: 'site-settings' }, { $set: nextSettings }, { upsert: true });
     return response(nextSettings);
   } catch {
     return Response.json({ message: 'Invalid hero image settings.' }, { status: 400 });

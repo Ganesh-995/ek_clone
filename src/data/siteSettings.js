@@ -1,4 +1,4 @@
-import defaultProducts from './products.json';
+import defaultProducts from './products.json' with { type: 'json' };
 
 export const defaultHeroImages = [
   '/images/butterfly.png',

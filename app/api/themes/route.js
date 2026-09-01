@@ -1,12 +1,9 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
-import { getStore } from '@netlify/blobs';
-import { themeCards } from '../../../src/data/themes.js';
+import { getDatabase } from '../../../lib/mongodb';
+
+export const runtime = 'nodejs';
 
 const adminPassword = process.env.ADMIN_PASSWORD;
-
-function getThemeStore() {
-  return getStore('themes');
-}
 
 function catalogResponse(data) {
   return Response.json(data, { headers: { 'Cache-Control': 'no-store, max-age=0' } });
@@ -28,12 +25,8 @@ function isAuthorized(request) {
 }
 
 export async function GET() {
-  const themeStore = getThemeStore();
-  const themes = await themeStore.get('catalog', { type: 'json' });
-  if (Array.isArray(themes)) return catalogResponse(themes);
-
-  await themeStore.setJSON('catalog', themeCards);
-  return catalogResponse(themeCards);
+  const themes = await (await getDatabase()).collection('themes').find({}, { projection: { _id: 0 } }).sort({ id: 1 }).toArray();
+  return catalogResponse(themes);
 }
 
 export async function PUT(request) {
@@ -47,8 +40,10 @@ export async function PUT(request) {
       return Response.json({ message: 'Themes must be an array.' }, { status: 400 });
     }
 
-    await getThemeStore().setJSON('catalog', payload);
-    return Response.json({ themes: payload });
+    const themes = (await getDatabase()).collection('themes');
+    await themes.deleteMany({});
+    if (payload.length > 0) await themes.insertMany(payload);
+    return catalogResponse(payload);
   } catch {
     return Response.json({ message: 'Invalid theme data.' }, { status: 400 });
   }

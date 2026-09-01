@@ -1,12 +1,9 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
-import { getStore } from '@netlify/blobs';
-import defaultProducts from '../../../src/data/products.json' with { type: 'json' };
+import { getDatabase } from '../../../lib/mongodb';
+
+export const runtime = 'nodejs';
 
 const adminPassword = process.env.ADMIN_PASSWORD;
-
-function getProductStore() {
-  return getStore('products');
-}
 
 function catalogResponse(data) {
   return Response.json(data, { headers: { 'Cache-Control': 'no-store, max-age=0' } });
@@ -28,22 +25,8 @@ function isAuthorized(request) {
 }
 
 export async function GET() {
-  const productStore = getProductStore();
-  const products = await productStore.get('catalog', { type: 'json' });
-  if (Array.isArray(products)) {
-    const existingIds = new Set(products.map((product) => product.id));
-    const missingDemoProducts = defaultProducts.filter((product) => !existingIds.has(product.id));
-    const catalog = [...products, ...missingDemoProducts];
-
-    if (missingDemoProducts.length > 0) {
-      await productStore.setJSON('catalog', catalog);
-    }
-
-    return catalogResponse(catalog);
-  }
-
-  await productStore.setJSON('catalog', defaultProducts);
-  return catalogResponse(defaultProducts);
+  const products = await (await getDatabase()).collection('products').find({}, { projection: { _id: 0 } }).sort({ id: 1 }).toArray();
+  return catalogResponse(products);
 }
 
 export async function PUT(request) {
@@ -57,8 +40,10 @@ export async function PUT(request) {
       return Response.json({ message: 'Products must be an array.' }, { status: 400 });
     }
 
-    await getProductStore().setJSON('catalog', payload);
-    return Response.json({ products: payload });
+    const products = (await getDatabase()).collection('products');
+    await products.deleteMany({});
+    if (payload.length > 0) await products.insertMany(payload);
+    return catalogResponse(payload);
   } catch {
     return Response.json({ message: 'Invalid product data.' }, { status: 400 });
   }
