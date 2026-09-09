@@ -30,7 +30,11 @@ const AskFormModal = ({ subject, type = 'product', images = [], onClose }) => {
   }
 
   return createPortal(
-    <div className="AskFormModal-overlay">
+    <div
+      className="AskFormModal-overlay"
+      onClick={(event) => event.stopPropagation()}
+      onKeyDown={(event) => event.stopPropagation()}
+    >
       <div className="AskFormModal" role="dialog" aria-modal="true" aria-labelledby="ask-form-title">
         <div className="AskFormModal-header">
           <div>

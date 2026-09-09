@@ -7,15 +7,17 @@ import { useProducts } from '../context/ProductContext'
 import { WHATSAPP_NUMBER } from '../utils/whatsapp'
 
 const Bunting = () => {
-  const { products } = useProducts()
+  const { products, hangerCards } = useProducts()
   const [searchParams] = useSearchParams()
   const [isImageOpen, setIsImageOpen] = useState(false)
   const selectedId = searchParams.get('item')
 
   const buntingItems = products.filter(p => /bunting|banner|festive/i.test(p.title)).slice(0, 6)
   const items = buntingItems.length >= 3 ? buntingItems : products.slice(0, 3)
+  const hangerIndex = selectedId?.startsWith('hanger-') ? Number(selectedId.slice('hanger-'.length)) : -1
+  const selectedHanger = Number.isInteger(hangerIndex) ? hangerCards[hangerIndex] : null
   const selectedItem = selectedId ? products.find((item) => String(item.id) === selectedId) : null
-  const main = selectedItem || items[0]
+  const main = selectedHanger || selectedItem || items[0]
   const visibleDetails = main?.bulletPoints?.slice(0, 3) || []
   const whatsappMessage = [
     'Hanger collection',

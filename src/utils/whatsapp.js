@@ -5,7 +5,7 @@ export function createProductWhatsAppUrl(product) {
     ? `\n\n✅ *Key details:*\n${product.bulletPoints.map((point) => `• ${point}`).join('\n')}`
     : ''
   const description = product.description ? `\n\n📝 *Description:*\n${product.description}` : ''
-  const message = `🛍️ *Interested in this product!*\n\n📦 *${product.title}*${description}${bulletPoints}\n\n🖼️ *Product Image:*\n${product.image}\n\nPlease provide more details!`
+  const message = `🛍️ *Interested in this product!*\n\n📦 *${product.title}*${description}${bulletPoints}\n\n🖼️ *Product Image:*\n${product.image}\n\nPlease reply with:\n• Availability for my event date\n• Final price and package details\n• Customization options\n• Delivery or setup details\n• How to book`
 
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
 }
@@ -14,7 +14,7 @@ export function createThemeWhatsAppUrl(theme, images = []) {
   const imageList = images.length
     ? `\n\n🖼️ *Theme Images:*\n${images.map((image) => `• ${image}`).join('\n')}`
     : ''
-  const message = `🎨 *Interested in this theme!*\n\n✨ *${theme.title}*\n\n📝 *Description:*\n${theme.detail || 'Please share more details about this theme.'}${imageList}\n\nPlease provide more details!`
+  const message = `🎨 *Interested in this theme!*\n\n✨ *${theme.title}*\n\n📝 *Description:*\n${theme.detail || 'Please share more details about this theme.'}${imageList}\n\nPlease reply with:\n• Availability for my event date\n• Final price and package details\n• Customization options\n• Delivery or setup details\n• How to book`
 
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`
 }

@@ -53,12 +53,12 @@ const HangingSlider = ({ items }) => {
         <div className="HangingSlider-track">
           {cards.map((card, i) => {
             const rawId = String(card.item.id ?? '')
-            const productId = rawId.split('-')[0]
+            const itemId = rawId
 
-            if (productId) {
+            if (itemId) {
               return (
                 <a
-                  href={`/bunting?item=${encodeURIComponent(productId)}`}
+                  href={`/bunting?item=${encodeURIComponent(itemId)}`}
                   className="HangingSlider-card"
                   key={i}
                   style={{
