@@ -23,6 +23,9 @@ export default function ManageProducts() {
   const [heroFormData, setHeroFormData] = useState({ images: '' });
   const [hangerFormData, setHangerFormData] = useState({ cards: [] });
   const [message, setMessage] = useState('');
+  const [productPage, setProductPage] = useState(1);
+  const [themePage, setThemePage] = useState(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     if (!showForm) return undefined;
@@ -33,10 +36,17 @@ export default function ManageProducts() {
     };
 
     document.body.style.overflow = 'hidden';
+    // Hide navbar when modal is open
+    const navbar = document.querySelector('nav');
+    if (navbar) navbar.style.display = 'none';
+    
     document.addEventListener('keydown', handleEscape);
 
     return () => {
       document.body.style.overflow = '';
+      // Show navbar when modal closes
+      const navbar = document.querySelector('nav');
+      if (navbar) navbar.style.display = '';
       document.removeEventListener('keydown', handleEscape);
     };
   }, [showForm]);
@@ -91,6 +101,22 @@ export default function ManageProducts() {
     }
     return nextId;
   };
+
+  // Pagination helpers
+  const getPaginatedItems = (items, page) => {
+    const startIndex = (page - 1) * itemsPerPage;
+    return items.slice(startIndex, startIndex + itemsPerPage);
+  };
+
+  const getTotalPages = (totalItems) => {
+    return Math.ceil(totalItems / itemsPerPage);
+  };
+
+  const paginatedProducts = getPaginatedItems(products, productPage);
+  const totalProductPages = getTotalPages(products.length);
+
+  const paginatedThemes = getPaginatedItems(themes, themePage);
+  const totalThemePages = getTotalPages(themes.length);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -348,9 +374,7 @@ export default function ManageProducts() {
       </div>
 
       {showForm && (
-        <div className="modal-backdrop" onMouseDown={(event) => {
-          if (event.target === event.currentTarget) resetForm();
-        }}>
+        <div className="modal-backdrop" onClick={(e) => e.stopPropagation()}>
           <div className="form-container" role="dialog" aria-modal="true" aria-labelledby="product-form-title">
             <div className="modal-header">
               <h2 id="product-form-title">{formType === 'hero' ? '🖼️ Edit Hero Images' : (formType === 'hanger' ? '✏️ Edit Hanger Cards' : (formType === 'theme' ? (editingThemeId ? '✏️ Edit Theme' : '🆕 Add New Theme') : (editingId ? '✏️ Edit Product' : '🆕 Add New Product')))}</h2>
@@ -470,7 +494,7 @@ export default function ManageProducts() {
       <div className="products-list">
         <h2>📋 All Products ({products.length})</h2>
         <div className="products-grid">
-          {products.map(product => (
+          {paginatedProducts.map(product => (
             <div key={product.id} className="product-item">
               <div className="product-image">
                 <img src={product.image} alt={product.title} />
@@ -480,7 +504,7 @@ export default function ManageProducts() {
                 <p>{product.description || 'Description add nahi ki gayi.'}</p>
                 {product.bulletPoints?.length > 0 && (
                   <ul>
-                    {product.bulletPoints.map(point => <li key={point}>{point}</li>)}
+                    {product.bulletPoints.slice(0, 2).map(point => <li key={point}>{point}</li>)}
                   </ul>
                 )}
               </div>
@@ -501,12 +525,31 @@ export default function ManageProducts() {
             </div>
           ))}
         </div>
+        {totalProductPages > 1 && (
+          <div className="pagination">
+            <button
+              className="btn btn-secondary btn-pagination"
+              onClick={() => setProductPage(prev => Math.max(prev - 1, 1))}
+              disabled={productPage === 1}
+            >
+              ← Previous
+            </button>
+            <span className="pagination-info">Page {productPage} of {totalProductPages}</span>
+            <button
+              className="btn btn-secondary btn-pagination"
+              onClick={() => setProductPage(prev => Math.min(prev + 1, totalProductPages))}
+              disabled={productPage === totalProductPages}
+            >
+              Next →
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="products-list themes-list">
         <h2>🎨 All Themes ({themes.length})</h2>
         <div className="products-grid">
-          {themes.map((theme) => {
+          {paginatedThemes.map((theme) => {
             const images = theme.images?.map((item) => typeof item === 'string' ? item : item.image).filter(Boolean)
               || theme.productIds?.map((id) => products.find((product) => product.id === id)?.image).filter(Boolean)
               || [];
@@ -528,6 +571,25 @@ export default function ManageProducts() {
             );
           })}
         </div>
+        {totalThemePages > 1 && (
+          <div className="pagination">
+            <button
+              className="btn btn-secondary btn-pagination"
+              onClick={() => setThemePage(prev => Math.max(prev - 1, 1))}
+              disabled={themePage === 1}
+            >
+              ← Previous
+            </button>
+            <span className="pagination-info">Page {themePage} of {totalThemePages}</span>
+            <button
+              className="btn btn-secondary btn-pagination"
+              onClick={() => setThemePage(prev => Math.min(prev + 1, totalThemePages))}
+              disabled={themePage === totalThemePages}
+            >
+              Next →
+            </button>
+          </div>
+        )}
       </div>
 
       <div className="info-box">
