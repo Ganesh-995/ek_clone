@@ -231,7 +231,7 @@ export function ProductProvider({ children }) {
             ? { Authorization: `Bearer ${sessionStorage.getItem('ek-admin-token')}` }
             : {}),
         },
-        body: JSON.stringify({ heroImages: nextHeroImages, hangerCards }),
+        body: JSON.stringify({ heroImages: nextHeroImages }),
       });
 
       if (!response.ok) {
@@ -258,7 +258,7 @@ export function ProductProvider({ children }) {
             ? { Authorization: `Bearer ${sessionStorage.getItem('ek-admin-token')}` }
             : {}),
         },
-        body: JSON.stringify({ heroImages, hangerCards: nextHangerCards }),
+        body: JSON.stringify({ hangerCards: nextHangerCards }),
       });
 
       if (!response.ok) {
