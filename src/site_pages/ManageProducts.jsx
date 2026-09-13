@@ -143,8 +143,8 @@ export default function ManageProducts() {
 
     if (formType === 'hanger') {
       const cards = hangerFormData.cards;
-      if (cards.length === 0 || cards.length > 20 || cards.some((card) => !card.image.trim() || !card.title.trim() || !card.description.trim())) {
-        setMessage('❌ Har hanger card ka image, title aur description zaroori hai!');
+      if (cards.length === 0 || cards.length > 20 || cards.some((card) => !card.image.trim() || !card.title.trim())) {
+        setMessage('❌ Har hanger card ka image aur title zaroori hai!');
         return;
       }
 

@@ -50,10 +50,10 @@ export async function PUT(request) {
 
     if (settings?.hangerCards !== undefined) {
       const hangerCards = settings.hangerCards;
-      if (!Array.isArray(hangerCards) || hangerCards.length === 0 || hangerCards.length > 20 || hangerCards.some((card) => !card || typeof card.image !== 'string' || !card.image.trim() || typeof card.title !== 'string' || !card.title.trim() || typeof card.description !== 'string' || !card.description.trim())) {
-        return Response.json({ message: 'Provide 1 to 20 hanger cards with an image, title, and description.' }, { status: 400 });
+      if (!Array.isArray(hangerCards) || hangerCards.length === 0 || hangerCards.length > 20 || hangerCards.some((card) => !card || typeof card.image !== 'string' || !card.image.trim() || typeof card.title !== 'string' || !card.title.trim())) {
+        return Response.json({ message: 'Provide 1 to 20 hanger cards with an image and title.' }, { status: 400 });
       }
-      nextSettings.hangerCards = hangerCards.map((card) => ({ image: card.image.trim(), title: card.title.trim(), description: card.description.trim() }));
+      nextSettings.hangerCards = hangerCards.map((card) => ({ image: card.image.trim(), title: card.title.trim(), description: typeof card.description === 'string' ? card.description.trim() : '' }));
     }
 
     if (Object.keys(nextSettings).length === 0) {
