@@ -315,10 +315,11 @@
     }
 
     .Hero-title {
-        font-size: clamp(1.25rem, 4.8vw, 2rem);
+        font-size: clamp(1.05rem, 4vw, 1.7rem);
         line-height: 1.08;
         margin-bottom: 0.65rem;
-        word-break: break-word;
+        word-break: normal;
+        overflow-wrap: normal;
     }
 
     .Hero-subtext {
