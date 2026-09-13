@@ -13,7 +13,8 @@
     overflow: hidden;
     width: 100%;
     background: #FDFBF7;
-    padding: 5.25rem 2rem 0.5rem;
+    margin-top: 74px;
+    padding: 3rem 2rem 0.5rem;
     box-sizing: border-box;
 }
 
@@ -294,7 +295,7 @@
 /* Responsive Styles for Hero */
 @media (max-width: 960px) {
     .Home-hero {
-        padding: 3rem 0.8rem 0.5rem;
+        padding: 5rem 0.8rem 0.5rem;
         min-height: auto;
     }
 
