@@ -172,7 +172,7 @@ export default function ManageProducts() {
         images: images.map((image) => ({ image, title: themeFormData.title.trim() }))
       };
       try {
-        await setThemes(editingThemeId ? themes.map((item) => item.id === editingThemeId ? theme : item) : [...themes, theme]);
+        await setThemes(editingThemeId ? themes.map((item) => item.id === editingThemeId ? theme : item) : [theme, ...themes]);
         setMessage(editingThemeId ? '✅ Theme update ho gaya!' : '✅ Naya theme add ho gaya!');
         setTimeout(() => setMessage(''), 3000);
         resetForm();
@@ -220,7 +220,7 @@ export default function ManageProducts() {
           .map(point => point.trim())
           .filter(Boolean)
       };
-      nextProducts = [...products, newProduct];
+      nextProducts = [newProduct, ...products];
       successMessage = '✅ Naya product add ho gaya!';
     }
 

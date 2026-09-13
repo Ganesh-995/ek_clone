@@ -25,7 +25,8 @@ function isAuthorized(request) {
 }
 
 export async function GET() {
-  const products = await (await getDatabase()).collection('products').find({}, { projection: { _id: 0 } }).sort({ id: 1 }).toArray();
+  // No sort: preserve the array order sent by the client (newest first) instead of forcing ascending id order.
+  const products = await (await getDatabase()).collection('products').find({}, { projection: { _id: 0 } }).toArray();
   return catalogResponse(products);
 }
 

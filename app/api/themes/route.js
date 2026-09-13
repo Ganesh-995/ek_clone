@@ -25,7 +25,8 @@ function isAuthorized(request) {
 }
 
 export async function GET() {
-  const themes = await (await getDatabase()).collection('themes').find({}, { projection: { _id: 0 } }).sort({ id: 1 }).toArray();
+  // No sort: preserve the array order sent by the client (newest first) instead of forcing ascending id order.
+  const themes = await (await getDatabase()).collection('themes').find({}, { projection: { _id: 0 } }).toArray();
   return catalogResponse(themes);
 }
 
