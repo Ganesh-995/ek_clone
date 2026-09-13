@@ -22,6 +22,7 @@ export default function ManageProducts() {
   const [themeFormData, setThemeFormData] = useState({ title: '', detail: '', images: '' });
   const [heroFormData, setHeroFormData] = useState({ images: '' });
   const [hangerFormData, setHangerFormData] = useState({ cards: [] });
+  const [activeHangerIndex, setActiveHangerIndex] = useState(0);
   const [message, setMessage] = useState('');
   const [productPage, setProductPage] = useState(1);
   const [themePage, setThemePage] = useState(1);
@@ -63,6 +64,7 @@ export default function ManageProducts() {
     setThemeFormData({ title: '', detail: '', images: '' });
     setHeroFormData({ images: '' });
     setHangerFormData({ cards: [] });
+    setActiveHangerIndex(0);
     setFormType('product');
     setShowForm(false);
   };
@@ -352,7 +354,7 @@ export default function ManageProducts() {
         </button>
         <button
           className="btn btn-secondary"
-          onClick={() => { setHangerFormData({ cards: hangerCards.map((card) => ({ ...card })) }); setFormType('hanger'); setShowForm(true); }}
+          onClick={() => { setHangerFormData({ cards: hangerCards.map((card) => ({ ...card })) }); setActiveHangerIndex(0); setFormType('hanger'); setShowForm(true); }}
         >
           ✏️ Edit Hanger Cards
         </button>
@@ -390,23 +392,31 @@ export default function ManageProducts() {
               </div>
             ) : formType === 'hanger' ? (
               <div className="hanger-card-editor">
-                {hangerFormData.cards.map((card, index) => (
-                  <fieldset className="hanger-card-fields" key={index}>
-                    <legend>Hanger Card {index + 1}</legend>
+                <div className="form-group">
+                  <label>🔢 Card Number</label>
+                  <select value={activeHangerIndex} onChange={(event) => setActiveHangerIndex(Number(event.target.value))}>
+                    {hangerFormData.cards.map((card, index) => (
+                      <option key={index} value={index}>{index + 1} — {card.title || 'Untitled'}</option>
+                    ))}
+                  </select>
+                </div>
+                {hangerFormData.cards[activeHangerIndex] && (
+                  <fieldset className="hanger-card-fields">
+                    <legend>Hanger Card {activeHangerIndex + 1}</legend>
                     <div className="form-group">
                       <label>🖼️ Image URL</label>
-                      <input type="url" name="image" value={card.image} onChange={(event) => handleHangerInputChange(index, event)} required />
+                      <input type="url" name="image" value={hangerFormData.cards[activeHangerIndex].image} onChange={(event) => handleHangerInputChange(activeHangerIndex, event)} required />
                     </div>
                     <div className="form-group">
                       <label>📝 Title</label>
-                      <input type="text" name="title" value={card.title} onChange={(event) => handleHangerInputChange(index, event)} required />
+                      <input type="text" name="title" value={hangerFormData.cards[activeHangerIndex].title} onChange={(event) => handleHangerInputChange(activeHangerIndex, event)} required />
                     </div>
                     <div className="form-group">
                       <label>📄 Description</label>
-                      <textarea name="description" value={card.description} onChange={(event) => handleHangerInputChange(index, event)} rows="3" required />
+                      <textarea name="description" value={hangerFormData.cards[activeHangerIndex].description} onChange={(event) => handleHangerInputChange(activeHangerIndex, event)} rows="2" required />
                     </div>
                   </fieldset>
-                ))}
+                )}
               </div>
             ) : formType === 'theme' ? (
               <>
