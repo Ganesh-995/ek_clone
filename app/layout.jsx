@@ -24,8 +24,11 @@ export const metadata = {
     canonical: '/',
   },
   icons: {
-    icon: '/images/new_logo.webp',
-    apple: '/images/new_logo.webp',
+    icon: [
+      { url: '/images/new_logo.png', type: 'image/png' },
+      { url: '/images/new_logo.webp', type: 'image/webp' },
+    ],
+    apple: '/images/new_logo.png',
   },
   openGraph: {
     type: 'website',
@@ -65,9 +68,28 @@ export const metadata = {
 };
 
 export default function RootLayout({ children }) {
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'The Balloon Space',
+    url: 'https://balloonspace.in',
+    logo: 'https://balloonspace.in/images/new_logo.png',
+    sameAs: [
+      'https://www.instagram.com/theballoonspace/',
+      'https://in.pinterest.com/ganeshrathore518/',
+      'https://www.youtube.com/@Theballoonspace-0',
+    ],
+  };
+
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        {children}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
+      </body>
     </html>
   );
 }
