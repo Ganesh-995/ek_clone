@@ -330,8 +330,12 @@
     }
 
     .Hero-cta-btn {
-        padding: 0.55rem 0.95rem;
-        font-size: 0.76rem;
+        width: max-content;
+        max-width: 100%;
+        gap: 0.45rem;
+        padding: 0.45rem 0.7rem;
+        font-size: 0.68rem;
+        white-space: nowrap;
     }
 
     .Hero-proof-bar {
