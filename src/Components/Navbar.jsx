@@ -36,53 +36,105 @@ const Navbar = () => {
   }
 
   return (
-    <div className={`Navbar-wrapper ${isMenuOpen ? 'menu-open' : ''}`}>
-        <nav className="Navbar">
-            <div className="Navbar-container">
-                <div className="Logo">
-                    <Link to="/">
-                      <span className="Logo-text">
-                        <small>The Balloon</small>
-                        <strong>Space</strong>
-                      </span>
-                    </Link>
-                </div>
-                <ul className={isMenuOpen ? 'active' : ''}>
-                  <li className="Navbar-section-label">MAIN</li>
-                    <li><NavLink to="/" end className={({ isActive }) => isActive ? 'Navbar-link-active' : undefined} onClick={handleLinkClick}>Home</NavLink></li>
-                    <li><NavLink to="/location" className={({ isActive }) => isActive ? 'Navbar-link-active' : undefined} onClick={handleLinkClick}>Location</NavLink></li>
-                    <li><NavLink to="/about" className={({ isActive }) => isActive ? 'Navbar-link-active' : undefined} onClick={handleLinkClick}>About</NavLink></li>
-                  <li className="Navbar-section-label">SUPPORT</li>
-                    <li><NavLink to="/inquiry" className={({ isActive }) => isActive ? 'Navbar-link-active' : undefined} onClick={handleLinkClick}>Inquiry</NavLink></li>
-                </ul>
-                <form className="Navbar-search" role="search" onSubmit={handleSearch}>
-                  <FiSearch aria-hidden="true" />
-                  <input
-                    type="search"
-                    placeholder="Search products or themes"
-                    aria-label="Search products or themes"
-                    value={searchTerm}
-                    onChange={(event) => setSearchTerm(event.target.value)}
-                    onKeyDown={(event) => {
-                      if (event.key === 'Escape') setSearchTerm('')
-                    }}
-                  />
-                  <button className="Navbar-search-button" type="submit">Search</button>
-                </form>
-                <button
-                  className={`hamburger ${isMenuOpen ? 'active' : ''}`}
-                  type="button"
-                  aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-                  aria-expanded={isMenuOpen}
-                  onClick={toggleMenu}
-                >
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
+    <header className={`Navbar-wrapper ${isMenuOpen ? 'menu-open' : ''}`}>
+      <nav className="Navbar">
+        <div className="Navbar-container">
+          {/* Aligned Logo */}
+          <div className="Logo">
+            <Link to="/" onClick={handleLinkClick} className="Logo-link">
+              <img src="/images/new_logo.webp" alt="The Balloon Space" className="Logo-img" />
+              <span className="Logo-text">
+                <small>THE BALLOON</small>
+                <strong>Space</strong>
+              </span>
+            </Link>
+          </div>
+
+          {/* Centered Navigation Links */}
+          <ul className={`Navbar-nav-links ${isMenuOpen ? 'active' : ''}`}>
+            <li>
+              <NavLink
+                to="/"
+                end
+                className={({ isActive }) => (isActive ? 'Navbar-link-active' : undefined)}
+                onClick={handleLinkClick}
+              >
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/themes"
+                className={({ isActive }) => (isActive ? 'Navbar-link-active' : undefined)}
+                onClick={handleLinkClick}
+              >
+                Themes
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/location"
+                className={({ isActive }) => (isActive ? 'Navbar-link-active' : undefined)}
+                onClick={handleLinkClick}
+              >
+                Location
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/about"
+                className={({ isActive }) => (isActive ? 'Navbar-link-active' : undefined)}
+                onClick={handleLinkClick}
+              >
+                About
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/inquiry"
+                className={({ isActive }) => (isActive ? 'Navbar-link-active' : undefined)}
+                onClick={handleLinkClick}
+              >
+                Inquiry
+              </NavLink>
+            </li>
+          </ul>
+
+          {/* Custom Capsule Search Bar */}
+          <form className="Navbar-search-container" role="search" onSubmit={handleSearch}>
+            <div className="Navbar-search-input-wrapper">
+              <FiSearch className="Navbar-search-icon" aria-hidden="true" />
+              <input
+                type="search"
+                placeholder="Search products, themes..."
+                aria-label="Search products or themes"
+                value={searchTerm}
+                onChange={(event) => setSearchTerm(event.target.value)}
+                onKeyDown={(event) => {
+                  if (event.key === 'Escape') setSearchTerm('')
+                }}
+              />
             </div>
-        </nav>
-    </div>
+            <button className="Navbar-search-btn" type="submit">
+              Search
+            </button>
+          </form>
+
+          {/* Mobile Hamburger Toggle */}
+          <button
+            className={`hamburger ${isMenuOpen ? 'active' : ''}`}
+            type="button"
+            aria-label={isMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+            aria-expanded={isMenuOpen}
+            onClick={toggleMenu}
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </nav>
+    </header>
   )
 }
 

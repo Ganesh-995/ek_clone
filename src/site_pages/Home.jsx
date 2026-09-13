@@ -1,7 +1,7 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { FaWhatsapp } from 'react-icons/fa'
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi'
+import { FiChevronLeft, FiChevronRight, FiArrowRight, FiAward, FiTruck, FiClock, FiHeart } from 'react-icons/fi'
 import ProductCard from '../Components/ProductCard'
 import HangingSlider from '../Components/HangingSlider'
 import { useProducts } from '../context/ProductContext'
@@ -81,11 +81,17 @@ const ThemeCard = ({ theme, products }) => {
 
 const Home = () => {
   const { products, themes, heroImages, hangerCards } = useProducts()
-  const carouselImages = [...heroImages, heroImages[0]]
+  const numHeroImages = heroImages.length
+  // Cloned ends for infinite loop: [Last, ...Images, First]
+  const carouselImages = numHeroImages > 1
+    ? [heroImages[numHeroImages - 1], ...heroImages, heroImages[0]]
+    : heroImages
+
   const [searchParams] = useSearchParams()
   const [currentPage, setCurrentPage] = useState(1)
-  const [heroImageIndex, setHeroImageIndex] = useState(0)
+  const [heroImageIndex, setHeroImageIndex] = useState(numHeroImages > 1 ? 1 : 0)
   const [isCarouselTransitionEnabled, setIsCarouselTransitionEnabled] = useState(true)
+  const [isCarouselHovered, setIsCarouselHovered] = useState(false)
   const bubbleRefs = useRef([])
   const carouselPointerStartX = useRef(null)
   const paginationPositionRef = useRef(null)
@@ -103,26 +109,80 @@ const Home = () => {
   const pageProducts = visibleProducts.slice(pageStart, pageStart + productsPerPage)
   const featuredProducts = pageProducts
   const additionalProducts = []
-  const safeHeroImageIndex = Math.min(heroImageIndex, heroImages.length)
 
-  useEffect(() => {
-    const carouselTimer = window.setInterval(() => {
-      setHeroImageIndex((index) => Math.min(index + 1, heroImages.length))
-    }, 6000)
-    return () => window.clearInterval(carouselTimer)
-  }, [])
+  // Active dot index (0-based)
+  const activeDotIndex = numHeroImages > 1
+    ? (heroImageIndex - 1 + numHeroImages) % numHeroImages
+    : 0
 
-  useEffect(() => {
-    if (heroImageIndex < heroImages.length) return undefined
-    const resetTimer = window.setTimeout(() => {
+  const handleNext = () => {
+    if (numHeroImages <= 1) return
+    setIsCarouselTransitionEnabled(true)
+    setHeroImageIndex((prev) => prev + 1)
+  }
+
+  const handlePrev = () => {
+    if (numHeroImages <= 1) return
+    setIsCarouselTransitionEnabled(true)
+    setHeroImageIndex((prev) => prev - 1)
+  }
+
+  const handleDotClick = (targetIndex) => {
+    if (numHeroImages <= 1) return
+    setIsCarouselTransitionEnabled(true)
+    setHeroImageIndex(targetIndex + 1)
+  }
+
+  const handleTrackTransitionEnd = (event) => {
+    if (event.propertyName && event.propertyName !== 'transform') return
+    if (numHeroImages <= 1) return
+
+    if (heroImageIndex >= numHeroImages + 1) {
       setIsCarouselTransitionEnabled(false)
-      setHeroImageIndex(0)
-      window.requestAnimationFrame(() => {
-        window.requestAnimationFrame(() => setIsCarouselTransitionEnabled(true))
+      setHeroImageIndex(1)
+    } else if (heroImageIndex <= 0) {
+      setIsCarouselTransitionEnabled(false)
+      setHeroImageIndex(numHeroImages)
+    }
+  }
+
+  useEffect(() => {
+    if (numHeroImages <= 1) return undefined
+
+    if (heroImageIndex >= numHeroImages + 1) {
+      const timer = window.setTimeout(() => {
+        setIsCarouselTransitionEnabled(false)
+        setHeroImageIndex(1)
+      }, 1210)
+      return () => window.clearTimeout(timer)
+    } else if (heroImageIndex <= 0) {
+      const timer = window.setTimeout(() => {
+        setIsCarouselTransitionEnabled(false)
+        setHeroImageIndex(numHeroImages)
+      }, 1210)
+      return () => window.clearTimeout(timer)
+    }
+  }, [heroImageIndex, numHeroImages])
+
+  useEffect(() => {
+    if (!isCarouselTransitionEnabled) {
+      const frame = window.requestAnimationFrame(() => {
+        window.requestAnimationFrame(() => {
+          setIsCarouselTransitionEnabled(true)
+        })
       })
-    }, 4020)
-    return () => window.clearTimeout(resetTimer)
-  }, [heroImageIndex])
+      return () => window.cancelAnimationFrame(frame)
+    }
+  }, [isCarouselTransitionEnabled])
+
+  useEffect(() => {
+    if (numHeroImages <= 1 || isCarouselHovered) return undefined
+
+    const carouselTimer = window.setInterval(() => {
+      handleNext()
+    }, 1500)
+    return () => window.clearInterval(carouselTimer)
+  }, [numHeroImages, isCarouselHovered, heroImageIndex])
 
   useEffect(() => {
     let animationFrame
@@ -180,19 +240,26 @@ const Home = () => {
 
   const handleCarouselPointerDown = (event) => {
     if (!event.isPrimary) return
+    if (event.target.closest('button') || event.target.closest('a')) return
     event.currentTarget.setPointerCapture(event.pointerId)
     carouselPointerStartX.current = event.clientX
   }
 
   const moveCarouselToSwipe = (distance, event) => {
-    if (Math.abs(distance) < 40) return false
+    if (Math.abs(distance) < 30 || numHeroImages === 0) return false
     carouselPointerStartX.current = null
     if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId)
+      try {
+        event.currentTarget.releasePointerCapture(event.pointerId)
+      } catch {
+        // ignore
+      }
     }
-    setHeroImageIndex((index) => distance < 0
-      ? Math.min(index + 1, heroImages.length)
-      : (index - 1 + heroImages.length) % heroImages.length)
+    if (distance < 0) {
+      handleNext()
+    } else {
+      handlePrev()
+    }
     return true
   }
 
@@ -204,104 +271,184 @@ const Home = () => {
   const handleCarouselPointerUp = (event) => {
     if (!event.isPrimary || carouselPointerStartX.current === null) return
     const distance = event.clientX - carouselPointerStartX.current
+    carouselPointerStartX.current = null
+    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
+      try {
+        event.currentTarget.releasePointerCapture(event.pointerId)
+      } catch {
+        // ignore
+      }
+    }
     moveCarouselToSwipe(distance, event)
   }
 
   return (
     <div className="Home">
-      <div className="Home-hero">
-        <div className="Hero-copy">
-          <span className="Hero-kicker">
-            <img src="/images/new_logo.png" alt="The Balloon Space" />
-          </span>
-          <h1><span>Make every moment feel</span> <em>extraordinary.</em></h1>
-          <p>Bright balloons, playful details and everything you need to turn an ordinary day into your favourite memory.</p>
-          <div className="Hero-proof" aria-label="Store highlights">
-            <div><strong>250+</strong><span>happy celebrations</span></div>
-            <div><strong>24h</strong><span>quick dispatch</span></div>
-            <div><strong>4.9/5</strong><span>customer love</span></div>
-          </div>
-        </div>
-        <div className="Hero-art">
-          <div className="Hero-sun"></div>
-          <div className="Hero-orbit Hero-orbit-one"></div>
-          <div className="Hero-orbit Hero-orbit-two"></div>
-          {heroBubbles.map((bubble, index) => (
-            <span
-              className="Hero-bubble"
-              key={`${bubble.left}-${bubble.top}`}
-              ref={(element) => { bubbleRefs.current[index] = element }}
-              style={{ width: `${bubble.size}px`, height: `${bubble.size}px`, left: bubble.left, top: bubble.top }}
-              aria-hidden="true"
-            />
-          ))}
-          <div
-            className="Hero-carousel"
-            aria-label="Celebration gallery"
-            onPointerDown={handleCarouselPointerDown}
-            onPointerMove={handleCarouselPointerMove}
-            onPointerUp={handleCarouselPointerUp}
-            onPointerCancel={() => { carouselPointerStartX.current = null }}
-          >
-            <div className="Hero-carousel-viewport">
-              <div
-                className="Hero-carousel-track"
-                style={{
-                  transform: `translateX(-${safeHeroImageIndex * 100}%)`,
-                  transition: isCarouselTransitionEnabled ? undefined : 'none'
-                }}
-              >
-                {carouselImages.map((image, index) => (
-                  <div className="Hero-carousel-slide" key={`${image}-${index}`}>
-                    <img
-                      className="Hero-carousel-image"
-                      src={image}
-                      alt={`Celebration decoration ${index + 1} of ${heroImages.length}`}
-                      draggable="false"
-                    />
-                  </div>
-                ))}
+      <section className="Home-hero">
+        <div className="Hero-container">
+          {/* Left Column: Catchy Headline, Subtext, and CTA */}
+          <div className="Hero-copy">
+            <span className="Hero-badge">ELEVATE YOUR CELEBRATION</span>
+            <h1 className="Hero-title">
+              Make every moment feel <em>extraordinary.</em>
+            </h1>
+            <p className="Hero-subtext">
+              Bright balloons, playful details, and premium decorations curated to turn your special day into unforgettable memories.
+            </p>
+            <div className="Hero-actions">
+              <a href="#products-grid" className="Hero-cta-btn">
+                <span>Explore Collection</span>
+                <FiArrowRight aria-hidden="true" />
+              </a>
+            </div>
+            <div className="Hero-proof-bar" aria-label="Store highlights">
+              <div className="Hero-proof-item">
+                <strong>250+</strong>
+                <span>happy celebrations</span>
+              </div>
+              <div className="Hero-proof-item">
+                <strong>24h</strong>
+                <span>quick dispatch</span>
+              </div>
+              <div className="Hero-proof-item">
+                <strong>4.9/5</strong>
+                <span>customer love</span>
               </div>
             </div>
-            <button
-              className="Hero-carousel-button Hero-carousel-button-prev"
-              type="button"
-              onClick={() => setHeroImageIndex((index) => (index - 1 + heroImages.length) % heroImages.length)}
-              aria-label="Show previous celebration image"
-            >
-              <FiChevronLeft aria-hidden="true" />
-            </button>
-            <button
-              className="Hero-carousel-button Hero-carousel-button-next"
-              type="button"
-              onClick={() => setHeroImageIndex((index) => (index + 1) % heroImages.length)}
-              aria-label="Show next celebration image"
-            >
-              <FiChevronRight aria-hidden="true" />
-            </button>
-            <div className="Hero-carousel-dots" aria-label="Choose celebration image">
-              {heroImages.map((image, index) => (
+          </div>
+
+          {/* Right Column: High-Resolution Image Container with Soft Rounded Corners */}
+          <div className="Hero-art">
+            <div className="Hero-image-card">
+              <div
+                className="Hero-carousel"
+                aria-label="Celebration gallery"
+                onMouseEnter={() => setIsCarouselHovered(true)}
+                onMouseLeave={() => setIsCarouselHovered(false)}
+                onPointerDown={handleCarouselPointerDown}
+                onPointerMove={handleCarouselPointerMove}
+                onPointerUp={handleCarouselPointerUp}
+                onPointerCancel={() => {
+                  carouselPointerStartX.current = null
+                }}
+              >
+                <div className="Hero-carousel-viewport">
+                  <div
+                    className="Hero-carousel-track"
+                    onTransitionEnd={handleTrackTransitionEnd}
+                    style={{
+                      transform: `translateX(-${heroImageIndex * 100}%)`,
+                      transition: isCarouselTransitionEnabled ? undefined : 'none'
+                    }}
+                  >
+                    {carouselImages.map((image, index) => (
+                      <div className="Hero-carousel-slide" key={`${image}-${index}`}>
+                        <img
+                          className="Hero-carousel-image"
+                          src={image}
+                          alt={`Celebration decoration ${index + 1} of ${numHeroImages}`}
+                          draggable="false"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
                 <button
-                  className={index === heroImageIndex ? 'is-active' : ''}
+                  className="Hero-carousel-button Hero-carousel-button-prev"
                   type="button"
-                  key={image}
-                  onClick={() => setHeroImageIndex(index)}
-                  aria-label={`Show celebration image ${index + 1}`}
-                  aria-current={index === heroImageIndex ? 'true' : undefined}
-                />
-              ))}
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    handlePrev()
+                  }}
+                  aria-label="Show previous celebration image"
+                >
+                  <FiChevronLeft aria-hidden="true" />
+                </button>
+                <button
+                  className="Hero-carousel-button Hero-carousel-button-next"
+                  type="button"
+                  onPointerDown={(event) => event.stopPropagation()}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    handleNext()
+                  }}
+                  aria-label="Show next celebration image"
+                >
+                  <FiChevronRight aria-hidden="true" />
+                </button>
+                <div
+                  className="Hero-carousel-dots"
+                  aria-label="Choose celebration image"
+                  onPointerDown={(event) => event.stopPropagation()}
+                >
+                  {heroImages.map((image, index) => (
+                    <button
+                      className={index === activeDotIndex ? 'is-active' : ''}
+                      type="button"
+                      key={image}
+                      onPointerDown={(event) => event.stopPropagation()}
+                      onClick={(event) => {
+                        event.stopPropagation()
+                        handleDotClick(index)
+                      }}
+                      aria-label={`Show celebration image ${index + 1}`}
+                      aria-current={index === activeDotIndex ? 'true' : undefined}
+                    />
+                  ))}
+                </div>
+              </div>
+              <span className="Hero-sticker Hero-sticker-top">let's celebrate!</span>
+              <span className="Hero-sticker Hero-sticker-bottom">made with joy <b>✦</b></span>
             </div>
           </div>
-          <span className="Hero-sticker Hero-sticker-top">let's celebrate!</span>
-          <span className="Hero-sticker Hero-sticker-bottom">made with joy <b>✦</b></span>
         </div>
-        <div className="Hero-partners" aria-label="Why customers choose us">
-          <span><strong>✦</strong> Curated picks</span>
-          <span><strong>✷</strong> Easy planning</span>
-          <span><strong>♡</strong> Happy hosts</span>
-          <span><strong>+</strong> Fresh arrivals</span>
+      </section>
+
+      {/* Step 2: Features / Announcement Banner Ribbon */}
+      <section className="Features-banner" aria-label="Store features and guarantees">
+        <div className="Features-container">
+          <div className="Feature-item">
+            <div className="Feature-icon-wrapper">
+              <FiAward className="Feature-icon" aria-hidden="true" />
+            </div>
+            <div className="Feature-text">
+              <strong>Premium Craftsmanship</strong>
+              <span>100% High-grade eco balloons</span>
+            </div>
+          </div>
+
+          <div className="Feature-item">
+            <div className="Feature-icon-wrapper">
+              <FiTruck className="Feature-icon" aria-hidden="true" />
+            </div>
+            <div className="Feature-text">
+              <strong>Express Delivery</strong>
+              <span>Same-day setup & dispatch</span>
+            </div>
+          </div>
+
+          <div className="Feature-item">
+            <div className="Feature-icon-wrapper">
+              <FiClock className="Feature-icon" aria-hidden="true" />
+            </div>
+            <div className="Feature-text">
+              <strong>On-Time Promise</strong>
+              <span>Ready before your event starts</span>
+            </div>
+          </div>
+
+          <div className="Feature-item">
+            <div className="Feature-icon-wrapper">
+              <FiHeart className="Feature-icon" aria-hidden="true" />
+            </div>
+            <div className="Feature-text">
+              <strong>Custom Party Themes</strong>
+              <span>Tailored to your celebration vision</span>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
 
       <HangingSlider
         items={hangerCards.map((card, index) => ({

@@ -155,14 +155,14 @@
 }
 
 .btn-primary {
-  background-color: #29232e;
+  background-color: #4A2E56;
   color: #fffaf5;
   box-shadow: 0 8px 18px rgba(47, 36, 64, 0.14);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  background-color: #46366a;
+  background-color: #382343;
   box-shadow: 0 12px 24px rgba(47, 36, 64, 0.2);
 }
 
@@ -177,14 +177,14 @@
 }
 
 .btn-success {
-  background-color: #29232e;
+  background-color: #4A2E56;
   color: #fffaf5;
   flex: 1;
   justify-content: center;
 }
 
 .btn-success:hover {
-  background-color: #46366a;
+  background-color: #382343;
   transform: translateY(-2px);
 }
 

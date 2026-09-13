@@ -234,7 +234,7 @@
   padding: 0.6rem 0.95rem;
   border: 0;
   border-radius: 999px;
-  background: linear-gradient(135deg, #d45b91, #7655a6);
+  background: linear-gradient(135deg, #594080);
   color: #fff;
   font: inherit;
   font-size: 0.82rem;
@@ -245,7 +245,7 @@
 
 .Theme-card-ask:hover,
 .Theme-card-ask:focus-visible {
-  background: linear-gradient(135deg, #b84377, #594080);
+  background: linear-gradient(135deg, #040404);
   transform: translateY(-1px);
 }
 

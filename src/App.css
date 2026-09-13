@@ -51,7 +51,7 @@ body {
     height: 44px;
     border: 1px solid #e5d7ee;
     border-radius: 50%;
-    background: #29232e;
+    background: #4A2E56;
     color: #fffdfb;
     box-shadow: 0 10px 22px rgba(47, 36, 64, 0.2);
     font-size: 1.35rem;
@@ -61,7 +61,7 @@ body {
 }
 
 .Page-up-button:hover {
-    background: #6f5390;
+    background: #382343;
     transform: translateY(-3px);
 }
 
@@ -86,9 +86,9 @@ body,
     box-shadow: 0 12px 30px rgba(159, 77, 154, 0.12);
 }
 
-.Navbar ul li a { color: #654c6d; }
-.Navbar ul li a:hover { color: #a046c1; background: rgba(238, 114, 169, 0.1); }
-.Navbar ul li a.Navbar-link-active { display: inline-flex; align-items: center; height: 38px; margin: 0; padding: 0 0.85rem; background: #000; border-radius: 8px !important; color: #fff; line-height: 1; }
+.Navbar ul li a { color: #4A2E56; border-radius: 999px !important; }
+.Navbar ul li a:hover { color: #FFFFFF; background: #4A2E56; }
+.Navbar ul li a.Navbar-link-active { display: inline-flex; align-items: center; height: auto; margin: 0; padding: 0.45rem 1rem; background: #4A2E56 !important; border-radius: 999px !important; color: #FFFFFF !important; line-height: 1; box-shadow: 0 4px 14px rgba(74, 46, 86, 0.22); }
 .Navbar-search { background: #fff7fc; border-color: #ead8e9; color: #a046c1; }
 .Navbar-search input { color: #211525; }
 .Navbar-search input::placeholder { color: #a28ea4; }
@@ -126,11 +126,11 @@ body,
 .ProductCard-message-btn,
 .ProductDetails-action,
 .Inquiry-submit,
-.Site-footer-cta-button { background: linear-gradient(100deg, #ee72a9, #a85be5); color: #fff; }
+.Site-footer-cta-button { background: #4A2E56; color: #fff; }
 .ProductCard-message-btn:hover,
 .ProductDetails-action:hover,
 .Inquiry-submit:hover,
-.Site-footer-cta-button:hover { background: linear-gradient(100deg, #df5f9b, #9746d4); }
+.Site-footer-cta-button:hover { background: #382343; }
 
 .ProductDetails-back,
 .ThemeDetails-back { color: #a046c1; }
@@ -159,28 +159,28 @@ body,
 
 .manage-products-container { background: transparent; }
 .manage-products-container .btn-primary,
-.manage-products-container .btn-success { background: linear-gradient(100deg, #ee72a9, #a85be5); border-color: transparent; }
+.manage-products-container .btn-success { background: #4A2E56; border-color: transparent; }
 .manage-products-container .btn-primary:hover,
-.manage-products-container .btn-success:hover { background: linear-gradient(100deg, #df5f9b, #9746d4); }
+.manage-products-container .btn-success:hover { background: #382343; }
 .manage-products-container .product-item,
 .manage-products-container .form-container { background: #fffafe; border-color: #ead8e9; }
 
 .Site-footer {
-    background: linear-gradient(120deg, #9f50db 0%, #d968be 58%, #f07da9 100%);
+    background: linear-gradient(120deg, #4A2E56 0%, #5a385f 46%, #6f4a74 100%);
 }
 
 .Site-footer-cta h2 { color: #fffaff; }
-.Site-footer-cta h2 em { color: #ffe2f2; }
+.Site-footer-cta h2 em { color: #f8dfe9; }
 .Site-footer-label,
-.Site-footer-column a:hover { color: #ffe2f2; }
-.Page-up-button { background: #a85be5; border-color: #e7c5ed; }
-.Page-up-button:hover { background: #c34a9a; }
+.Site-footer-column a:hover { color: #f8dfe9; }
+.Page-up-button { background: #4A2E56; border-color: #e7c5ed; }
+.Page-up-button:hover { background: #382343; }
 
 .Site-footer {
     position: relative;
     overflow: hidden;
     min-height: 76px;
-    background: linear-gradient(120deg, #9f50db 0%, #d968be 58%, #f07da9 100%);
+    background: linear-gradient(120deg, #4A2E56 0%, #5a385f 46%, #6f4a74 100%);
     color: #fffaf5;
 }
 
@@ -191,10 +191,10 @@ body,
     height: 170px;
     right: -90px;
     top: 40px;
-    border: 1px solid rgba(111, 83, 144, 0.14);
+    border: 1px solid rgba(248, 222, 233, 0.18);
     border-radius: 50%;
     transform: rotate(-16deg);
-    box-shadow: 0 0 0 22px rgba(237, 140, 104, 0.08), 0 0 0 44px rgba(111, 83, 144, 0.05);
+    box-shadow: 0 0 0 22px rgba(248, 222, 233, 0.06), 0 0 0 44px rgba(255, 255, 255, 0.04);
 }
 
 .Site-footer-socials {
@@ -237,7 +237,7 @@ body,
 .Site-footer-cta-kicker {
     display: block;
     margin-bottom: 0.65rem;
-    color: #ed8c68;
+    color: #f3d7ea;
     font-size: 0.7rem;
     font-weight: 800;
     letter-spacing: 0.14em;
@@ -254,7 +254,7 @@ body,
 }
 
 .Site-footer-cta h2 em {
-    color: #ffe0a6;
+    color: #f8dfe9;
     font-style: italic;
 }
 
@@ -263,7 +263,7 @@ body,
     align-items: center;
     gap: 1rem;
     padding: 0.7rem 1rem;
-    background: #29232e;
+    background: #4A2E56;
     color: #fffaf5;
     font-size: 0.78rem;
     font-weight: 800;
@@ -272,7 +272,7 @@ body,
 }
 
 .Site-footer-cta-button:hover {
-    background: #6f5390;
+    background: #382343;
     transform: translateY(-2px);
 }
 

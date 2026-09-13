@@ -21,17 +21,21 @@ function response(settings) {
 }
 
 export async function GET() {
-  const settings = await (await getDatabase()).collection('siteSettings').findOne({ _id: 'site-settings' });
-  if (Array.isArray(settings?.heroImages) && settings.heroImages.length > 0) {
-    return response({
-      heroImages: settings.heroImages,
-      hangerCards: Array.isArray(settings.hangerCards) && settings.hangerCards.length > 0 ? settings.hangerCards : defaultHangerCards
-    });
-  }
+  try {
+    const settings = await (await getDatabase()).collection('siteSettings').findOne({ _id: 'site-settings' });
+    if (Array.isArray(settings?.heroImages) && settings.heroImages.length >= 10) {
+      return response({
+        heroImages: settings.heroImages,
+        hangerCards: Array.isArray(settings.hangerCards) && settings.hangerCards.length > 0 ? settings.hangerCards : defaultHangerCards
+      });
+    }
 
-  const defaultSettings = { heroImages: defaultHeroImages, hangerCards: defaultHangerCards };
-  await (await getDatabase()).collection('siteSettings').updateOne({ _id: 'site-settings' }, { $set: defaultSettings }, { upsert: true });
-  return response(defaultSettings);
+    const defaultSettings = { heroImages: defaultHeroImages, hangerCards: defaultHangerCards };
+    await (await getDatabase()).collection('siteSettings').updateOne({ _id: 'site-settings' }, { $set: defaultSettings }, { upsert: true });
+    return response(defaultSettings);
+  } catch {
+    return response({ heroImages: defaultHeroImages, hangerCards: defaultHangerCards });
+  }
 }
 
 export async function PUT(request) {

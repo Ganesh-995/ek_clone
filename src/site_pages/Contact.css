@@ -224,7 +224,7 @@
   margin-top: 0.5rem;
   padding: 0.9rem 1.1rem;
   border: 0;
-  background: #29232e;
+  background: #4A2E56;
   color: #fffdfb;
   font-size: 0.78rem;
   font-weight: 800;
@@ -233,7 +233,7 @@
 }
 
 .Inquiry-submit:hover {
-  background: #6f5390;
+  background: #382343;
   transform: translateY(-2px);
 }
 
