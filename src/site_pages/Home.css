@@ -22,7 +22,7 @@
     display: grid;
     grid-template-columns: 4fr 6fr;
     align-items: center;
-    gap: 2.5rem;
+    gap: 1.5rem;
     max-width: 1280px;
     margin: 0 auto;
 }
@@ -33,6 +33,7 @@
     flex-direction: column;
     align-items: flex-start;
     text-align: left;
+    min-width: 0;
 }
 
 .Hero-badge {
@@ -226,11 +227,11 @@
 }
 
 .Hero-carousel-button-prev {
-    left: 1rem;
+    left: 0.75rem;
 }
 
 .Hero-carousel-button-next {
-    right: 1rem;
+    right: 0.75rem;
 }
 
 .Hero-carousel-dots {
@@ -375,6 +376,14 @@
     .Hero-carousel-button {
         width: 28px;
         height: 28px;
+    }
+
+    .Hero-carousel-button-prev {
+        left: 0.5rem;
+    }
+
+    .Hero-carousel-button-next {
+        right: 0.5rem;
     }
 
     .Hero-carousel-dots {
@@ -880,7 +889,28 @@
 
 /* Mobile responsive */
 @media (max-width: 480px) {
-    .Home-container { padding: 2rem 0.15rem; }
+    .Home-hero {
+        padding: 3rem 0.75rem 0.5rem;
+    }
+
+    .Hero-container {
+        grid-template-columns: 1fr;
+        gap: 0.5rem;
+        align-items: center;
+    }
+
+    .Hero-image-card {
+        aspect-ratio: 16 / 9;
+    }
+
+    .Hero-cta-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.75rem;
+        white-space: nowrap;
+        min-width: fit-content;
+    }
+
+    .Home-container { padding: 2rem 0.75rem; }
 
     .Home-container h2 {
         font-size: 1.3rem;
