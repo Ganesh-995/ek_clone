@@ -1091,15 +1091,6 @@
         display: none;
     }
 
-    .Theme-card-badge,
-    .Theme-card-reverse .Theme-card-badge {
-        top: 50%;
-        width: 32px;
-        height: 32px;
-        border-width: 3px;
-        font-size: 0.9rem;
-    }
-
     .Products-grid .ProductCard-title {
         font-size: 0.66rem;
         line-height: 1.15;
@@ -1158,6 +1149,15 @@
     .Theme-card-copy {
         height: calc(100% - 1rem);
         min-height: 0;
+    }
+
+    .Theme-card-badge,
+    .Theme-card-reverse .Theme-card-badge {
+        top: 50%;
+        width: 32px;
+        height: 32px;
+        border-width: 3px;
+        font-size: 0.9rem;
     }
 }
 

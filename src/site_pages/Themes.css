@@ -434,6 +434,15 @@
     min-height: 0;
   }
 
+  .Theme-card-badge,
+  .Theme-card-reverse .Theme-card-badge {
+    top: 50%;
+    width: 32px;
+    height: 32px;
+    border-width: 3px;
+    font-size: 0.9rem;
+  }
+
   .Themes-page .Theme-card-actions {
     width: 100%;
     justify-content: flex-end;
