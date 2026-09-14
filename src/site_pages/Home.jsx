@@ -20,34 +20,23 @@ const heroBubbles = [
 
 const themeBulletColors = ['#f2897a', '#3fb950', '#e5484d']
 
-const ThemeCard = ({ theme, products }) => {
+const ThemeCard = ({ theme, products, index = 0 }) => {
   const [isAskFormOpen, setIsAskFormOpen] = useState(false)
   const images = (theme.images?.length
     ? theme.images.map((item) => typeof item === 'string' ? item : item.image).filter(Boolean)
     : theme.productIds?.map((productId) => products.find((item) => item.id === productId)?.image).filter(Boolean) || [])
-  const bulletPoints = (theme.detail || '')
-    .split(/(?<=[.!])\s+/)
-    .map((sentence) => sentence.trim())
-    .filter(Boolean)
 
   return (
     <>
-      <Link className={`Theme-card Theme-card-${theme.id}`} to={`/theme/${theme.id}`}>
-        <div className="Theme-card-images">
-          {images.slice(0, 3).map((image, index) => <img key={image} src={image} alt="" className={index === 0 ? 'Theme-card-image-main' : 'Theme-card-image-sub'} />)}
+      <Link className={`Theme-card Theme-card-${theme.id}${index % 2 === 1 ? ' Theme-card-reverse' : ''}`} to={`/theme/${theme.id}`}>
+        <div className={`Theme-card-images Theme-card-images-${Math.min(images.length, 3)}`}>
+          {images.slice(0, 3).map((image, imgIndex) => <img key={image} src={image} alt="" className={imgIndex === 0 ? 'Theme-card-image-main' : 'Theme-card-image-sub'} />)}
         </div>
+        <span className="Theme-card-badge" aria-hidden="true"><FiHeart /></span>
         <div className="Theme-card-copy">
-          <h3>{theme.title}</h3>
-          <ul className="Theme-card-bullets">
-            {bulletPoints.map((point, index) => (
-              <li key={point}>
-                <span className="Theme-card-bullet-dot" style={{ background: themeBulletColors[index % themeBulletColors.length] }} aria-hidden="true" />
-                <span>{point}</span>
-              </li>
-            ))}
-          </ul>
+          <h3>{theme.title} <span className="Theme-card-sparkle" aria-hidden="true">✦</span></h3>
+          <p className="Theme-card-desc">{theme.detail}</p>
           <div className="Theme-card-actions">
-            <span className="Theme-card-explore">Explore theme <span aria-hidden="true">↗</span></span>
             <button
               className="Theme-card-ask"
               type="button"
@@ -525,7 +514,7 @@ const Home = () => {
           <h2 id="themes-title">Find your <em>theme.</em></h2>
         </div>
         <div className="Theme-grid">
-          {visibleThemes.slice(0, 4).map((theme) => <ThemeCard key={theme.id} theme={theme} products={products} />)}
+          {visibleThemes.slice(0, 4).map((theme, index) => <ThemeCard key={theme.id} theme={theme} products={products} index={index} />)}
         </div>
         {themes.length > 4 && <Link className="Home-more-themes" to="/themes">More Themes</Link>}
       </section>

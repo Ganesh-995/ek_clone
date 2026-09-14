@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaWhatsapp } from 'react-icons/fa'
+import { FiHeart } from 'react-icons/fi'
 import { useProducts } from '../context/ProductContext'
 import { createThemeWhatsAppUrl } from '../utils/whatsapp'
 import AskFormModal from '../Components/AskFormModal'
 import './Themes.css'
-
-const themeBulletColors = ['#f2897a', '#3fb950', '#e5484d']
 
 function getThemeImages(theme, products) {
   return theme.images?.map((item) => typeof item === 'string' ? item : item.image).filter(Boolean)
@@ -14,32 +13,21 @@ function getThemeImages(theme, products) {
     || []
 }
 
-const ThemeCard = ({ theme, products }) => {
+const ThemeCard = ({ theme, products, index = 0 }) => {
   const [isAskFormOpen, setIsAskFormOpen] = useState(false)
   const images = getThemeImages(theme, products)
-  const bulletPoints = (theme.detail || '')
-    .split(/(?<=[.!])\s+/)
-    .map((sentence) => sentence.trim())
-    .filter(Boolean)
 
   return (
     <>
-      <Link className="Theme-card" to={`/theme/${theme.id}`}>
-        <div className="Theme-card-images">
-          {images.slice(0, 3).map((image, index) => <img key={image} src={image} alt="" className={index === 0 ? 'Theme-card-image-main' : 'Theme-card-image-sub'} />)}
+      <Link className={`Theme-card${index % 2 === 1 ? ' Theme-card-reverse' : ''}`} to={`/theme/${theme.id}`}>
+        <div className={`Theme-card-images Theme-card-images-${Math.min(images.length, 3)}`}>
+          {images.slice(0, 3).map((image, imgIndex) => <img key={image} src={image} alt="" className={imgIndex === 0 ? 'Theme-card-image-main' : 'Theme-card-image-sub'} />)}
         </div>
+        <span className="Theme-card-badge" aria-hidden="true"><FiHeart /></span>
         <div className="Theme-card-copy">
-          <h3>{theme.title}</h3>
-          <ul className="Theme-card-bullets">
-            {bulletPoints.map((point, index) => (
-              <li key={point}>
-                <span className="Theme-card-bullet-dot" style={{ background: themeBulletColors[index % themeBulletColors.length] }} aria-hidden="true" />
-                <span>{point}</span>
-              </li>
-            ))}
-          </ul>
+          <h3>{theme.title} <span className="Theme-card-sparkle" aria-hidden="true">✦</span></h3>
+          <p className="Theme-card-desc">{theme.detail}</p>
           <div className="Theme-card-actions">
-            <span className="Theme-card-explore">Explore theme <span aria-hidden="true">↗</span></span>
             <button
               className="Theme-card-ask"
               type="button"
@@ -91,7 +79,7 @@ export default function Themes() {
         <h1>All <em>themes.</em></h1>
       </header>
       <div className="Theme-grid">
-        {pageThemes.map((theme) => <ThemeCard key={theme.id} theme={theme} products={products} />)}
+        {pageThemes.map((theme, index) => <ThemeCard key={theme.id} theme={theme} products={products} index={index} />)}
       </div>
       <nav className="Themes-pagination" aria-label="Theme pages">
         <button type="button" onClick={() => setCurrentPage((page) => Math.max(1, page - 1))} disabled={safePage === 1}>← Previous</button>
