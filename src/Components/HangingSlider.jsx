@@ -22,6 +22,7 @@ const buildSet = (items, offset) => items.map((item, index) => {
 const HangingSlider = ({ items }) => {
   const navigate = useNavigate()
   const viewportRef = useRef(null)
+  const dragState = useRef({ active: false, moved: false, startX: 0, startScrollLeft: 0 })
 
   // Card set is rendered twice back-to-back so navigation can wrap silently (1-2-3-1-2-3)
   const cards = items?.length ? [...buildSet(items, 0), ...buildSet(items, items.length)] : []
@@ -81,9 +82,53 @@ const HangingSlider = ({ items }) => {
     viewport.scrollBy({ left: direction * scrollStep, behavior: 'smooth' })
   }
 
+  // Mouse click-and-drag scrolling (touch swipe already works natively via overflow-x)
+  const handlePointerDown = (event) => {
+    if (event.pointerType === 'touch') return
+    const viewport = viewportRef.current
+    if (!viewport) return
+    dragState.current = { active: true, moved: false, startX: event.clientX, startScrollLeft: viewport.scrollLeft }
+    try {
+      viewport.setPointerCapture(event.pointerId)
+    } catch {
+      // pointer capture is best-effort; dragging still works without it
+    }
+  }
+
+  const handlePointerMove = (event) => {
+    if (!dragState.current.active) return
+    const viewport = viewportRef.current
+    if (!viewport) return
+    const delta = event.clientX - dragState.current.startX
+    if (Math.abs(delta) > 3) dragState.current.moved = true
+    viewport.scrollLeft = dragState.current.startScrollLeft - delta
+  }
+
+  const endDrag = () => {
+    dragState.current.active = false
+  }
+
+  // Suppress the card-open click right after a drag so dragging doesn't trigger navigation
+  const handleTrackClickCapture = (event) => {
+    if (dragState.current.moved) {
+      event.preventDefault()
+      event.stopPropagation()
+      dragState.current.moved = false
+    }
+  }
+
   return (
     <div className="HangingSlider">
-      <div className="HangingSlider-viewport" ref={viewportRef}>
+      <div
+        className="HangingSlider-viewport"
+        ref={viewportRef}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={endDrag}
+        onPointerLeave={endDrag}
+        onPointerCancel={endDrag}
+        onClickCapture={handleTrackClickCapture}
+      >
         <svg className="HangingSlider-string" viewBox={`0 0 ${totalWidth} 44`} preserveAspectRatio="none" aria-hidden="true" style={{ width: `${totalWidth}px` }}>
           <path d={stringPath} fill="none" stroke="#c9c2b8" strokeWidth="1" />
         </svg>

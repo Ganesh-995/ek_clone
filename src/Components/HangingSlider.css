@@ -11,6 +11,12 @@
     overflow-y: hidden;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    cursor: grab;
+    touch-action: pan-x;
+}
+
+.HangingSlider-viewport:active {
+    cursor: grabbing;
 }
 
 .HangingSlider-viewport::-webkit-scrollbar {
