@@ -375,7 +375,7 @@ const Home = () => {
                     <button
                       className={index === activeDotIndex ? 'is-active' : ''}
                       type="button"
-                      key={image}
+                      key={`${image}-${index}`}
                       onPointerDown={(event) => event.stopPropagation()}
                       onClick={(event) => {
                         event.stopPropagation()
