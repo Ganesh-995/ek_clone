@@ -362,7 +362,7 @@
     margin-right: 0;
     box-sizing: border-box;
   }
-  .Theme-grid {
+  .Themes-page .Theme-grid {
     position: relative;
     left: -1rem;
     width: 100vw;
@@ -372,7 +372,7 @@
   .Theme-card-images {
     min-height: 200px;
   }
-  .Theme-grid {
+  .Themes-page .Theme-grid {
     grid-template-columns: 1fr;
     width: 100vw;
   }
@@ -432,5 +432,19 @@
   .Theme-card-copy {
     height: calc(100% - 1rem);
     min-height: 0;
+  }
+
+  .Themes-page .Theme-card-actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+
+  .Themes-page .Theme-card-whatsapp {
+    width: auto;
+    padding-inline: 0.4rem;
+  }
+
+  .Themes-page .Theme-card-whatsapp span {
+    display: inline;
   }
 }

@@ -1167,6 +1167,7 @@
     }
 
     .Home-themes .Theme-grid {
+        width: 100vw;
         margin-top: 0.375rem;
         margin-bottom: 0.125rem;
         row-gap: 0;
@@ -1191,6 +1192,12 @@
         border-radius: 12px;
     }
 
+    .Theme-grid .Theme-card-images {
+        --theme-image-gap: 3px;
+        --theme-image-padding: 3px;
+        padding: var(--theme-image-padding);
+    }
+
     .Theme-grid .Theme-card-images img {
         border-radius: 8px;
     }
@@ -1213,5 +1220,19 @@
 
     .Theme-grid .Theme-card-whatsapp {
         width: 22px;
+    }
+
+    .Home-themes .Theme-card-actions {
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .Home-themes .Theme-card-whatsapp {
+        width: auto;
+        padding-inline: 0.4rem;
+    }
+
+    .Home-themes .Theme-card-whatsapp span {
+        display: inline;
     }
 }
