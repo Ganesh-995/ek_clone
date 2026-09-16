@@ -50,7 +50,7 @@ const About = () => {
               <p>{description}</p>
             </div>
             <div className="About-story-image">
-              <img src={`/images/${image}`} alt={alt} />
+              <img src={`/images/${image}`} alt={alt} loading="lazy" decoding="async" />
             </div>
           </article>
         ))}

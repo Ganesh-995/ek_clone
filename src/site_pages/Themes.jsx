@@ -21,7 +21,7 @@ const ThemeCard = ({ theme, products, index = 0 }) => {
     <>
       <Link className={`Theme-card${index % 2 === 1 ? ' Theme-card-reverse' : ''}`} to={`/theme/${theme.id}`}>
         <div className={`Theme-card-images Theme-card-images-${Math.min(images.length, 3)}`}>
-          {images.slice(0, 3).map((image, imgIndex) => <img key={image} src={image} alt="" className={imgIndex === 0 ? 'Theme-card-image-main' : 'Theme-card-image-sub'} />)}
+          {images.slice(0, 3).map((image, imgIndex) => <img key={`${image}-${imgIndex}`} src={image} alt="" loading="lazy" decoding="async" className={imgIndex === 0 ? 'Theme-card-image-main' : 'Theme-card-image-sub'} />)}
         </div>
         <span className="Theme-card-badge" aria-hidden="true"><FiHeart /></span>
         <div className="Theme-card-copy">

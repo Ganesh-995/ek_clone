@@ -18,8 +18,6 @@ const heroBubbles = [
   { size: 15, left: '4%', top: '48%', delay: 2.7 }
 ]
 
-const themeBulletColors = ['#f2897a', '#3fb950', '#e5484d']
-
 const ThemeCard = ({ theme, products, index = 0 }) => {
   const [isAskFormOpen, setIsAskFormOpen] = useState(false)
   const images = (theme.images?.length
@@ -30,7 +28,7 @@ const ThemeCard = ({ theme, products, index = 0 }) => {
     <>
       <Link className={`Theme-card Theme-card-${theme.id}${index % 2 === 1 ? ' Theme-card-reverse' : ''}`} to={`/theme/${theme.id}`}>
         <div className={`Theme-card-images Theme-card-images-${Math.min(images.length, 3)}`}>
-          {images.slice(0, 3).map((image, imgIndex) => <img key={image} src={image} alt="" className={imgIndex === 0 ? 'Theme-card-image-main' : 'Theme-card-image-sub'} />)}
+          {images.slice(0, 3).map((image, imgIndex) => <img key={`${image}-${imgIndex}`} src={image} alt="" loading="lazy" decoding="async" className={imgIndex === 0 ? 'Theme-card-image-main' : 'Theme-card-image-sub'} />)}
         </div>
         <span className="Theme-card-badge" aria-hidden="true"><FiHeart /></span>
         <div className="Theme-card-copy">
@@ -336,6 +334,8 @@ const Home = () => {
                           className="Hero-carousel-image"
                           src={image}
                           alt={`Celebration decoration ${index + 1} of ${numHeroImages}`}
+                          loading={index === heroImageIndex ? 'eager' : 'lazy'}
+                          decoding="async"
                           draggable="false"
                         />
                       </div>

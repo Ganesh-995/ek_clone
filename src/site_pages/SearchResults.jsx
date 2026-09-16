@@ -61,7 +61,7 @@ function SearchResults() {
               return (
                 <Link className="Search-theme-card" to={`/theme/${theme.id}`} key={theme.id}>
                   <div className="Search-theme-image-wrap">
-                    {image && <img src={image} alt="" />}
+                    {image && <img src={image} alt="" loading="lazy" decoding="async" />}
                   </div>
                   <div>
                     <span className="Search-result-type">Theme</span>
@@ -120,7 +120,7 @@ function SearchResults() {
           <div className="Search-results-products">
             {matchingHangerCards.map((card, index) => (
               <Link className="Search-hanger-card" to="/bunting" key={`${card.title}-${index}`}>
-                <img src={card.image} alt={card.title} />
+                <img src={card.image} alt={card.title} loading="lazy" decoding="async" />
                 <div>
                   <span className="Search-result-type">Hanger card</span>
                   <h3>{card.title}</h3>

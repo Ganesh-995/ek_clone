@@ -42,7 +42,7 @@ const ProductCard = ({ id, image, title, description, bulletPoints = [] }) => {
       aria-label={`View details for ${title}`}
     >
       <div className="ProductCard-image-wrapper">
-        <img src={image} alt={title} className="ProductCard-image" />
+        <img src={image} alt={title} className="ProductCard-image" loading="lazy" decoding="async" />
       </div>
       <div className="ProductCard-info">
           <h3 className="ProductCard-title">{title}</h3>

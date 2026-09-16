@@ -507,7 +507,7 @@ export default function ManageProducts() {
           {paginatedProducts.map(product => (
             <div key={product.id} className="product-item">
               <div className="product-image">
-                <img src={product.image} alt={product.title} />
+                <img src={product.image} alt={product.title} loading="lazy" decoding="async" />
               </div>
               <div className="product-details">
                 <h3>{product.title}</h3>
@@ -566,7 +566,7 @@ export default function ManageProducts() {
             return (
               <div key={theme.id} className="product-item theme-item">
                 <div className="theme-image-strip">
-                  {images.slice(0, 4).map((image) => <img key={image} src={image} alt="" />)}
+                  {images.slice(0, 4).map((image, imageIndex) => <img key={`${image}-${imageIndex}`} src={image} alt="" loading="lazy" decoding="async" />)}
                 </div>
                 <div className="product-details">
                   <h3>{theme.title}</h3>

@@ -57,7 +57,7 @@ const ThemeDetails = () => {
               onClick={() => setSelectedProduct(product)}
               aria-label={`Open ${product.title} image`}
             >
-              <img src={product.image} alt={product.title || theme.title} />
+              <img src={product.image} alt={product.title || theme.title} loading="lazy" decoding="async" />
             </button>
           ))}
         </div>
