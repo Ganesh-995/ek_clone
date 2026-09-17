@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import ProductCard from '../Components/ProductCard'
+import HangingSlider from '../Components/HangingSlider'
+import ThemeCard from '../Components/ThemeCard'
 import { useProducts } from '../context/ProductContext'
 import './SearchResults.css'
 
@@ -27,7 +29,7 @@ function SearchResults() {
       .toLowerCase()
       .includes(normalizedQuery)
   ))
-  const matchingHangerCards = hangerCards.filter((card) => (
+  const matchingHangerCards = hangerCards.map((card, index) => ({ ...card, index })).filter((card) => (
     `hanger ${card.title} ${card.description || ''}`.toLowerCase().includes(normalizedQuery)
   ))
   const matchingThemes = themes.filter((theme) => getThemeSearchText(theme).includes(normalizedQuery))
@@ -55,23 +57,8 @@ function SearchResults() {
             <span>01</span>
             <h2 id="matching-themes-title">Matching <em>themes.</em></h2>
           </div>
-          <div className="Search-results-themes">
-            {matchingThemes.map((theme) => {
-              const image = theme.image || theme.images?.[0]?.image || theme.images?.[0] || products.find((product) => theme.productIds?.includes(product.id))?.image
-              return (
-                <Link className="Search-theme-card" to={`/theme/${theme.id}`} key={theme.id}>
-                  <div className="Search-theme-image-wrap">
-                    {image && <img src={image} alt="" loading="lazy" decoding="async" />}
-                  </div>
-                  <div>
-                    <span className="Search-result-type">Theme</span>
-                    <h3>{theme.title || theme.name}</h3>
-                    <p>{theme.detail || theme.description}</p>
-                    <span className="Search-result-link">Explore theme <span aria-hidden="true">↗</span></span>
-                  </div>
-                </Link>
-              )
-            })}
+          <div className="Theme-grid Search-results-theme-grid">
+            {matchingThemes.map((theme, index) => <ThemeCard key={theme.id} theme={theme} products={products} index={index} />)}
           </div>
         </section>
       )}
@@ -82,7 +69,7 @@ function SearchResults() {
             <span>02</span>
             <h2>Matching <em id="matching-products-title">products.</em></h2>
           </div>
-          <div className="Search-results-products">
+          <div className="Products-grid">
             {paginatedProducts.map((product) => (
               <ProductCard
                 key={product.id}
@@ -117,18 +104,7 @@ function SearchResults() {
             <span>03</span>
             <h2 id="matching-hangers-title">Matching <em>hanger cards.</em></h2>
           </div>
-          <div className="Search-results-products">
-            {matchingHangerCards.map((card, index) => (
-              <Link className="Search-hanger-card" to="/bunting" key={`${card.title}-${index}`}>
-                <img src={card.image} alt={card.title} loading="lazy" decoding="async" />
-                <div>
-                  <span className="Search-result-type">Hanger card</span>
-                  <h3>{card.title}</h3>
-                  <p>{card.description}</p>
-                </div>
-              </Link>
-            ))}
-          </div>
+          <HangingSlider items={matchingHangerCards.map((card) => ({ id: `hanger-${card.index}`, title: card.title, image: card.image }))} />
         </section>
       )}
 

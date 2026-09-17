@@ -1,12 +1,10 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import { FaWhatsapp } from 'react-icons/fa'
 import { FiChevronLeft, FiChevronRight, FiArrowRight, FiAward, FiTruck, FiClock, FiHeart } from 'react-icons/fi'
 import ProductCard from '../Components/ProductCard'
 import HangingSlider from '../Components/HangingSlider'
+import ThemeCard from '../Components/ThemeCard'
 import { useProducts } from '../context/ProductContext'
-import { createThemeWhatsAppUrl } from '../utils/whatsapp'
-import AskFormModal from '../Components/AskFormModal'
 import './Home.css'
 
 const heroBubbles = [
@@ -17,54 +15,6 @@ const heroBubbles = [
   { size: 10, left: '92%', top: '52%', delay: 1.7 },
   { size: 15, left: '4%', top: '48%', delay: 2.7 }
 ]
-
-const ThemeCard = ({ theme, products, index = 0 }) => {
-  const [isAskFormOpen, setIsAskFormOpen] = useState(false)
-  const images = (theme.images?.length
-    ? theme.images.map((item) => typeof item === 'string' ? item : item.image).filter(Boolean)
-    : theme.productIds?.map((productId) => products.find((item) => item.id === productId)?.image).filter(Boolean) || [])
-
-  return (
-    <>
-      <Link className={`Theme-card Theme-card-${theme.id}${index % 2 === 1 ? ' Theme-card-reverse' : ''}`} to={`/theme/${theme.id}`}>
-        <div className={`Theme-card-images Theme-card-images-${Math.min(images.length, 3)}`}>
-          {images.slice(0, 3).map((image, imgIndex) => <img key={`${image}-${imgIndex}`} src={image} alt="" loading="lazy" decoding="async" className={imgIndex === 0 ? 'Theme-card-image-main' : 'Theme-card-image-sub'} />)}
-        </div>
-        <span className="Theme-card-badge" aria-hidden="true"><FiHeart /></span>
-        <div className="Theme-card-copy">
-          <h3>{theme.title} <span className="Theme-card-sparkle" aria-hidden="true">✦</span></h3>
-          <p className="Theme-card-desc">{theme.detail}</p>
-          <div className="Theme-card-actions">
-            <button
-              className="Theme-card-ask"
-              type="button"
-              onClick={(event) => { event.preventDefault(); event.stopPropagation(); setIsAskFormOpen(true) }}
-              aria-label={`Ask about ${theme.title}`}
-              title="Ask about this theme"
-            >
-              Ask
-            </button>
-            <button
-              className="Theme-card-whatsapp"
-              type="button"
-              onClick={(event) => {
-                event.preventDefault()
-                event.stopPropagation()
-                window.open(createThemeWhatsAppUrl(theme, images), '_blank')
-              }}
-              aria-label={`WhatsApp par ${theme.title} ke baare mein poochein`}
-              title="WhatsApp par theme inquiry bhejein"
-            >
-              <FaWhatsapp aria-hidden="true" />
-              <span>WhatsApp</span>
-            </button>
-          </div>
-        </div>
-      </Link>
-      {isAskFormOpen && <AskFormModal subject={theme.title} type="theme" images={images} onClose={() => setIsAskFormOpen(false)} />}
-    </>
-  )
-}
 
 const Home = () => {
   const { products, themes, heroImages, hangerCards } = useProducts()
@@ -283,7 +233,7 @@ const Home = () => {
               Bright balloons, playful details, and premium decorations curated to turn your special day into unforgettable memories.
             </p>
             <div className="Hero-actions">
-              <a href="#products-grid" className="Hero-cta-btn">
+              <a href="#featured-products" className="Hero-cta-btn">
                 <span>Explore Collection</span>
                 <FiArrowRight aria-hidden="true" />
               </a>
