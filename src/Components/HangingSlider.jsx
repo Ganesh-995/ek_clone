@@ -88,11 +88,6 @@ const HangingSlider = ({ items }) => {
     const viewport = viewportRef.current
     if (!viewport) return
     dragState.current = { active: true, moved: false, startX: event.clientX, startScrollLeft: viewport.scrollLeft }
-    try {
-      viewport.setPointerCapture(event.pointerId)
-    } catch {
-      // pointer capture is best-effort; dragging still works without it
-    }
   }
 
   const handlePointerMove = (event) => {
@@ -100,7 +95,14 @@ const HangingSlider = ({ items }) => {
     const viewport = viewportRef.current
     if (!viewport) return
     const delta = event.clientX - dragState.current.startX
-    if (Math.abs(delta) > 3) dragState.current.moved = true
+    if (Math.abs(delta) > 3 && !dragState.current.moved) {
+      dragState.current.moved = true
+      try {
+        viewport.setPointerCapture(event.pointerId)
+      } catch {
+        // pointer capture is best-effort; dragging still works without it
+      }
+    }
     viewport.scrollLeft = dragState.current.startScrollLeft - delta
   }
 

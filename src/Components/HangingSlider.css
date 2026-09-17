@@ -56,6 +56,11 @@
     box-shadow: 0 16px 26px rgba(41, 35, 46, 0.2);
 }
 
+.HangingSlider-card:active,
+.HangingSlider-card:focus-visible {
+    animation-play-state: paused;
+}
+
 @keyframes HangingSlider-sway {
     0%, 100% { transform: translateY(var(--arch-offset, 0px)) rotate(var(--tilt, 0deg)); }
     50% { transform: translateY(var(--arch-offset, 0px)) rotate(calc(var(--tilt, 0deg) * -1)); }
