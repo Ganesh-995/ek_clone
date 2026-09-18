@@ -75,8 +75,7 @@ const Contact = () => {
             <p>Your inquiry has been received. You will be redirected to the home page in 5 seconds.</p>
           </div>
         ) : (
-        <form className="Inquiry-form" name="inquiry" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" onSubmit={handleSubmit}>
-          <input type="hidden" name="form-name" value="inquiry" />
+        <form className="Inquiry-form" onSubmit={handleSubmit}>
           <label className="Inquiry-honeypot">
             Don't fill this out
             <input name="bot-field" tabIndex="-1" autoComplete="off" />
