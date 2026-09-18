@@ -98,6 +98,24 @@ export default function ManageProducts() {
     }));
   };
 
+  const addHangerCard = () => {
+    setHangerFormData((previous) => {
+      if (previous.cards.length >= 20) return previous;
+      const nextCards = [...previous.cards, { image: '', title: '', description: '' }];
+      setActiveHangerIndex(nextCards.length - 1);
+      return { cards: nextCards };
+    });
+  };
+
+  const removeHangerCard = (index) => {
+    setHangerFormData((previous) => {
+      if (previous.cards.length <= 1) return previous;
+      const nextCards = previous.cards.filter((_, cardIndex) => cardIndex !== index);
+      setActiveHangerIndex((currentIndex) => Math.min(currentIndex, nextCards.length - 1));
+      return { cards: nextCards };
+    });
+  };
+
   const createThemeId = (title) => {
     const baseId = title.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'theme';
     let nextId = baseId;
@@ -398,12 +416,30 @@ export default function ManageProducts() {
             ) : formType === 'hanger' ? (
               <div className="hanger-card-editor">
                 <div className="form-group">
-                  <label>🔢 Card Number</label>
+                  <label>🔢 Card Number ({hangerFormData.cards.length}/20)</label>
                   <select value={activeHangerIndex} onChange={(event) => setActiveHangerIndex(Number(event.target.value))}>
                     {hangerFormData.cards.map((card, index) => (
                       <option key={index} value={index}>{index + 1} — {card.title || 'Untitled'}</option>
                     ))}
                   </select>
+                </div>
+                <div className="hanger-card-actions">
+                  <button
+                    type="button"
+                    className="btn btn-secondary"
+                    onClick={addHangerCard}
+                    disabled={hangerFormData.cards.length >= 20}
+                  >
+                    ➕ Add Card
+                  </button>
+                  <button
+                    type="button"
+                    className="btn btn-cancel"
+                    onClick={() => removeHangerCard(activeHangerIndex)}
+                    disabled={hangerFormData.cards.length <= 1}
+                  >
+                    🗑️ Remove This Card
+                  </button>
                 </div>
                 {hangerFormData.cards[activeHangerIndex] && (
                   <fieldset className="hanger-card-fields">
