@@ -626,7 +626,7 @@
 }
 
 .Theme-card:hover {
-    transform: translateY(-4px);
+    transform: none;
 }
 
 .Theme-card-images {

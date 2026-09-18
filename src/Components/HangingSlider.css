@@ -46,12 +46,9 @@
     box-shadow: 0 10px 18px rgba(41, 35, 46, 0.14);
     transform-origin: top center;
     transform: translateY(var(--arch-offset, 0px)) rotate(var(--tilt, 0deg));
-    animation: HangingSlider-sway 4.5s ease-in-out infinite;
-    animation-delay: var(--delay, 0s);
 }
 
 .HangingSlider-card:hover {
-    animation-play-state: paused;
     transform: translateY(var(--arch-offset, 0px)) rotate(0deg) translateY(-4px);
     box-shadow: 0 16px 26px rgba(41, 35, 46, 0.2);
 }
