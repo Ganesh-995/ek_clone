@@ -15,8 +15,8 @@ const Bunting = () => {
   const buntingItems = products.filter(p => /bunting|banner|festive/i.test(p.title)).slice(0, 6)
   const items = buntingItems.length >= 3 ? buntingItems : products.slice(0, 3)
   const hangerIndex = selectedId?.startsWith('hanger-') ? Number(selectedId.slice('hanger-'.length)) : -1
-  const selectedHanger = Number.isInteger(hangerIndex) ? hangerCards[hangerIndex] : null
-  const selectedItem = selectedId ? products.find((item) => String(item.id) === selectedId) : null
+  const selectedHanger = Number.isInteger(hangerIndex) && hangerIndex >= 0 && hangerIndex < hangerCards.length ? hangerCards[hangerIndex] : null
+  const selectedItem = selectedId && !selectedId.startsWith('hanger-') ? products.find((item) => String(item.id) === selectedId) : null
   const main = selectedHanger || selectedItem || items[0]
   const visibleDetails = main?.bulletPoints?.slice(0, 3) || []
   const whatsappMessage = [

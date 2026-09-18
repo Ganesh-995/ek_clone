@@ -20,11 +20,33 @@ function response(settings) {
   return Response.json(settings, { headers: { 'Cache-Control': 'no-store, max-age=0' } });
 }
 
+function normalizeHangerCards(cards) {
+  const source = Array.isArray(cards) && cards.length > 0 ? cards : defaultHangerCards;
+  return source
+    .filter((card) => card && typeof card.image === 'string' && card.image.trim() && typeof card.title === 'string' && card.title.trim())
+    .slice(0, 20)
+    .map((card) => ({
+      image: card.image.trim(),
+      title: card.title.trim(),
+      description: typeof card.description === 'string' ? card.description.trim() : '',
+    }));
+}
+
+function normalizeHeroImages(images) {
+  const source = Array.isArray(images) && images.length > 0 ? images : defaultHeroImages;
+  return source.filter((image) => typeof image === 'string' && image.trim()).slice(0, 10).map((image) => image.trim());
+}
+
 export async function GET() {
   try {
-    const settings = await (await getDatabase()).collection('siteSettings').findOne({ _id: 'site-settings' });
-    const heroImages = Array.isArray(settings?.heroImages) && settings.heroImages.length > 0 ? settings.heroImages : defaultHeroImages;
-    const hangerCards = Array.isArray(settings?.hangerCards) && settings.hangerCards.length > 0 ? settings.hangerCards : defaultHangerCards;
+    const database = await getDatabase();
+    const collection = database.collection('siteSettings');
+    const settings = await collection.findOne({ _id: 'site-settings' });
+    const heroImages = normalizeHeroImages(settings?.heroImages);
+    const hangerCards = normalizeHangerCards(settings?.hangerCards);
+    if (!settings || !Array.isArray(settings.heroImages) || !Array.isArray(settings.hangerCards)) {
+      await collection.updateOne({ _id: 'site-settings' }, { $set: { heroImages, hangerCards } }, { upsert: true });
+    }
     return response({ heroImages, hangerCards });
   } catch {
     return response({ heroImages: defaultHeroImages, hangerCards: defaultHangerCards });
@@ -49,11 +71,11 @@ export async function PUT(request) {
     }
 
     if (settings?.hangerCards !== undefined) {
-      const hangerCards = settings.hangerCards;
-      if (!Array.isArray(hangerCards) || hangerCards.length === 0 || hangerCards.length > 20 || hangerCards.some((card) => !card || typeof card.image !== 'string' || !card.image.trim() || typeof card.title !== 'string' || !card.title.trim())) {
+      const hangerCards = normalizeHangerCards(settings.hangerCards);
+      if (hangerCards.length === 0 || hangerCards.length > 20) {
         return Response.json({ message: 'Provide 1 to 20 hanger cards with an image and title.' }, { status: 400 });
       }
-      nextSettings.hangerCards = hangerCards.map((card) => ({ image: card.image.trim(), title: card.title.trim(), description: typeof card.description === 'string' ? card.description.trim() : '' }));
+      nextSettings.hangerCards = hangerCards;
     }
 
     if (Object.keys(nextSettings).length === 0) {

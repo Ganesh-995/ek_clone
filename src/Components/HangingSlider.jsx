@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
 import './HangingSlider.css'
 
 const tiltPattern = [-6, 4, -3, 5, -4, 3, -5, 4]
@@ -20,7 +19,6 @@ const buildSet = (items, offset) => items.map((item, index) => {
 })
 
 const HangingSlider = ({ items }) => {
-  const navigate = useNavigate()
   const viewportRef = useRef(null)
   const dragState = useRef({ active: false, moved: false, startX: 0, startScrollLeft: 0 })
 
@@ -63,12 +61,6 @@ const HangingSlider = ({ items }) => {
   }, [setWidth])
 
   if (!items?.length) return null
-
-  const openBunting = (event) => {
-    event?.preventDefault()
-    event?.stopPropagation()
-    navigate('/bunting')
-  }
 
   const scroll = (direction) => {
     const viewport = viewportRef.current
@@ -136,42 +128,9 @@ const HangingSlider = ({ items }) => {
         </svg>
         <div className="HangingSlider-track" style={{ width: `${totalWidth}px` }}>
           {cards.map((card, i) => {
-            const rawId = String(card.item.id ?? '')
-            const itemId = rawId
-
-            if (itemId) {
-              return (
-                <a
-                  href={`/bunting?item=${encodeURIComponent(itemId)}`}
-                  className="HangingSlider-card"
-                  key={i}
-                  style={{
-                    width: `${cardWidth}px`,
-                    '--tilt': `${tiltPattern[card.localIndex % tiltPattern.length]}deg`,
-                    '--delay': `${(card.localIndex % 5) * 0.3}s`,
-                    '--arch-offset': `${card.arch}px`,
-                    '--card-color': getPastelColor(i)
-                  }}
-                  aria-label={card.item.title}
-                >
-                  <span
-                    className="HangingSlider-clip"
-                    role="button"
-                    tabIndex={0}
-                    aria-label="Open bunting page"
-                  />
-                  <div className="HangingSlider-photo">
-                    <img src={card.item.image} alt={card.item.title} loading="lazy" />
-                  </div>
-                  <div className="HangingSlider-info">
-                    <strong>{card.item.title}</strong>
-                  </div>
-                </a>
-              )
-            }
-
             return (
-              <div
+              <a
+                href={`/bunting?item=hanger-${card.localIndex}`}
                 className="HangingSlider-card"
                 key={i}
                 style={{
@@ -185,11 +144,7 @@ const HangingSlider = ({ items }) => {
               >
                 <span
                   className="HangingSlider-clip"
-                  role="button"
-                  tabIndex={0}
                   aria-label="Open bunting page"
-                  onClick={openBunting}
-                  onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') openBunting(e) }}
                 />
                 <div className="HangingSlider-photo">
                   <img src={card.item.image} alt={card.item.title} loading="lazy" />
@@ -197,7 +152,7 @@ const HangingSlider = ({ items }) => {
                 <div className="HangingSlider-info">
                   <strong>{card.item.title}</strong>
                 </div>
-              </div>
+              </a>
             )
           })}
         </div>
