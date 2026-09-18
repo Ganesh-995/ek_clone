@@ -12,7 +12,7 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
     cursor: grab;
-    touch-action: pan-x;
+    touch-action: auto;
 }
 
 .HangingSlider-viewport:active {
