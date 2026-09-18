@@ -1,20 +1,19 @@
 
 import { Routes, Route, useLocation } from 'react-router-dom'
-import { lazy, Suspense, useEffect } from 'react'
+import { useEffect } from 'react'
 import { FaInstagram, FaPinterest, FaYoutube } from 'react-icons/fa'
 import Navbar from './Components/Navbar.jsx'
 import './App.css'
-
-const Home = lazy(() => import('./site_pages/Home.jsx'))
-const Location = lazy(() => import('./site_pages/Location.jsx'))
-const About = lazy(() => import('./site_pages/About.jsx'))
-const Contact = lazy(() => import('./site_pages/Contact.jsx'))
-const ManageProducts = lazy(() => import('./site_pages/ManageProducts.jsx'))
-const ProductDetails = lazy(() => import('./site_pages/ProductDetails.jsx'))
-const ThemeDetails = lazy(() => import('./site_pages/ThemeDetails.jsx'))
-const Themes = lazy(() => import('./site_pages/Themes.jsx'))
-const Bunting = lazy(() => import('./site_pages/Bunting.jsx'))
-const SearchResults = lazy(() => import('./site_pages/SearchResults.jsx'))
+import Home from './site_pages/Home.jsx'
+import Location from './site_pages/Location.jsx'
+import About from './site_pages/About.jsx'
+import Contact from './site_pages/Contact.jsx'
+import ManageProducts from './site_pages/ManageProducts.jsx'
+import ProductDetails from './site_pages/ProductDetails.jsx'
+import ThemeDetails from './site_pages/ThemeDetails.jsx'
+import Themes from './site_pages/Themes.jsx'
+import Bunting from './site_pages/Bunting.jsx'
+import SearchResults from './site_pages/SearchResults.jsx'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -32,20 +31,18 @@ function App() {
       <ScrollToTop />
       <Navbar />
       <main className="App-main">
-        <Suspense fallback={<div className="Route-loading" role="status">Loading...</div>}>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/location" element={<Location />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/inquiry" element={<Contact />} />
-            <Route path="/manage" element={<ManageProducts />} />
-            <Route path="/product/:productId" element={<ProductDetails />} />
-            <Route path="/bunting" element={<Bunting />} />
-            <Route path="/theme/:themeId" element={<ThemeDetails />} />
-            <Route path="/themes" element={<Themes />} />
-            <Route path="/search" element={<SearchResults />} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/location" element={<Location />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/inquiry" element={<Contact />} />
+          <Route path="/manage" element={<ManageProducts />} />
+          <Route path="/product/:productId" element={<ProductDetails />} />
+          <Route path="/bunting" element={<Bunting />} />
+          <Route path="/theme/:themeId" element={<ThemeDetails />} />
+          <Route path="/themes" element={<Themes />} />
+          <Route path="/search" element={<SearchResults />} />
+        </Routes>
         <div className="Page-up-container">
           <button
             className="Page-up-button"
