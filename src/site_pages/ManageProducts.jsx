@@ -5,7 +5,7 @@ import './ManageProducts.css';
 
 export default function ManageProducts() {
   const { products, setProducts, themes, setThemes, heroImages, setHeroImages, hangerCards, setHangerCards, visitorStats } = useProducts();
-  const [isAuthenticated, setIsAuthenticated] = useState(() => Boolean(sessionStorage.getItem('ek-admin-token')));
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [isLoggingIn, setIsLoggingIn] = useState(false);
@@ -27,6 +27,11 @@ export default function ManageProducts() {
   const [productPage, setProductPage] = useState(1);
   const [themePage, setThemePage] = useState(1);
   const itemsPerPage = 6;
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return undefined;
+    setIsAuthenticated(Boolean(sessionStorage.getItem('ek-admin-token')));
+  }, []);
 
   useEffect(() => {
     if (!showForm) return undefined;

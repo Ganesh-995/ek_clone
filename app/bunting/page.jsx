@@ -1,9 +1,7 @@
 "use client"
 
-import dynamic from 'next/dynamic'
+import AppRouterShell from '../AppRouterShell';
 
-const AppRouterShell = dynamic(() => import('../AppRouterShell'), { ssr: false })
-
-export default function Page() {
-  return <AppRouterShell />
+export default function BuntingPage() {
+  return <AppRouterShell />;
 }

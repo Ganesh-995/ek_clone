@@ -4,7 +4,7 @@ import { defaultHangerCards, defaultHeroImages } from '../src/data/siteSettings.
 import { themeCards as defaultThemes } from '../src/data/themes.js';
 
 const mongoUri = process.env.MONGODB_URI;
-const databaseName = process.env.MONGODB_DB_NAME || 'balloon_space';
+const databaseName = process.env.MONGODB_DB_NAME || process.env.MONGODB_DB || 'balloon_space';
 const sourceUrl = process.env.DATA_MIGRATION_SOURCE_URL || 'https://theballoonspace.netlify.app';
 
 if (!mongoUri) throw new Error('Missing MONGODB_URI environment variable.');

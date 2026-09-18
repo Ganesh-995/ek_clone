@@ -1,8 +1,6 @@
 'use client';
 
-import dynamic from 'next/dynamic';
-
-const AppRouterShell = dynamic(() => import('../AppRouterShell'), { ssr: false });
+import AppRouterShell from '../AppRouterShell';
 
 export default function ManagePage() {
   return <AppRouterShell />;
