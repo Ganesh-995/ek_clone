@@ -14,6 +14,7 @@ import ThemeDetails from './site_pages/ThemeDetails.jsx'
 import Themes from './site_pages/Themes.jsx'
 import Bunting from './site_pages/Bunting.jsx'
 import SearchResults from './site_pages/SearchResults.jsx'
+import ThankYou from './site_pages/ThankYou.jsx'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -42,6 +43,7 @@ function App() {
           <Route path="/theme/:themeId" element={<ThemeDetails />} />
           <Route path="/themes" element={<Themes />} />
           <Route path="/search" element={<SearchResults />} />
+          <Route path="/thank-you" element={<ThankYou />} />
         </Routes>
         <div className="Page-up-container">
           <button

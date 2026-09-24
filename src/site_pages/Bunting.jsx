@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import { useSearchParams } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { FaTimes, FaWhatsapp } from 'react-icons/fa'
 import './Bunting.css'
 import { useProducts } from '../context/ProductContext'
-import { WHATSAPP_NUMBER } from '../utils/whatsapp'
+import { WHATSAPP_NUMBER, openWhatsAppAndNavigate } from '../utils/whatsapp'
 
 const Bunting = () => {
   const { products, hangerCards } = useProducts()
   const [searchParams] = useSearchParams()
+  const navigate = useNavigate()
   const [isImageOpen, setIsImageOpen] = useState(false)
   const selectedId = searchParams.get('item')
 
@@ -63,6 +64,10 @@ const Bunting = () => {
               href={whatsappUrl}
               target="_blank"
               rel="noreferrer"
+              onClick={(event) => {
+                event.preventDefault()
+                openWhatsAppAndNavigate(whatsappUrl, navigate)
+              }}
             >
               <FaWhatsapp aria-hidden="true" />
               <span>WhatsApp</span>

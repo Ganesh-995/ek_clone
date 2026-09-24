@@ -1,14 +1,6 @@
 [build]
   command = "npm run build"
-
-[[redirects]]
-  from = "/api/site-settings"
-  to = "/.netlify/functions/site-settings"
-  status = 200
-  force = true
-
-[[plugins]]
-  package = "@netlify/plugin-nextjs"
+  publish = ".next"
 
 [build.environment]
   NODE_VERSION = "20"

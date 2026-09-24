@@ -1,5 +1,10 @@
 export const WHATSAPP_NUMBER = '917838937047'
 
+export function openWhatsAppAndNavigate(url, navigate) {
+  window.open(url, '_blank', 'noopener,noreferrer')
+  navigate('/thank-you')
+}
+
 export function createProductWhatsAppUrl(product) {
   const bulletPoints = product.bulletPoints?.length
     ? `\n\n✅ *Key details:*\n${product.bulletPoints.map((point) => `• ${point}`).join('\n')}`

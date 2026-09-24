@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
+import { useNavigate } from 'react-router-dom'
 import { FaTimes, FaWhatsapp } from 'react-icons/fa'
-import { createInquiryWhatsAppUrl } from '../utils/whatsapp'
+import { createInquiryWhatsAppUrl, openWhatsAppAndNavigate } from '../utils/whatsapp'
 import './AskFormModal.css'
 
 const AskFormModal = ({ subject, type = 'product', images = [], onClose }) => {
   const [formData, setFormData] = useState({ name: '', mobile: '', eventDate: '', message: '' })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const navigate = useNavigate()
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow
@@ -24,7 +26,7 @@ const AskFormModal = ({ subject, type = 'product', images = [], onClose }) => {
   const handleSubmit = (event) => {
     event.preventDefault()
     setIsSubmitting(true)
-    window.open(createInquiryWhatsAppUrl({ subject, type, images, ...formData }), '_blank', 'noopener,noreferrer')
+    openWhatsAppAndNavigate(createInquiryWhatsAppUrl({ subject, type, images, ...formData }), navigate)
     setIsSubmitting(false)
     onClose()
   }

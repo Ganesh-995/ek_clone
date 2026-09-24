@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { FaWhatsapp } from 'react-icons/fa'
-import { createProductWhatsAppUrl } from '../utils/whatsapp'
+import { createProductWhatsAppUrl, openWhatsAppAndNavigate } from '../utils/whatsapp'
 import AskFormModal from './AskFormModal'
 import './ProductCard.css'
 
@@ -13,7 +13,7 @@ const ProductCard = ({ id, image, title, description, bulletPoints = [] }) => {
     e.preventDefault()
     e.stopPropagation()
 
-    window.open(createProductWhatsAppUrl({ title, image, description, bulletPoints }), '_blank')
+    openWhatsAppAndNavigate(createProductWhatsAppUrl({ title, image, description, bulletPoints }), navigate)
   }
 
   const goToDetails = () => {

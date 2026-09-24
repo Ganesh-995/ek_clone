@@ -3,7 +3,7 @@ import { createPortal } from 'react-dom'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { FaTimes, FaWhatsapp } from 'react-icons/fa'
 import { useProducts } from '../context/ProductContext'
-import { createThemeWhatsAppUrl } from '../utils/whatsapp'
+import { createThemeWhatsAppUrl, openWhatsAppAndNavigate } from '../utils/whatsapp'
 import AskFormModal from '../Components/AskFormModal'
 import './ThemeDetails.css'
 
@@ -72,7 +72,7 @@ const ThemeDetails = () => {
             <button
               className="ThemeDetails-whatsapp"
               type="button"
-              onClick={() => window.open(createThemeWhatsAppUrl(theme, themeImages), '_blank')}
+              onClick={() => openWhatsAppAndNavigate(createThemeWhatsAppUrl(theme, themeImages), navigate)}
             >
               <FaWhatsapp aria-hidden="true" /> WhatsApp
             </button>

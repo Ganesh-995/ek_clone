@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaWhatsapp } from 'react-icons/fa'
 import { FiHeart } from 'react-icons/fi'
 import { useProducts } from '../context/ProductContext'
-import { createThemeWhatsAppUrl } from '../utils/whatsapp'
+import { createThemeWhatsAppUrl, openWhatsAppAndNavigate } from '../utils/whatsapp'
 import AskFormModal from '../Components/AskFormModal'
 import './Themes.css'
 
@@ -14,6 +14,7 @@ function getThemeImages(theme, products) {
 }
 
 const ThemeCard = ({ theme, products, index = 0 }) => {
+  const navigate = useNavigate()
   const [isAskFormOpen, setIsAskFormOpen] = useState(false)
   const images = getThemeImages(theme, products)
 
@@ -43,7 +44,7 @@ const ThemeCard = ({ theme, products, index = 0 }) => {
               onClick={(event) => {
                 event.preventDefault()
                 event.stopPropagation()
-                window.open(createThemeWhatsAppUrl(theme, images), '_blank')
+                openWhatsAppAndNavigate(createThemeWhatsAppUrl(theme, images), navigate)
               }}
               aria-label={`WhatsApp par ${theme.title} ke baare mein poochein`}
               title="WhatsApp par theme inquiry bhejein"

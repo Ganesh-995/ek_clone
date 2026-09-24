@@ -1,12 +1,13 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { FaWhatsapp } from 'react-icons/fa'
 import { FiHeart } from 'react-icons/fi'
-import { createThemeWhatsAppUrl } from '../utils/whatsapp'
+import { createThemeWhatsAppUrl, openWhatsAppAndNavigate } from '../utils/whatsapp'
 import AskFormModal from './AskFormModal'
 import '../site_pages/Home.css'
 
 const ThemeCard = ({ theme, products, index = 0 }) => {
+  const navigate = useNavigate()
   const [isAskFormOpen, setIsAskFormOpen] = useState(false)
   const images = (theme.images?.length
     ? theme.images.map((item) => typeof item === 'string' ? item : item.image).filter(Boolean)
@@ -26,7 +27,7 @@ const ThemeCard = ({ theme, products, index = 0 }) => {
             <button className="Theme-card-ask" type="button" onClick={(event) => { event.preventDefault(); event.stopPropagation(); setIsAskFormOpen(true) }} aria-label={`Ask about ${theme.title}`} title="Ask about this theme">
               Ask
             </button>
-            <button className="Theme-card-whatsapp" type="button" onClick={(event) => { event.preventDefault(); event.stopPropagation(); window.open(createThemeWhatsAppUrl(theme, images), '_blank') }} aria-label={`WhatsApp par ${theme.title} ke baare mein poochein`} title="WhatsApp par theme inquiry bhejein">
+            <button className="Theme-card-whatsapp" type="button" onClick={(event) => { event.preventDefault(); event.stopPropagation(); openWhatsAppAndNavigate(createThemeWhatsAppUrl(theme, images), navigate) }} aria-label={`WhatsApp par ${theme.title} ke baare mein poochein`} title="WhatsApp par theme inquiry bhejein">
               <FaWhatsapp aria-hidden="true" />
               <span>WhatsApp</span>
             </button>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { openWhatsAppAndNavigate } from '../utils/whatsapp'
 import './Contact.css'
 
 const whatsappNumber = '917838937047'
@@ -12,7 +13,6 @@ const Contact = () => {
     mobile: '',
     message: ''
   })
-  const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitError, setSubmitError] = useState('')
 
@@ -33,11 +33,9 @@ const Contact = () => {
         `Mobile: ${formData.mobile}`,
         `Message: ${formData.message}`,
       ].join('\n')
-      window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`, '_blank', 'noopener,noreferrer')
+      openWhatsAppAndNavigate(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`, navigate)
 
-      setIsSubmitted(true)
       setFormData({ name: '', email: '', mobile: '', message: '' })
-      window.setTimeout(() => navigate('/'), 5000)
     } catch (error) {
       setSubmitError(error.message)
     } finally {
@@ -68,13 +66,6 @@ const Contact = () => {
           </div>
         </div>
 
-        {isSubmitted ? (
-          <div className="Inquiry-success" role="status" aria-live="polite">
-            <span className="Inquiry-success-mark">✓</span>
-            <h2>We will let you know.</h2>
-            <p>Your inquiry has been received. You will be redirected to the home page in 5 seconds.</p>
-          </div>
-        ) : (
         <form className="Inquiry-form" onSubmit={handleSubmit}>
           <label className="Inquiry-honeypot">
             Don't fill this out
@@ -103,7 +94,6 @@ const Contact = () => {
             {isSubmitting ? 'Sending...' : 'Send inquiry'} {!isSubmitting && <span aria-hidden="true">↗</span>}
           </button>
         </form>
-        )}
       </section>
     </div>
   )
